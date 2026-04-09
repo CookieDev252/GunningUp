@@ -1,6 +1,7 @@
 # Build output
 dist/
 build/
+raylib/
 
 # Environment variables
 .env
