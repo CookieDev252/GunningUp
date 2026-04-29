@@ -30,8 +30,33 @@ if (NOT raylib_cpp_FOUND)
     FetchContent_MakeAvailable(raylib_cpp)
 endif()
 
-#create the source for the game
-set(SOURCES src/main.cpp)
-add_executable(${PROJECT_NAME} ${SOURCES})
+
+
+add_executable(${PROJECT_NAME})
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 11)
-target_link_libraries(${PROJECT_NAME} PUBLIC raylib raylib_cpp)
+
+#create the source for the game
+target_sources(${PROJECT_NAME} 
+PRIVATE
+    # ALL SOURCES GO HERE
+        src/main.cpp
+        src/app.cpp
+        src/player.cpp
+
+PUBLIC
+    FILE_SET myHeaders
+    TYPE HEADERS
+    BASE_DIRS
+        include
+    FILES
+    # ALL HEADERS GO HERE
+        include/app.hpp
+        include/GunningUp.h
+        include/player.hpp
+        
+)
+
+target_link_libraries(${PROJECT_NAME} 
+PUBLIC 
+    raylib raylib_cpp
+)
