@@ -20,9 +20,12 @@ private:
 	Vector2 m_rotation{ 0,0 };
 	Vector2 m_right{ 0,0 };
 	Vector2 m_up{ 0,0 };
+	//Controller Variables
+	Vector2 m_controllerAxis{ 0,0 };
 	//game stats
-	float m_speed{ 10.f };
+	float m_speed{ 20.f };
 	float m_rotSpeed{ 180.f };
+
 };
 
 #endif
