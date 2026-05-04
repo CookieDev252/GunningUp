@@ -14,6 +14,7 @@ public:
 	void draw() const;
 	//updates the game object
 	void update(float dt);
+	Vector2 getPosition() { return m_position; }
 private:
 	//Transform
 	Vector2 m_position{ 0,0 };
@@ -23,8 +24,9 @@ private:
 	//Controller Variables
 	Vector2 m_controllerAxis{ 0,0 };
 	//game stats
-	float m_speed{ 20.f };
+	float m_speed{ 50.f };
 	float m_rotSpeed{ 180.f };
+	float m_size{ 10.f };
 
 };
 

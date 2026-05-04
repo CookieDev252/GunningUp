@@ -3,6 +3,12 @@
 
 #include "GunningUp.h"
 
+enum RenderMode
+{
+	TOPDOWN,
+	FIRSTPERSON
+};
+
 class App
 {
 public:
@@ -16,9 +22,12 @@ private:
 	int m_winheight{ 500 };
 	char* m_title{ "test window" };
 	Player* m_player;
+	FloorGenerator* m_floor;
+	Camera2D* m_camera;
 public:
 	bool running{true};
 	raylib::Window* m_window;
+	unsigned int m_viewMode{RenderMode::TOPDOWN};
 };
 
 

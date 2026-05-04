@@ -5,7 +5,8 @@ Player::Player()
 {}
 
 Player::Player(raylib::Vector2& position, raylib::Vector2& rotation) {
-
+	m_position = position;
+	m_rotation = rotation;
 }
 
 Player::~Player()
@@ -15,8 +16,8 @@ Player::~Player()
 
 void Player::draw() const
 {
-	DrawCircle(m_position.x, m_position.y, 5.f, { 0,255,0,255 } );
-	DrawLine(m_position.x, m_position.y, m_position.x + m_up.x*10, m_position.y - m_up.y*10, {0,122,0,255} ); 
+	DrawCircle(m_position.x, m_position.y, m_size/2.f, { 0,255,0,255 } );
+	DrawLine(m_position.x, m_position.y, m_position.x + m_up.x*m_size, m_position.y - m_up.y*m_size, {0,122,0,255} ); 
 }
 
 void Player::update(float dt)
@@ -64,11 +65,18 @@ void Player::update(float dt)
 
 	//apply movement to up and right vectors
 
-	m_position = {
-		m_position.x + ((m_up.x * m_controllerAxis.y) + (m_right.x * m_controllerAxis.x)) * deltaSpeed,
-		m_position.y + ((m_up.y * m_controllerAxis.y) + (m_right.y * m_controllerAxis.x)) * -deltaSpeed
+	Vector2 translationTotal = {
+		((m_up.x * m_controllerAxis.y) + (m_right.x * m_controllerAxis.x)),
+		((m_up.y * m_controllerAxis.y) + (m_right.y * m_controllerAxis.x))
 	};
 
+	float weight = sqrtf(translationTotal.x * translationTotal.x + translationTotal.y * translationTotal.y);
 
+	
+	if (weight != 0)
+	{
+		m_position.x += translationTotal.x / weight * m_speed * dt;
+		m_position.y += translationTotal.y / weight * -m_speed * dt;
+	}
 
 }

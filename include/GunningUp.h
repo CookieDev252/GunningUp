@@ -9,6 +9,8 @@
 #include "raylib-cpp.hpp"
 #include "raymath.hpp"
 
+#include "floorGenerator.hpp"
+
 #include "player.hpp" 
 
 #endif

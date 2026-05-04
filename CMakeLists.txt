@@ -42,7 +42,7 @@ PRIVATE
         src/main.cpp
         src/app.cpp
         src/player.cpp
-
+        src/floorGenerator.cpp
 PUBLIC
     FILE_SET myHeaders
     TYPE HEADERS
@@ -53,6 +53,7 @@ PUBLIC
         include/app.hpp
         include/GunningUp.h
         include/player.hpp
+        include/floorGenerator.hpp
         
 )
 
