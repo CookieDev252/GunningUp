@@ -40,6 +40,8 @@ public:
 	void SplitRoom(int selectedRoom);
 	void GenerateLevelUnseeded();
 	bool CanBeSplit(Room& room) const;
+
+	std::vector<Room>& getRooms() { return m_rooms; }
 };
 
 #endif

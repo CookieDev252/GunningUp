@@ -76,6 +76,17 @@ void FloorGenerator::GenerateLevelUnseeded()
 		SplitRoom(selectedRoom);
 		selectedRoom = GetRandomValue(0, m_rooms.size()-1);
 	}
+	// convert all the rooms into walls
+	{
+		Vector2 topLeft;
+		for (auto& room : m_rooms) {
+			Vector2 topLeft = { (float)room.x, (float)room.y + (float)room.h};
+			Vector2 topRight = { (float)room.x + (float)room.w, (float)room.y + (float)room.h};
+			Vector2 bottomRight = { (float)room.x + (float)room.w, (float)room.y};
+			Vector2 bottomLeft = { (float)room.x, (float)room.y};
+			m_walls.push_back(Line2D{ Vector2{(float)room.x, (float)room.y},{(float)room.x + room.w, room.y} })
+		}
+	}
 }
 
 bool FloorGenerator::CanBeSplit(Room& room) const

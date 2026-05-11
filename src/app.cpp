@@ -11,7 +11,7 @@ App::App(int winWidth, int winHeight, char* title) :
 	m_floor = new FloorGenerator(1024,1024);
 
 	m_camera = new Camera2D();
-	m_camera->zoom = 1.0f;
+	m_camera->zoom = 1.f;
 	m_camera->offset = { GetScreenWidth() / 2.f, GetScreenHeight() / 2.f };
 }
 
@@ -32,6 +32,7 @@ void App::update(float dt)
 	}
 
 	m_player->update(dt);
+	m_player->MoveAndCollideWithMap(m_floor->getRooms());
 
 	m_camera->target = m_player->getPosition();
 }
@@ -58,5 +59,10 @@ void App::draw()
 		EndMode2D();
 
 		m_window->EndDrawing();
+	}
+	else if (m_viewMode == RenderMode::FIRSTPERSON) {
+		//start by casting rays into the scene
+
+		for ( )
 	}
 }

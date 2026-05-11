@@ -65,18 +65,71 @@ void Player::update(float dt)
 
 	//apply movement to up and right vectors
 
-	Vector2 translationTotal = {
+	m_translationTotal = {
 		((m_up.x * m_controllerAxis.y) + (m_right.x * m_controllerAxis.x)),
 		((m_up.y * m_controllerAxis.y) + (m_right.y * m_controllerAxis.x))
 	};
 
-	float weight = sqrtf(translationTotal.x * translationTotal.x + translationTotal.y * translationTotal.y);
+	float weight = sqrtf(m_translationTotal.x * m_translationTotal.x + m_translationTotal.y * m_translationTotal.y);
 
 	
 	if (weight != 0)
 	{
-		m_position.x += translationTotal.x / weight * m_speed * dt;
-		m_position.y += translationTotal.y / weight * -m_speed * dt;
+		m_translationUnit = { m_translationTotal.x / weight , m_translationTotal.y / weight };
+		m_position.x += m_translationUnit.x * m_speed * dt;
+		m_position.y += m_translationUnit.y * -m_speed * dt;
 	}
 
+}
+
+void Player::MoveAndCollideWithMap(std::vector<Room>& floor)
+{
+	float dX, dY, dXW, dYH, radius;
+
+	radius = m_size * 0.5f;
+
+	for (Room& room : floor) {
+		//get the absolute distances for each value
+		dX = room.x - m_position.x;
+		dXW = room.x + room.w - m_position.x;
+		dY = room.y - m_position.y;
+		dYH = room.y + room.h - m_position.y;
+
+		//check if intersection happened
+		//top
+		if (std::fabsf(dY) < radius && 
+			dX < radius &&
+			dXW > -radius
+		) 
+		{
+			m_position.y += dY - radius;
+		}
+
+		//bottom
+		else if (std::fabsf(dYH) < radius &&
+			dX < radius &&
+			dXW > -radius
+		) 
+		{
+			m_position.y += dYH + radius;
+		}
+
+		//left
+		if (std::fabsf(dX) < radius &&
+			dY < radius &&
+			dYH > -radius
+		) 
+		{
+			m_position.x += dX - radius;
+		}
+		
+		//right
+		else if (std::fabsf(dXW) < radius &&
+			dY < radius &&
+			dYH > -radius
+		)
+		{
+			m_position.x += dXW + radius;
+		}
+	}
 }
