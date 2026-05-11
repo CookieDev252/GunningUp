@@ -84,7 +84,11 @@ void FloorGenerator::GenerateLevelUnseeded()
 			Vector2 topRight = { (float)room.x + (float)room.w, (float)room.y + (float)room.h};
 			Vector2 bottomRight = { (float)room.x + (float)room.w, (float)room.y};
 			Vector2 bottomLeft = { (float)room.x, (float)room.y};
-			m_walls.push_back(Line2D{ Vector2{(float)room.x, (float)room.y},{(float)room.x + room.w, room.y} })
+			m_walls.push_back(Line2D{ topRight, topLeft }); //top
+			m_walls.push_back(Line2D{ bottomLeft, topRight }); //bottom
+			m_walls.push_back(Line2D{ topLeft, topRight }); //left
+			m_walls.push_back(Line2D{ topLeft, topRight }); //right
+
 		}
 	}
 }

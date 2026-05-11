@@ -22,13 +22,25 @@ struct Room{
 
 };
 
+struct Line2D {
+	Line2D(Vector2 start, Vector2 end) {
+		startPoint = start;
+		endPoint = end;
+	}
+	Vector2 startPoint;
+	Vector2 endPoint;
+private:
+	Vector2 normal;
+};
+
 class FloorGenerator {
 private:
 	int m_splitCount{ 100 }; // default to 3 splits
 	int m_minRoomArea{100}; // small room
 	int m_maxRoomArea{50}; // massive room 
 	int m_intersection{ 10 }; // gap betweem room split (hallways)
-	std::vector<Room> m_rooms = {};
+	std::vector<Room> m_rooms = {}; //constains all the rooms
+	std::vector<Line2D> m_walls = {}; // contains all the walls
 	
 
 public:

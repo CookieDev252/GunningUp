@@ -62,7 +62,9 @@ void App::draw()
 	}
 	else if (m_viewMode == RenderMode::FIRSTPERSON) {
 		//start by casting rays into the scene
+		int currentRayIndex;
+		for (currentRayIndex = 0; currentRayIndex < m_fov; currentRayIndex++) {
 
-		for ( )
+		}
 	}
 }

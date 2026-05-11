@@ -9,6 +9,24 @@ enum RenderMode
 	FIRSTPERSON
 };
 
+//holds the data of ray collision in the scene
+struct RayData {
+	Color color{ 255,255,255,255 }; //default white
+	float distance{9999.f};  //default to a very large number
+
+};
+
+class Ray2D {
+public:
+	Ray2D(Vector2 position, Vector2 direction, float distance){
+		m_startPoint = position;
+		m_endPoint = 
+	}
+private:
+	Vector2 m_startPoint;
+	Vector2 m_endPoint;
+};
+
 class App
 {
 public:
