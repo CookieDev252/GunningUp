@@ -76,7 +76,8 @@ void App::draw()
 		//ray data
 		Vector2 startPoint = m_player->getPosition();
 		Vector2 endPoint;
-		float rayDistance = 50.f;
+		float rayDistance = 150.f;
+		float actualRayDistance{0};
 
 		//Trace Data
 		Color traceColor{BLACK};
@@ -88,35 +89,44 @@ void App::draw()
 		for (currentRayIndex = -m_fov/2; currentRayIndex < m_fov/2; currentRayIndex++) {
 			//get the end point of the ray
 			endPoint = {
-				startPoint.x + std::cosf((angle + (float)currentRayIndex) * (PI / 180.f)) * rayDistance,
-				startPoint.y + std::sinf((angle + 90.f + (float)currentRayIndex) * (PI / 180.f)) * rayDistance
+				startPoint.x - (std::cosf(((float)currentRayIndex + angle) * TORADIANS) * rayDistance) / cosf((float)currentRayIndex * TORADIANS),
+				startPoint.y - (std::sinf(((float)currentRayIndex + angle) * TORADIANS) * rayDistance) / cosf((float)currentRayIndex * TORADIANS)
 			};
 			//compare it do other walls
 			for (Line2D& wall : m_floor->getWalls()) {
 				//check for collision
-				if (CheckCollisionLines(wall.startPoint,wall.endPoint,startPoint,endPoint,&collisionPoint)) {
+				if (CheckCollisionLines(startPoint,endPoint, wall.startPoint, wall.endPoint, &collisionPoint)) {
 					tempDistance = Vector2Distance(startPoint, collisionPoint);
+					actualRayDistance = Vector2Distance(startPoint, endPoint);
 					if (tempDistance < traceDistance) {
 						//update the trace data
 						traceDistance = tempDistance;
 						traceColor = wall.color;
 					}
+					//traceDistance = tempDistance;
+					//traceColor = wall.color;
 				}
 			}
 
-			DrawLine(startPoint.x, startPoint.y, endPoint.x, endPoint.y, BLACK);
 
-			/*if (tempDistance != 0)
+			if (tempDistance > 0)
 			{
-
+				float distancePercent = tempDistance / actualRayDistance;
 				DrawRectangle(
-					m_winwidth / m_fov * currentRayIndex,
-					m_winheight / 4 - rayDistance / tempDistance * 10.f,
-					m_winwidth / m_fov * currentRayIndex + 1,
-					m_winheight / 4 * 3 + rayDistance / tempDistance * 10.f,
-					traceColor
+					(m_winwidth / m_fov) * (currentRayIndex + m_fov / 2)/*re centre the rayindex*/,
+					m_winheight / 4 - (1.0f-distancePercent) * 50.f,
+					(m_winwidth / m_fov),
+					m_winheight / 2 + (1.0f-distancePercent) * 100.f,
+					{ 
+						(unsigned char)((float)traceColor.r /** (distancePercent)*/),
+						(unsigned char)((float)traceColor.g /** (distancePercent)*/),
+						(unsigned char)((float)traceColor.b /** (distancePercent)*/),
+						traceColor.a
+					}
 				);
-			}*/
+			}
+			
+			DrawLine(startPoint.x, startPoint.y, endPoint.x, endPoint.y, traceColor);
 
 			tempDistance = 9999.f; // some big number
 			traceColor = BLACK;

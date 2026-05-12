@@ -94,7 +94,6 @@ void FloorGenerator::GenerateLevelUnseeded()
 			m_walls.push_back(Line2D{ bottomLeft, bottomRight, room.roomFillColor }); //bottom
 			m_walls.push_back(Line2D{ topLeft, bottomLeft, room.roomFillColor }); //left
 			m_walls.push_back(Line2D{ bottomRight, topRight, room.roomFillColor }); //right
-
 		}
 	}
 }

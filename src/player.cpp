@@ -41,13 +41,13 @@ void Player::update(float dt)
 	}
 
 	m_up = {
-		std::sinf((m_rotation.x - 90.f) * (PI / 180.f)) ,
-		std::cosf((m_rotation.x - 90.f) * (PI / 180.f))
+		std::sinf((m_rotation.x - 90.f) * TORADIANS) ,
+		std::cosf((m_rotation.x - 90.f) * TORADIANS)
 	};
 
 	m_right = {
-		std::sinf((m_rotation.x) * (PI / 180.f)),
-		std::cosf((m_rotation.x) * (PI / 180.f)) 
+		std::sinf((m_rotation.x) * TORADIANS),
+		std::cosf((m_rotation.x) * TORADIANS)
 	};
 
 	float deltaSpeed = dt * m_speed;
