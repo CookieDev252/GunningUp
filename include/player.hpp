@@ -15,6 +15,7 @@ public:
 	//updates the game object
 	void update(float dt);
 	Vector2 getPosition() { return m_position; }
+	float getRotationHorizontal() { return m_rotation.x; }
 	void MoveAndCollideWithMap(std::vector<Room>& floor);
 private:
 	//Transform

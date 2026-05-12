@@ -20,7 +20,10 @@ class Ray2D {
 public:
 	Ray2D(Vector2 position, Vector2 direction, float distance){
 		m_startPoint = position;
-		m_endPoint = 
+		m_endPoint = {
+			position.x + direction.x * distance,
+			position.y + direction.y * distance
+		};
 	}
 private:
 	Vector2 m_startPoint;

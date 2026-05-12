@@ -12,6 +12,9 @@ void FloorGenerator::draw() {
 	for (const Room& room : m_rooms) {
 		DrawRectangle(room.x, room.y, room.w, room.h, room.roomFillColor);
 	}
+	for (const Line2D& wall : m_walls) {
+		DrawLine(wall.startPoint.x, wall.startPoint.y, wall.endPoint.x, wall.endPoint.y, BLACK);
+	}
 }
 
 void FloorGenerator::SplitRoom(int selectedRoom)
@@ -71,7 +74,7 @@ void FloorGenerator::GenerateLevelUnseeded()
 		firstSelectedRoom = selectedRoom;
 		while (!CanBeSplit(m_rooms[selectedRoom])) { 
 			selectedRoom += 1; if (selectedRoom == m_rooms.size()) selectedRoom = 0;
-			if (firstSelectedRoom == selectedRoom) { return; } //no valid squares to split
+			if (firstSelectedRoom == selectedRoom) { break; } //no valid squares to split
 		}
 		SplitRoom(selectedRoom);
 		selectedRoom = GetRandomValue(0, m_rooms.size()-1);
@@ -79,15 +82,18 @@ void FloorGenerator::GenerateLevelUnseeded()
 	// convert all the rooms into walls
 	{
 		Vector2 topLeft;
+		Vector2 topRight;
+		Vector2 bottomRight;
+		Vector2 bottomLeft;
 		for (auto& room : m_rooms) {
-			Vector2 topLeft = { (float)room.x, (float)room.y + (float)room.h};
-			Vector2 topRight = { (float)room.x + (float)room.w, (float)room.y + (float)room.h};
-			Vector2 bottomRight = { (float)room.x + (float)room.w, (float)room.y};
-			Vector2 bottomLeft = { (float)room.x, (float)room.y};
-			m_walls.push_back(Line2D{ topRight, topLeft }); //top
-			m_walls.push_back(Line2D{ bottomLeft, topRight }); //bottom
-			m_walls.push_back(Line2D{ topLeft, topRight }); //left
-			m_walls.push_back(Line2D{ topLeft, topRight }); //right
+			topLeft = { (float)room.x, (float)room.y + (float)room.h};
+			topRight = { (float)room.x + (float)room.w, (float)room.y + (float)room.h};
+			bottomRight = { (float)room.x + (float)room.w, (float)room.y};
+			bottomLeft = { (float)room.x, (float)room.y};
+			m_walls.push_back(Line2D{ topRight, topLeft, room.roomFillColor }); //top
+			m_walls.push_back(Line2D{ bottomLeft, bottomRight, room.roomFillColor }); //bottom
+			m_walls.push_back(Line2D{ topLeft, bottomLeft, room.roomFillColor }); //left
+			m_walls.push_back(Line2D{ bottomRight, topRight, room.roomFillColor }); //right
 
 		}
 	}

@@ -23,14 +23,14 @@ struct Room{
 };
 
 struct Line2D {
-	Line2D(Vector2 start, Vector2 end) {
-		startPoint = start;
-		endPoint = end;
+	Line2D(Vector2 start, Vector2 end, Color color= BLACK) {
+		this->startPoint = start;
+		this->endPoint = end;
+		this->color = color;
 	}
 	Vector2 startPoint;
 	Vector2 endPoint;
-private:
-	Vector2 normal;
+	Color color;
 };
 
 class FloorGenerator {
@@ -54,6 +54,7 @@ public:
 	bool CanBeSplit(Room& room) const;
 
 	std::vector<Room>& getRooms() { return m_rooms; }
+	std::vector<Line2D>& getWalls() { return m_walls; }
 };
 
 #endif
