@@ -50,7 +50,8 @@ public:
 	void setSplitCount(int count) { m_splitCount = count; }
 
 	void SplitRoom(int selectedRoom);
-	void GenerateLevelUnseeded();
+	void GenerateLevel();
+	void setSeed(unsigned int seed) { SetRandomSeed(seed); }
 	bool CanBeSplit(Room& room) const;
 
 	std::vector<Room>& getRooms() { return m_rooms; }

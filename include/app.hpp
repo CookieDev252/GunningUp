@@ -39,10 +39,16 @@ public:
 	void draw();
 
 private:
+	//minimap
+	RenderTexture m_minimapTexture;
+	Texture2D basicWall;
 	int m_winwidth{ 700 };
 	int m_winheight{ 500 };
 	int m_fov{ 90 };
-	char* m_title{ "test window" };
+	int m_sampleSize{ 2 };
+	float wallSize = m_winheight;
+	float playerHeight = wallSize * 0.666f;
+	char* m_title{ "GunningUp" };
 	Player* m_player;
 	FloorGenerator* m_floor;
 	Camera2D* m_camera;

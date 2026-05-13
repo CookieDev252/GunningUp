@@ -61,5 +61,3 @@ target_link_libraries(${PROJECT_NAME}
 PUBLIC 
     raylib raylib_cpp
 )
-
-#https://www.scottsmitelli.com/articles/we-can-fix-your-raycaster/

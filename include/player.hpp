@@ -15,9 +15,16 @@ public:
 	//updates the game object
 	void update(float dt);
 	Vector2 getPosition() { return m_position; }
-	float getRotationHorizontal() { return m_rotation.x; }
+	float getRotationHorizontals() { return m_rotation.x; }
 	void MoveAndCollideWithMap(std::vector<Room>& floor);
 private:
+	//Axis DeadZones
+	const float m_leftStickDeadzoneX = 0.1f;
+	const float m_leftStickDeadzoneY = 0.1f;
+	const float m_rightStickDeadzoneX = 0.1f;
+	const float m_rightStickDeadzoneY = 0.1f;
+	const float m_leftTriggerDeadzone = -0.9f;
+	const float m_rightTriggerDeadzone = -0.9f;
 	//Transform
 	Vector2 m_position{ 0,0 };
 	Vector2 m_rotation{ 0,0 };

@@ -5,15 +5,12 @@ FloorGenerator::FloorGenerator(int width, int height)
 {
 	m_rooms.push_back(Room(0, 0, width, height));
 
-	GenerateLevelUnseeded();
+	GenerateLevel();
 }
 
 void FloorGenerator::draw() {
-	for (const Room& room : m_rooms) {
-		DrawRectangle(room.x, room.y, room.w, room.h, room.roomFillColor);
-	}
 	for (const Line2D& wall : m_walls) {
-		DrawLine(wall.startPoint.x, wall.startPoint.y, wall.endPoint.x, wall.endPoint.y, BLACK);
+		DrawLine(wall.startPoint.x, wall.startPoint.y, wall.endPoint.x, wall.endPoint.y, wall.color);
 	}
 }
 
@@ -63,7 +60,7 @@ void FloorGenerator::SplitRoom(int selectedRoom)
 	}
 }
 
-void FloorGenerator::GenerateLevelUnseeded()
+void FloorGenerator::GenerateLevel()
 {
 	int splits; // counter for which split it's on
 	int selectedRoom = 0; //set to 0 because there should only be 1 room right now
