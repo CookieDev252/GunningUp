@@ -15,7 +15,10 @@ App::App(int winWidth, int winHeight, char* title) :
 	m_camera->offset = { GetScreenWidth() / 8.f, GetScreenHeight() / 8.f };
 	m_minimapTexture = LoadRenderTexture(m_winwidth/4, m_winwidth/4);
 
-	basicWall = LoadTexture("./assets/textures/wall.png");
+	basicWall = LoadTexture("..\\assets\\textures\\test_wall.png");
+
+	m_sliceInfo = NPatchInfo{};
+	m_sliceInfo.layout = NPATCH_NINE_PATCH; // strectch it on both x and y axis
 }
 
 App::~App()
@@ -26,6 +29,7 @@ App::~App()
 	delete m_camera;
 
 	UnloadRenderTexture(m_minimapTexture); // unload minimap texture
+	UnloadTexture(basicWall);
 }
 
 void App::update(float dt)
@@ -83,19 +87,22 @@ void App::draw()
 		Vector2 startPoint = m_player->getPosition();
 		Vector2 endPoint;
 		float rayDistance = 250.f;
-		float actualRayDistance{ 0 };
 
 		//Trace Data
 		Color traceColor{ BLACK };
 		float traceDistance{ 99999 };
 		Vector2 collisionPoint;
+		Vector2 wallStart{};
+		Vector2 wallEnd{};
+		Vector2 pointAlongWall{};
+		float percentAlongWall{};
 
 		float tempDistance{ 0 };
 
 		for (currentRayIndex = -m_fov / 2; currentRayIndex <= m_fov / 2; currentRayIndex++) {
 			//get the end point of the ray
 			endPoint = {
-				startPoint.x - (std::cosf(((float)currentRayIndex + angle) * TORADIANS) * rayDistance) ,
+				startPoint.x - (std::cosf(((float)currentRayIndex + angle) * TORADIANS) * rayDistance),
 				startPoint.y - (std::sinf(((float)currentRayIndex + angle) * TORADIANS) * rayDistance)
 			};
 			//compare it do other walls
@@ -103,44 +110,65 @@ void App::draw()
 				//check for collision
 				if (CheckCollisionLines(startPoint, endPoint, wall.startPoint, wall.endPoint, &collisionPoint)) {
 					tempDistance = Vector2Distance(startPoint, collisionPoint);
-					actualRayDistance = Vector2Distance(startPoint, endPoint);
 					if (tempDistance < traceDistance) {
 						//update the trace data
 						traceDistance = tempDistance;
 						traceColor = wall.color;
+						wallStart = wall.startPoint;
+						wallEnd = wall.endPoint;
+						pointAlongWall = collisionPoint;
 					}
-					//traceDistance = tempDistance;
-					//traceColor = wall.color;
 				}
 			}
 
 
 			if (tempDistance > 0)
 			{
-				float distancePercent = traceDistance / actualRayDistance;
-
+				percentAlongWall = Vector2Distance(wallStart, pointAlongWall) / Vector2Distance(wallStart, wallEnd);
 				DrawRectangle(
 					(m_winwidth / m_fov) * (currentRayIndex + m_fov / 2)/*re centre the rayindex*/,
-					(float)(m_winheight / 2) - wallSize * (1.0f - distancePercent) + playerHeight,
+					(float)(m_winheight / 2) - wallSize / traceDistance,
 					(m_winwidth / m_fov),
-					wallSize * (1.0f - distancePercent),
+					wallSize / traceDistance * 2.0f,
 					{
-						(unsigned char)((float)traceColor.r * (1.0f - distancePercent)),
-						(unsigned char)((float)traceColor.g * (1.0f - distancePercent)),
-						(unsigned char)((float)traceColor.b * (1.0f - distancePercent)),
+						(unsigned char)(Lerp(/*(float)traceColor.r*/0,255,percentAlongWall)),
+						(unsigned char)(Lerp(/*(float)traceColor.g*/0,255,percentAlongWall)),
+						(unsigned char)(Lerp(/*(float)traceColor.b*/0,255,percentAlongWall)),
 						traceColor.a
 					}
 				);
+				//slice of the texture
+				m_sliceInfo.source = {
+					(float)basicWall.width * percentAlongWall, // x
+					0,
+					1,
+					(float)basicWall.height
+				};
+				m_sliceInfo.top = 1;
+				m_sliceInfo.bottom = 1;
+				m_sliceInfo.left = 1;
+				m_sliceInfo.right = 1;
+				DrawTextureNPatch(
+					basicWall,		//original texture
+					m_sliceInfo,	//slice info
+					{				//destination
+						(float)(m_winwidth / m_fov)* (currentRayIndex + m_fov / 2),
+						(float)(m_winheight / 2) - wallSize / traceDistance,
+						(float)(m_winwidth / m_fov),
+						(float)wallSize / traceDistance * 2.0f 
+					},
+					Vector2{ 0,0 },	//origin
+					0,				//rotation
+					WHITE			//tint
+				);
 			}
-
-			//DrawLine(startPoint.x, startPoint.y, endPoint.x, endPoint.y, traceColor);
 
 			traceDistance = 9999.f; // some big number
 			traceColor = BLACK;
 
 		}
 	}
-
+	
 	//minimap rendering
 	{
 		//border for minimap

@@ -54,7 +54,7 @@ void Player::update(float dt)
 
 	//get movement axis
 
-	if (GetGamepadName(0))
+	if (IsGamepadAvailable(0))
 	{
 		m_controllerAxis.x = GetGamepadAxisMovement(0, GAMEPAD_AXIS_LEFT_X);
 		if (m_controllerAxis.x < m_leftStickDeadzoneX && m_controllerAxis.x > -m_leftStickDeadzoneX) m_controllerAxis.x = 0;
