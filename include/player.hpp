@@ -25,6 +25,8 @@ private:
 	const float m_rightStickDeadzoneY = 0.1f;
 	const float m_leftTriggerDeadzone = -0.9f;
 	const float m_rightTriggerDeadzone = -0.9f;
+
+	float m_lookSensitivity = 5.f;
 	//Transform
 	Vector2 m_position{ 0,0 };
 	Vector2 m_rotation{ 0,0 };

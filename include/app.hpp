@@ -44,9 +44,9 @@ private:
 	Texture2D basicWall;
 	int m_winwidth{ 700 };
 	int m_winheight{ 500 };
-	int m_fov{ 60 };
-	int m_sampleSize{ 2 };
-	float wallSize = m_winheight;
+	int m_fov{ 90 };
+	int m_wallLength{ 8 };
+	float wallSize = m_winheight*2.f;
 	float playerHeight = wallSize * 0.666f;
 	char* m_title{ "GunningUp" };
 	Player* m_player;

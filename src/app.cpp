@@ -15,8 +15,9 @@ App::App(int winWidth, int winHeight, char* title) :
 	m_camera->offset = { GetScreenWidth() / 8.f, GetScreenHeight() / 8.f };
 	m_minimapTexture = LoadRenderTexture(m_winwidth/4, m_winwidth/4);
 
+	//load in the wall texture
 	basicWall = LoadTexture("..\\assets\\textures\\test_wall.png");
-
+	//this will be used to slice up the wall texture
 	m_sliceInfo = NPatchInfo{};
 	m_sliceInfo.layout = NPATCH_NINE_PATCH; // strectch it on both x and y axis
 }
@@ -124,43 +125,33 @@ void App::draw()
 
 			if (tempDistance > 0)
 			{
-				percentAlongWall = Vector2Distance(wallStart, pointAlongWall) / Vector2Distance(wallStart, wallEnd);
-				DrawRectangle(
-					(m_winwidth / m_fov) * (currentRayIndex + m_fov / 2)/*re centre the rayindex*/,
-					(float)(m_winheight / 2) - wallSize / traceDistance,
-					(m_winwidth / m_fov),
-					wallSize / traceDistance * 2.0f,
-					{
-						(unsigned char)(Lerp(/*(float)traceColor.r*/0,255,percentAlongWall)),
-						(unsigned char)(Lerp(/*(float)traceColor.g*/0,255,percentAlongWall)),
-						(unsigned char)(Lerp(/*(float)traceColor.b*/0,255,percentAlongWall)),
-						traceColor.a
-					}
-				);
-				//slice of the texture
-				m_sliceInfo.source = {
-					(float)basicWall.width * percentAlongWall, // x
-					0,
-					1,
-					(float)basicWall.height
-				};
-				m_sliceInfo.top = 1;
-				m_sliceInfo.bottom = 1;
-				m_sliceInfo.left = 1;
-				m_sliceInfo.right = 1;
-				DrawTextureNPatch(
-					basicWall,		//original texture
-					m_sliceInfo,	//slice info
-					{				//destination
-						(float)(m_winwidth / m_fov)* (currentRayIndex + m_fov / 2),
-						(float)(m_winheight / 2) - wallSize / traceDistance,
-						(float)(m_winwidth / m_fov),
-						(float)wallSize / traceDistance * 2.0f 
-					},
-					Vector2{ 0,0 },	//origin
-					0,				//rotation
-					WHITE			//tint
-				);
+				percentAlongWall = (float)((int)Vector2Distance(wallStart, pointAlongWall) % m_wallLength) / (float)m_wallLength;
+				//takes a sample of the texture for the wall and trnasforms it into the correct shape for the wall
+				{
+					m_sliceInfo.source = {
+						(float)basicWall.width * percentAlongWall, // x
+						0,
+						5,
+						(float)basicWall.height
+					};
+					m_sliceInfo.top = 0;
+					m_sliceInfo.bottom = 0;
+					m_sliceInfo.left = 0;
+					m_sliceInfo.right = 0;
+					DrawTextureNPatch(
+						basicWall,		//original texture
+						m_sliceInfo,	//slice info
+						{				//destination
+							(float)(m_winwidth / m_fov) * (currentRayIndex + m_fov / 2),
+							(float)(m_winheight / 2) - wallSize / (traceDistance * std::cosf(currentRayIndex * TORADIANS)),
+							(float)(m_winwidth / m_fov),
+							(float)wallSize / (traceDistance * std::cosf(currentRayIndex * TORADIANS)) * 2.0f
+						},
+						Vector2{ 0,0 },	//origin
+						0,				//rotation
+						WHITE			//tint
+					);
+				}
 			}
 
 			traceDistance = 9999.f; // some big number

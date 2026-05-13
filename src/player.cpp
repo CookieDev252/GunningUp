@@ -23,21 +23,31 @@ void Player::draw() const
 void Player::update(float dt)
 {
 
-	if (IsKeyDown(KEY_UP)) {
-		m_rotation.y += dt * m_rotSpeed;
-		if (m_rotation.y >= 360.f) { m_rotation.y -= 360.f; }
-	}
-	if (IsKeyDown(KEY_LEFT)) { 
-		m_rotation.x -= dt * m_rotSpeed; 
-		if (m_rotation.x < 0.f) { m_rotation.x += 360.f; }
-	}
-	if (IsKeyDown(KEY_DOWN)) { 
-		m_rotation.y -= dt * m_rotSpeed;
-		if (m_rotation.y < 0) { m_rotation.y += 360.f; }
-	}
-	if (IsKeyDown(KEY_RIGHT)) { 
-		m_rotation.x += dt * m_rotSpeed; 
-		if (m_rotation.x >= 360.f) { m_rotation.x -= 360.f; }
+	if (IsGamepadAvailable(0)) {
+		m_rotation.y += (fabsf(GetGamepadAxisMovement(0, GAMEPAD_AXIS_RIGHT_Y)) > m_rightStickDeadzoneY) ? GetGamepadAxisMovement(0, GAMEPAD_AXIS_RIGHT_Y) * m_lookSensitivity : 0;
+		if (m_rotation.y >= 360.f) m_rotation.y -= 360.f;
+		if (m_rotation.y < 0) m_rotation.y += 360.f;
+		m_rotation.x += (fabsf(GetGamepadAxisMovement(0, GAMEPAD_AXIS_RIGHT_X)) > m_rightStickDeadzoneX) ? GetGamepadAxisMovement(0, GAMEPAD_AXIS_RIGHT_X) * m_lookSensitivity : 0;
+		if (m_rotation.x >= 360.f) m_rotation.x -= 360.f;
+		if (m_rotation.x < 0) m_rotation.x += 360.f;
+
+	}else{
+		if (IsKeyDown(KEY_UP)) {
+			m_rotation.y += dt * m_rotSpeed;
+			if (m_rotation.y >= 360.f) { m_rotation.y -= 360.f; }
+		}
+		if (IsKeyDown(KEY_LEFT)) {
+			m_rotation.x -= dt * m_rotSpeed;
+			if (m_rotation.x < 0.f) { m_rotation.x += 360.f; }
+		}
+		if (IsKeyDown(KEY_DOWN)) {
+			m_rotation.y -= dt * m_rotSpeed;
+			if (m_rotation.y < 0) { m_rotation.y += 360.f; }
+		}
+		if (IsKeyDown(KEY_RIGHT)) {
+			m_rotation.x += dt * m_rotSpeed;
+			if (m_rotation.x >= 360.f) { m_rotation.x -= 360.f; }
+		}
 	}
 
 	m_up = {
