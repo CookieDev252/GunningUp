@@ -46,8 +46,9 @@ private:
 	int m_winheight{ 500 };
 	int m_fov{ 90 };
 	int m_wallLength{ 8 };
-	float wallSize = m_winheight*2.f;
+	float wallSize = 1000.f;
 	float playerHeight = wallSize * 0.666f;
+	float actualAngleDegrees{};
 	char* m_title{ "GunningUp" };
 	Player* m_player;
 	FloorGenerator* m_floor;

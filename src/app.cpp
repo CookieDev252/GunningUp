@@ -100,11 +100,13 @@ void App::draw()
 
 		float tempDistance{ 0 };
 
-		for (currentRayIndex = -m_fov / 2; currentRayIndex <= m_fov / 2; currentRayIndex++) {
+		for (currentRayIndex = 0; currentRayIndex <= m_winwidth; currentRayIndex++) {
+			float angleX = std::cosf(((float)currentRayIndex / (float)m_winwidth * (float)m_fov - (float)m_fov / 2.0f + angle) * TORADIANS);
+			float angleY = std::sinf(((float)currentRayIndex / (float)m_winwidth * (float)m_fov - (float)m_fov / 2.0f + angle) * TORADIANS);
 			//get the end point of the ray
 			endPoint = {
-				startPoint.x - (std::cosf(((float)currentRayIndex + angle) * TORADIANS) * rayDistance),
-				startPoint.y - (std::sinf(((float)currentRayIndex + angle) * TORADIANS) * rayDistance)
+				startPoint.x - ( angleX * rayDistance),
+				startPoint.y - ( angleY * rayDistance)
 			};
 			//compare it do other walls
 			for (Line2D& wall : m_floor->getWalls()) {
@@ -125,13 +127,15 @@ void App::draw()
 
 			if (tempDistance > 0)
 			{
-				percentAlongWall = (float)((int)Vector2Distance(wallStart, pointAlongWall) % m_wallLength) / (float)m_wallLength;
+				percentAlongWall = Vector2Distance(wallStart, pointAlongWall);
+				percentAlongWall /= m_wallLength;
+				percentAlongWall = percentAlongWall - (float)(int)percentAlongWall;
 				//takes a sample of the texture for the wall and trnasforms it into the correct shape for the wall
 				{
 					m_sliceInfo.source = {
 						(float)basicWall.width * percentAlongWall, // x
 						0,
-						5,
+						1,
 						(float)basicWall.height
 					};
 					m_sliceInfo.top = 0;
@@ -139,17 +143,28 @@ void App::draw()
 					m_sliceInfo.left = 0;
 					m_sliceInfo.right = 0;
 					DrawTextureNPatch(
+						
 						basicWall,		//original texture
+						
 						m_sliceInfo,	//slice info
+						
 						{				//destination
-							(float)(m_winwidth / m_fov) * (currentRayIndex + m_fov / 2),
-							(float)(m_winheight / 2) - wallSize / (traceDistance * std::cosf(currentRayIndex * TORADIANS)),
-							(float)(m_winwidth / m_fov),
-							(float)wallSize / (traceDistance * std::cosf(currentRayIndex * TORADIANS)) * 2.0f
+							(float)currentRayIndex,
+							(float)(m_winheight / 2) - wallSize / (traceDistance * std::cosf(((float)currentRayIndex / (float)m_winwidth * (float)m_fov - (float)m_fov / 2.0f) * TORADIANS)),
+							1,
+							(float)wallSize / (traceDistance * std::cosf(((float)currentRayIndex / (float)m_winwidth * (float)m_fov - (float)m_fov / 2.0f) * TORADIANS)) * 2.0f
 						},
+						
 						Vector2{ 0,0 },	//origin
+
 						0,				//rotation
-						WHITE			//tint
+						
+						{				//tint (darkens based on distance)
+							(unsigned char)(255.f * (1.0f - traceDistance / rayDistance)),	//r
+							(unsigned char)(255.f * (1.0f - traceDistance / rayDistance)),	//g
+							(unsigned char)(255.f * (1.0f - traceDistance / rayDistance)),	//b
+							255																//a
+						}
 					);
 				}
 			}

@@ -1,6 +1,10 @@
 #include "player.hpp"
 #include <stdio.h>
 
+//pre declare functions
+Vector2 closestPoint(Vector2 a, Vector2 b, Vector2 p);
+
+
 Player::Player()
 {}
 
@@ -101,54 +105,75 @@ void Player::update(float dt)
 
 }
 
-void Player::MoveAndCollideWithMap(std::vector<Room>& floor)
+void Player::MoveAndCollideWithMap(std::vector<Line2D>& walls)
 {
 	float dX, dY, dXW, dYH, radius;
 
 	radius = m_size * 0.5f;
 
-	for (Room& room : floor) {
-		//get the absolute distances for each value
-		dX = room.x - m_position.x;
-		dXW = room.x + room.w - m_position.x;
-		dY = room.y - m_position.y;
-		dYH = room.y + room.h - m_position.y;
+	for (Line2D& wall : walls) {
+		////get the absolute distances for each value
+		//dX = room.x - m_position.x;
+		//dXW = room.x + room.w - m_position.x;
+		//dY = room.y - m_position.y;
+		//dYH = room.y + room.h - m_position.y;
 
-		//check if intersection happened
-		//top
-		if (std::fabsf(dY) < radius && 
-			dX < radius &&
-			dXW > -radius
-		) 
-		{
-			m_position.y += dY - radius;
-		}
+		////check if intersection happened
+		////top
+		//if (std::fabsf(dY) < radius && 
+		//	dX < radius &&
+		//	dXW > -radius
+		//) 
+		//{
+		//	m_position.y += dY - radius;
+		//}
 
-		//bottom
-		else if (std::fabsf(dYH) < radius &&
-			dX < radius &&
-			dXW > -radius
-		) 
-		{
-			m_position.y += dYH + radius;
-		}
+		////bottom
+		//else if (std::fabsf(dYH) < radius &&
+		//	dX < radius &&
+		//	dXW > -radius
+		//) 
+		//{
+		//	m_position.y += dYH + radius;
+		//}
 
-		//left
-		if (std::fabsf(dX) < radius &&
-			dY < radius &&
-			dYH > -radius
-		) 
-		{
-			m_position.x += dX - radius;
-		}
-		
-		//right
-		else if (std::fabsf(dXW) < radius &&
-			dY < radius &&
-			dYH > -radius
-		)
-		{
-			m_position.x += dXW + radius;
+		////left
+		//if (std::fabsf(dX) < radius &&
+		//	dY < radius &&
+		//	dYH > -radius
+		//) 
+		//{
+		//	m_position.x += dX - radius;
+		//}
+		//
+		////right
+		//else if (std::fabsf(dXW) < radius &&
+		//	dY < radius &&
+		//	dYH > -radius
+		//)
+		//{
+		//	m_position.x += dXW + radius;
+		//}
+		if (CheckCollisionCircleLine(m_position, m_size, wall.startPoint, wall.endPoint)) {
+			//check what side collided
+			if (Vector2DotProduct(m_position,closestPoint(m_position, wall.startPoint, wall.endPoint))) {}
 		}
 	}
+}
+
+//calculates the nearest point to the line with a given point
+Vector2 closestPoint(Vector2 a, Vector2 b, Vector2 p) {
+
+	// get vector differences
+	Vector2 AB = Vector2Subtract(b, a);
+	Vector2 AP = Vector2Subtract(p, a);
+
+	// projected length + normalization
+	float t = Vector2DotProduct(AP, AB) / Vector2DotProduct(AB, AP);
+
+	//clamp to [0,1]
+	t -= (float)(int)t;
+
+	//calculate point
+	return Vector2Add(a, Vector2Scale(AB, t));
 }
