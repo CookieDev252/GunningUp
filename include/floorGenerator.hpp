@@ -1,8 +1,7 @@
 #ifndef FLOORGENERATOR_HPP
 #define FLOORGENERATOR_HPP
 
-#include "raylib-cpp.hpp"
-#include <vector>
+#include "GunningUp.h"
 
 struct Room{
 	int x, y, w, h;

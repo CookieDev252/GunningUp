@@ -5,6 +5,7 @@
 
 
 #include <iostream>
+#include <vector>
 
 //Raylib headers
 #include "raylib-cpp.hpp"
@@ -17,8 +18,11 @@
 #define PS_ALIAS_2   "sony"
 
 #include "floorGenerator.hpp"
-
-#include "player.hpp" 
+#include "entity.hpp"
+#include "player.hpp"
+#include "blackboard.hpp"
+#include "enemy.hpp"
+#include "behaviourTree.hpp"
 
 //#include "behaviourTree.hpp"
 //
