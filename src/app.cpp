@@ -146,11 +146,12 @@ void App::draw()
 					//pre calculate values
 					float height;
 					float y;
-					float currentAngle = ((float)currentRayIndex / (float)m_winwidth * (float)m_fov - (float)m_fov / 2.0f) * TORADIANS;	//convert the index to be between -0.5 and 0.5
+					float currentAngle = (((float)currentRayIndex / (float)m_winwidth) * 2.0f - 1.0f) / 2.0f;	//convert the index to be between -0.5 and 0.5
+					currentAngle *= (float)m_fov;																//scale to fov
 					{
 						y = (float)(m_winheight) / 2.0f; //move to halfway down the screen
 						
-						height = wallSize / (traceDistance * cosf(currentAngle));
+						height = wallSize / (traceDistance * cosf(currentAngle * TORADIANS));
 						
 						y -= height;
 					}
@@ -165,11 +166,11 @@ void App::draw()
 						
 						{				//destination
 							(float)currentRayIndex,
-							y + playerHeight,
-							//(float)(m_winheight / 2) - wallSize / (traceDistance * std::cosf(((float)currentRayIndex / (float)m_winwidth * (float)m_fov - (float)m_fov / 2.0f) * TORADIANS)),
+							//y + playerHeight,
+							(float)(m_winheight / 2) - wallSize / (traceDistance * std::cosf(((float)currentRayIndex / (float)m_winwidth * (float)m_fov - (float)m_fov / 2.0f) * TORADIANS)),
 							1,
-							height * 2.0f
-							//(float)wallSize / (traceDistance * std::cosf(((float)currentRayIndex / (float)m_winwidth * (float)m_fov - (float)m_fov / 2.0f) * TORADIANS)) * 1.75f
+							//height
+							(float)wallSize / (traceDistance * std::cosf(((float)currentRayIndex / (float)m_winwidth * (float)m_fov - (float)m_fov / 2.0f) * TORADIANS)) * 1.75f
 						},
 						
 						Vector2{ 0,0 },	//origin

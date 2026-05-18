@@ -125,7 +125,7 @@ void FloorGenerator::GenerateLevel()
 bool FloorGenerator::CanBeSplit(Room& room) const
 {
 	return (
-		room.w > m_minRoomArea &&
-		room.h > m_minRoomArea 
+		room.w > m_minRoomArea * 2 &&
+		room.h > m_minRoomArea * 2
 	);
 }

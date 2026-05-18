@@ -34,8 +34,10 @@ struct Line2D {
 
 class FloorGenerator {
 private:
+	int width{0};
+	int height{0};
 	int m_splitCount{ 100 }; // default to 3 splits
-	int m_minRoomArea{100}; // small room
+	int m_minRoomArea{20}; // small room
 	int m_maxRoomArea{50}; // massive room 
 	int m_intersection{ 10 }; // gap betweem room split (hallways)
 	std::vector<Room> m_rooms = {}; //constains all the rooms

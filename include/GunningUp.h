@@ -16,6 +16,7 @@
 #define XBOX_ALIAS_2 "x-box"
 #define PS_ALIAS_1   "playstation"
 #define PS_ALIAS_2   "sony"
+#define GLSL_VERSION 330 //Desktop Version
 
 #include "floorGenerator.hpp"
 #include "entity.hpp"

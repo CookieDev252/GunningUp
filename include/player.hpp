@@ -16,7 +16,8 @@ public:
 	void update(float dt);
 	Vector2 getPosition() { return m_position; }
 	float getRotationHorizontals() { return m_rotation.x; }
-	void MoveAndCollideWithMap(std::vector<Room>& floor);
+	float getRotationVertical() { return m_rotation.y; }
+	void MoveAndCollideWithMap(std::vector<Line2D>& walls);
 private:
 	//Axis DeadZones
 	const float m_leftStickDeadzoneX = 0.1f;

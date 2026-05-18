@@ -2,7 +2,7 @@
 #include <stdio.h>
 
 //pre declare functions
-Vector2 closestPoint(Vector2 a, Vector2 b, Vector2 p);
+Vector2 ClosestPoint(Vector2 a, Vector2 b, Vector2 p);
 
 
 Player::Player()
@@ -107,73 +107,32 @@ void Player::update(float dt)
 
 void Player::MoveAndCollideWithMap(std::vector<Line2D>& walls)
 {
-	float dX, dY, dXW, dYH, radius;
-
-	radius = m_size * 0.5f;
-
 	for (Line2D& wall : walls) {
-		////get the absolute distances for each value
-		//dX = room.x - m_position.x;
-		//dXW = room.x + room.w - m_position.x;
-		//dY = room.y - m_position.y;
-		//dYH = room.y + room.h - m_position.y;
-
-		////check if intersection happened
-		////top
-		//if (std::fabsf(dY) < radius && 
-		//	dX < radius &&
-		//	dXW > -radius
-		//) 
-		//{
-		//	m_position.y += dY - radius;
-		//}
-
-		////bottom
-		//else if (std::fabsf(dYH) < radius &&
-		//	dX < radius &&
-		//	dXW > -radius
-		//) 
-		//{
-		//	m_position.y += dYH + radius;
-		//}
-
-		////left
-		//if (std::fabsf(dX) < radius &&
-		//	dY < radius &&
-		//	dYH > -radius
-		//) 
-		//{
-		//	m_position.x += dX - radius;
-		//}
-		//
-		////right
-		//else if (std::fabsf(dXW) < radius &&
-		//	dY < radius &&
-		//	dYH > -radius
-		//)
-		//{
-		//	m_position.x += dXW + radius;
-		//}
-		if (CheckCollisionCircleLine(m_position, m_size, wall.startPoint, wall.endPoint)) {
+		if (CheckCollisionCircleLine(m_position, m_size*0.5f, wall.startPoint, wall.endPoint)) {
 			//check what side collided
-			if (Vector2DotProduct(m_position,closestPoint(m_position, wall.startPoint, wall.endPoint))) {}
+			Vector2 closestPoint = ClosestPoint(wall.startPoint, wall.endPoint, m_position);
+
+			Vector2 directionAndLength = Vector2Scale(Vector2Normalize(Vector2Subtract(closestPoint,m_position)),m_size*0.51f); //add a little extra on the end so it doesn't get stuck
+			
+			m_position = Vector2Add(m_position, Vector2Subtract(Vector2Subtract(closestPoint, m_position), directionAndLength));
 		}
 	}
 }
 
 //calculates the nearest point to the line with a given point
-Vector2 closestPoint(Vector2 a, Vector2 b, Vector2 p) {
+Vector2 ClosestPoint(Vector2 a, Vector2 b, Vector2 p) {
 
 	// get vector differences
-	Vector2 AB = Vector2Subtract(b, a);
+	Vector2 D = Vector2Subtract(b, a);
 	Vector2 AP = Vector2Subtract(p, a);
 
 	// projected length + normalization
-	float t = Vector2DotProduct(AP, AB) / Vector2DotProduct(AB, AP);
+	float t = Vector2DotProduct(AP, D) / Vector2DotProduct(D, D);
 
 	//clamp to [0,1]
-	t -= (float)(int)t;
+	t = fmaxf(0, fminf(1, t));
+
 
 	//calculate point
-	return Vector2Add(a, Vector2Scale(AB, t));
+	return Vector2Add(a, Vector2Scale(D, t));
 }
