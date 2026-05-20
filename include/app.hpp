@@ -47,7 +47,7 @@ private:
 	int m_fov{ 90 };
 	int m_wallLength{ 8 };
 	float wallSize = 1000.f;
-	float playerHeight = wallSize * 0.666f;
+	float playerHeight = 250.f;
 	float actualAngleDegrees{};
 	char* m_title{ "GunningUp" };
 	Player* m_player;

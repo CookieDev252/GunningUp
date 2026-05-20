@@ -6,7 +6,7 @@ App::App(int winWidth, int winHeight, char* title) :
 {
 	m_window = new raylib::Window(winWidth, winHeight, title);
 
-	m_player = new Player(raylib::Vector2(winWidth/2,winHeight/2), raylib::Vector2(0,0));
+	m_player = new Player(raylib::Vector2(512,512), raylib::Vector2(0,0));
 
 	m_floor = new FloorGenerator(1024,1024);
 
@@ -166,11 +166,9 @@ void App::draw()
 						
 						{				//destination
 							(float)currentRayIndex,
-							//y + playerHeight,
-							(float)(m_winheight / 2) - wallSize / (traceDistance * std::cosf(((float)currentRayIndex / (float)m_winwidth * (float)m_fov - (float)m_fov / 2.0f) * TORADIANS)),
+							y + playerHeight,
 							1,
-							//height
-							(float)wallSize / (traceDistance * std::cosf(((float)currentRayIndex / (float)m_winwidth * (float)m_fov - (float)m_fov / 2.0f) * TORADIANS)) * 1.75f
+							height
 						},
 						
 						Vector2{ 0,0 },	//origin

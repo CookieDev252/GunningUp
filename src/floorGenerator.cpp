@@ -14,6 +14,12 @@ void FloorGenerator::draw() {
 	for (const Line2D& wall : m_walls) {
 		DrawLine(wall.startPoint.x, wall.startPoint.y, wall.endPoint.x, wall.endPoint.y, wall.color);
 	}
+	for (const NavigationNode& node : m_navNodes) {
+		DrawCircleV(node.position, 5, GREEN);
+		for (const NavigationNode* connectedNode : node.m_connectedNodes) {
+			DrawLineV(node.position, connectedNode->position, BLACK);
+		}
+	}
 }
 
 void FloorGenerator::SplitRoom(int selectedRoom)
@@ -30,6 +36,7 @@ void FloorGenerator::SplitRoom(int selectedRoom)
 				room.h
 				)
 		);
+		m_navNodes.push_back(NavigationNode{ Vector2{(float)(room.x + room.w / 2 + offset), (float)(room.y)} });
 		m_rooms.insert(m_rooms.begin() + selectedRoom+1,
 			Room(
 				room.x + room.w / 2 + offset + m_intersection,
@@ -38,6 +45,7 @@ void FloorGenerator::SplitRoom(int selectedRoom)
 				room.h
 			)
 		);
+		m_navNodes.push_back(NavigationNode{ Vector2{(float)(room.x + room.w / 2 + offset), (float)(room.y + room.h)} });
 		m_rooms.erase(m_rooms.begin() + selectedRoom);
 	}
 	else {
@@ -50,6 +58,7 @@ void FloorGenerator::SplitRoom(int selectedRoom)
 				room.h / 2 + offset - m_intersection
 			)
 		);
+		m_navNodes.push_back(NavigationNode{ Vector2{(float)(room.x), (float)(room.y + room.h / 2 + offset)} });
 		m_rooms.insert(m_rooms.begin() + selectedRoom+1,
 			Room(
 				room.x,
@@ -58,6 +67,7 @@ void FloorGenerator::SplitRoom(int selectedRoom)
 				room.h / 2 - offset - m_intersection
 			)
 		);
+		m_navNodes.push_back(NavigationNode{ Vector2{(float)(room.x + room.w), (float)(room.y + room.h / 2 + offset)} });
 		m_rooms.erase(m_rooms.begin() + selectedRoom);
 	}
 }
@@ -120,6 +130,28 @@ void FloorGenerator::GenerateLevel()
 	m_walls.push_back(Line2D{ Vector2{(float)width,0}, Vector2{(float)width,(float)height}, {0,0,0,0}});
 	m_walls.push_back(Line2D{ Vector2{(float)width,(float)height}, Vector2{0,(float)height}, {0,0,0,0}});
 	m_walls.push_back(Line2D{ Vector2{0,(float)height}, Vector2{0,0}, {0,0,0,0} });
+
+	Vector2* emptyPointer = new Vector2{};
+
+	int skippingNode = 0, currentNode = 0, wallsObstructing = 0;
+	for (NavigationNode& node : m_navNodes) {
+		for (NavigationNode& otherNode : m_navNodes) {
+			if (skippingNode != currentNode) {
+				for (Line2D& wall : m_walls) {
+					//check if the line between the two nodes is obstructed by a wall
+					wallsObstructing += CheckCollisionLines(node.position, otherNode.position, wall.startPoint, wall.endPoint, emptyPointer);
+					std::cout << "looping walls" << std::endl;
+				}
+				if (wallsObstructing == 0) node.m_connectedNodes.push_back(&otherNode);
+			}
+			currentNode++;
+		}
+		skippingNode++;
+		currentNode = 0;
+		wallsObstructing = 0;
+	}
+
+	delete emptyPointer;
 }
 
 bool FloorGenerator::CanBeSplit(Room& room) const

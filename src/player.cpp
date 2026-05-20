@@ -28,10 +28,10 @@ void Player::update(float dt)
 {
 
 	if (IsGamepadAvailable(0)) {
-		m_rotation.y += (fabsf(GetGamepadAxisMovement(0, GAMEPAD_AXIS_RIGHT_Y)) > m_rightStickDeadzoneY) ? GetGamepadAxisMovement(0, GAMEPAD_AXIS_RIGHT_Y) * m_lookSensitivity : 0;
+		m_rotation.y += (fabsf(GetGamepadAxisMovement(0, GAMEPAD_AXIS_RIGHT_Y)) > m_rightStickDeadzoneY) ? GetGamepadAxisMovement(0, GAMEPAD_AXIS_RIGHT_Y) * m_lookSensitivity * dt: 0;
 		if (m_rotation.y >= 360.f) m_rotation.y -= 360.f;
 		if (m_rotation.y < 0) m_rotation.y += 360.f;
-		m_rotation.x += (fabsf(GetGamepadAxisMovement(0, GAMEPAD_AXIS_RIGHT_X)) > m_rightStickDeadzoneX) ? GetGamepadAxisMovement(0, GAMEPAD_AXIS_RIGHT_X) * m_lookSensitivity : 0;
+		m_rotation.x += (fabsf(GetGamepadAxisMovement(0, GAMEPAD_AXIS_RIGHT_X)) > m_rightStickDeadzoneX) ? GetGamepadAxisMovement(0, GAMEPAD_AXIS_RIGHT_X) * m_lookSensitivity * dt : 0;
 		if (m_rotation.x >= 360.f) m_rotation.x -= 360.f;
 		if (m_rotation.x < 0) m_rotation.x += 360.f;
 
@@ -107,14 +107,20 @@ void Player::update(float dt)
 
 void Player::MoveAndCollideWithMap(std::vector<Line2D>& walls)
 {
-	for (Line2D& wall : walls) {
-		if (CheckCollisionCircleLine(m_position, m_size*0.5f, wall.startPoint, wall.endPoint)) {
-			//check what side collided
-			Vector2 closestPoint = ClosestPoint(wall.startPoint, wall.endPoint, m_position);
+	float dX, dY, dXW, dYH, radius;
 
-			Vector2 directionAndLength = Vector2Scale(Vector2Normalize(Vector2Subtract(closestPoint,m_position)),m_size*0.51f); //add a little extra on the end so it doesn't get stuck
-			
-			m_position = Vector2Add(m_position, Vector2Subtract(Vector2Subtract(closestPoint, m_position), directionAndLength));
+	radius = m_size * 0.5f;
+
+	for (Line2D& wall : walls) {
+		if (CheckCollisionCircleLine(m_position, m_size * 0.5f, wall.startPoint, wall.endPoint)) {
+			//check what side collided
+			if (Vector2DotProduct(m_position, ClosestPoint(m_position, wall.startPoint, wall.endPoint))) {
+				Vector2 closestPoint = ClosestPoint(wall.startPoint, wall.endPoint, m_position);
+
+				Vector2 directionAndLength = Vector2Scale(Vector2Normalize(Vector2Subtract(closestPoint, m_position)), m_size * 0.51f); //add a little extra on the end so it doesn't get stuck
+
+				m_position = Vector2Add(m_position, Vector2Subtract(Vector2Subtract(closestPoint, m_position), directionAndLength));
+			}
 		}
 	}
 }
@@ -131,7 +137,6 @@ Vector2 ClosestPoint(Vector2 a, Vector2 b, Vector2 p) {
 
 	//clamp to [0,1]
 	t = fmaxf(0, fminf(1, t));
-
 
 	//calculate point
 	return Vector2Add(a, Vector2Scale(D, t));

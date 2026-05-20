@@ -33,8 +33,6 @@ endif()
 add_executable(${PROJECT_NAME})
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 11)
 
-set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-
 # Collect source files
 file(GLOB_RECURSE SOURCE_FILES CONFIGURE_DEPENDS
     "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp"
@@ -43,7 +41,6 @@ file(GLOB_RECURSE SOURCE_FILES CONFIGURE_DEPENDS
 # Collect header files
 file(GLOB_RECURSE HEADER_FILES CONFIGURE_DEPENDS
     "${CMAKE_CURRENT_SOURCE_DIR}/include/*.hpp"
-    "${CMAKE_CURRENT_SOURCE_DIR}/include/*.h"
 )
 
 #create the source for the game
@@ -58,11 +55,8 @@ PUBLIC
         include
     FILES
     # ALL HEADERS GO HERE
+        include/GunningUp.h
         ${HEADER_FILES}
-)
-
-source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}
-    FILES ${SOURCE_FILES} ${HEADER_FILES}
 )
 
 target_link_libraries(${PROJECT_NAME} 

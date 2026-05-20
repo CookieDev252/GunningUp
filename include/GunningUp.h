@@ -18,15 +18,11 @@
 #define PS_ALIAS_2   "sony"
 #define GLSL_VERSION 330 //Desktop Version
 
-#include "floorGenerator.hpp"
-#include "entity.hpp"
-#include "player.hpp"
-#include "blackboard.hpp"
-#include "enemy.hpp"
-#include "behaviourTree.hpp"
+static std::vector<raylib::Texture2D> WallTextures;
 
-//#include "behaviourTree.hpp"
-//
-//#include "enemy.hpp"
+
+#include "floorGenerator.hpp"
+#include "player.hpp"
+#include "behaviourTree.hpp"
 
 #endif

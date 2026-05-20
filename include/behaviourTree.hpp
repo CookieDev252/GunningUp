@@ -3,27 +3,6 @@
 
 #include "GunningUp.h"
 
-//pre declare classes
-class Node;
-class Selector;
-class Sequence;
-class Action;
-
-
-class BehaviourTree {
-public:
-	BehaviourTree();
-private:
-	Node* root{nullptr};
-	Node* currentNode{ root };
-};
-
-#endif
-
-//Things to Add
-
-//Node
-
 class Node {
 public:
 	Node(Node* parent) { this->m_parent = parent; }
@@ -38,8 +17,28 @@ public:
 private:
 	Node* m_parent{ nullptr };
 	std::vector<Node*> m_children;
-	float m_timeSinceEntered{0.0f};
+	float m_timeSinceEntered{ 0.0f };
 };
+
+
+//pre declare classes
+class Selector;
+class Sequence;
+class Action;
+
+
+class BehaviourTree {
+public:
+	BehaviourTree();
+private:
+	Node* root{nullptr};
+	Node* currentNode{ root };
+};
+
+
+//Things to Add
+
+
 
 //Selectors
 
@@ -75,3 +74,5 @@ class Action : Node {
 	virtual void OnUpdate(float dt) override {}
 	virtual void OnExit() override {}
 };
+
+#endif
