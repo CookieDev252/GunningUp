@@ -1,0 +1,82 @@
+\doxysection{floor\+Generator.\+hpp}
+\hypertarget{floor_generator_8hpp_source}{}\label{floor_generator_8hpp_source}\index{include/floorGenerator.hpp@{include/floorGenerator.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ FLOORGENERATOR\_HPP}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ FLOORGENERATOR\_HPP}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}GunningUp.h"{}}}
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00006\ \textcolor{keyword}{struct\ }Room\ \{}
+\DoxyCodeLine{00007\ \ \ \ \ \textcolor{keywordtype}{int}\ x,\ y,\ w,\ h;}
+\DoxyCodeLine{00008\ \ \ \ \ Color\ roomFillColor\{\ 0,0,0,0\ \};}
+\DoxyCodeLine{00009\ \ \ \ \ Room(\textcolor{keywordtype}{int}\ x,\ \textcolor{keywordtype}{int}\ y,\ \textcolor{keywordtype}{int}\ w,\ \textcolor{keywordtype}{int}\ h)\ \{}
+\DoxyCodeLine{00010\ \ \ \ \ \ \ \ \ this-\/>x\ =\ x;}
+\DoxyCodeLine{00011\ \ \ \ \ \ \ \ \ this-\/>y\ =\ y;}
+\DoxyCodeLine{00012\ \ \ \ \ \ \ \ \ this-\/>w\ =\ w;}
+\DoxyCodeLine{00013\ \ \ \ \ \ \ \ \ this-\/>h\ =\ h;}
+\DoxyCodeLine{00014\ \ \ \ \ \ \ \ \ this-\/>roomFillColor\ =\ \{}
+\DoxyCodeLine{00015\ \ \ \ \ \ \ \ \ \ \ \ \ (\textcolor{keywordtype}{unsigned}\ char)GetRandomValue(0,255),}
+\DoxyCodeLine{00016\ \ \ \ \ \ \ \ \ \ \ \ \ (\textcolor{keywordtype}{unsigned}\ char)GetRandomValue(0,\ 255),}
+\DoxyCodeLine{00017\ \ \ \ \ \ \ \ \ \ \ \ \ (\textcolor{keywordtype}{unsigned}\ char)GetRandomValue(0,\ 255),}
+\DoxyCodeLine{00018\ \ \ \ \ \ \ \ \ \ \ \ \ 255}
+\DoxyCodeLine{00019\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00020\ \ \ \ \ \}}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \};}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \textcolor{comment}{//connects\ two\ points}}
+\DoxyCodeLine{00025\ \textcolor{keyword}{struct\ }Line2D\ \{}
+\DoxyCodeLine{00026\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00027\ \ \ \ \ Line2D(Vector2\ start,\ Vector2\ end,\ Color\ color\ =\ BLACK)\ \{}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ this-\/>startPoint\ =\ start;}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ this-\/>endPoint\ =\ end;}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ this-\/>color\ =\ color;}
+\DoxyCodeLine{00031\ \ \ \ \ \}}
+\DoxyCodeLine{00032\ \ \ \ \ Vector2\ startPoint;}
+\DoxyCodeLine{00033\ \ \ \ \ Vector2\ endPoint;}
+\DoxyCodeLine{00034\ \ \ \ \ Color\ color;}
+\DoxyCodeLine{00035\ \};}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \textcolor{comment}{//similar\ to\ Line2D\ but\ can\ connect\ to\ multiple\ nodes}}
+\DoxyCodeLine{00038\ \textcolor{keyword}{class\ }NavigationNode\ \{}
+\DoxyCodeLine{00039\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00040\ \ \ \ \ NavigationNode(Vector2\ position)\ \{\ this-\/>position\ =\ position;\ \}}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keywordtype}{void}\ AddNode(NavigationNode*\ node)\ \{\ m\_connectedNodes.push\_back(node);\ \}}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordtype}{void}\ RemoveNode(NavigationNode*\ node);}
+\DoxyCodeLine{00043\ \ \ \ \ Vector2\ position;}
+\DoxyCodeLine{00044\ \ \ \ \ std::vector<NavigationNode*>\ m\_connectedNodes\ =\ \{\};}
+\DoxyCodeLine{00045\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00046\ \};}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \textcolor{keyword}{class\ }FloorGenerator\ \{}
+\DoxyCodeLine{00049\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordtype}{int}\ width\{\ 0\ \};}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keywordtype}{int}\ height\{\ 0\ \};}
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keywordtype}{int}\ m\_splitCount\{\ 100\ \};\ \textcolor{comment}{//\ default\ to\ 3\ splits}}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keywordtype}{int}\ m\_minRoomArea\{\ 20\ \};\ \textcolor{comment}{//\ small\ room}}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordtype}{int}\ m\_maxRoomArea\{\ 50\ \};\ \textcolor{comment}{//\ massive\ room}}
+\DoxyCodeLine{00055\ \ \ \ \ \textcolor{keywordtype}{int}\ m\_intersection\{\ 10\ \};\ \textcolor{comment}{//\ gap\ betweem\ room\ split\ (hallways)}}
+\DoxyCodeLine{00056\ \ \ \ \ std::vector<Room>\ m\_rooms\ =\ \{\};\ \textcolor{comment}{//constains\ all\ the\ rooms}}
+\DoxyCodeLine{00057\ \ \ \ \ std::vector<Line2D>\ m\_walls\ =\ \{\};\ \textcolor{comment}{//\ contains\ all\ the\ walls}}
+\DoxyCodeLine{00058\ \ \ \ \ std::vector<NavigationNode>\ m\_navNodes\ =\ \{\};\ \textcolor{comment}{//\ contains\ all\ the\ navigation\ nodes}}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00062\ \ \ \ \ FloorGenerator(\textcolor{keywordtype}{int}\ width,\ \textcolor{keywordtype}{int}\ height);}
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keywordtype}{void}\ draw();}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keywordtype}{void}\ setSplitCount(\textcolor{keywordtype}{int}\ count)\ \{\ m\_splitCount\ =\ count;\ \}}
+\DoxyCodeLine{00066\ }
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keywordtype}{void}\ SplitRoom(\textcolor{keywordtype}{int}\ selectedRoom);}
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keywordtype}{void}\ GenerateLevel();}
+\DoxyCodeLine{00069\ \ \ \ \ \textcolor{keywordtype}{void}\ setSeed(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ seed)\ \{\ SetRandomSeed(seed);\ \}}
+\DoxyCodeLine{00070\ \ \ \ \ \textcolor{keywordtype}{bool}\ CanBeSplit(\doxymbox{\hyperlink{struct_room}{Room}}\&\ room)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00072\ \ \ \ \ std::vector<Room>\&\ getRooms()\ \{\ \textcolor{keywordflow}{return}\ m\_rooms;\ \}}
+\DoxyCodeLine{00073\ \ \ \ \ std::vector<Line2D>\&\ getWalls()\ \{\ \textcolor{keywordflow}{return}\ m\_walls;\ \}}
+\DoxyCodeLine{00074\ \};}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00076\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

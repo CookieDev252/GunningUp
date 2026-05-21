@@ -1,0 +1,55 @@
+\doxysection{player.\+hpp}
+\hypertarget{player_8hpp_source}{}\label{player_8hpp_source}\index{include/player.hpp@{include/player.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ PLAYER\_HPP}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ PLAYER\_HPP}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}GunningUp.h"{}}}
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00006\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{struct_line2_d}{Line2D}};}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{keyword}{class\ }Player\ }
+\DoxyCodeLine{00009\ \{}
+\DoxyCodeLine{00010\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00011\ \ \ \ \ Player();}
+\DoxyCodeLine{00012\ \ \ \ \ Player(raylib::Vector2\&\ position,\ raylib::Vector2\&\ rotation);}
+\DoxyCodeLine{00013\ \ \ \ \ \string~Player();}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \ \ \ \ \textcolor{comment}{//draws\ a\ circle\ with\ a\ line\ to\ show\ facing\ direction\ and\ world\ space\ position}}
+\DoxyCodeLine{00016\ \ \ \ \ \textcolor{keywordtype}{void}\ draw()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{comment}{//updates\ the\ game\ object}}
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{keywordtype}{void}\ update(\textcolor{keywordtype}{float}\ dt);}
+\DoxyCodeLine{00019\ \ \ \ \ Vector2\ getPosition()\ \{\ \textcolor{keywordflow}{return}\ m\_position;\ \}}
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{keywordtype}{float}\ getRotationHorizontals()\ \{\ \textcolor{keywordflow}{return}\ m\_rotation.x;\ \}}
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keywordtype}{float}\ getRotationVertical()\ \{\ \textcolor{keywordflow}{return}\ m\_rotation.y;\ \}}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keywordtype}{void}\ MoveAndCollideWithMap(std::vector<Line2D>\&\ walls);}
+\DoxyCodeLine{00023\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{comment}{//Axis\ DeadZones}}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ m\_leftStickDeadzoneX\ =\ 0.1f;}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ m\_leftStickDeadzoneY\ =\ 0.1f;}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ m\_rightStickDeadzoneX\ =\ 0.1f;}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ m\_rightStickDeadzoneY\ =\ 0.1f;}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ m\_leftTriggerDeadzone\ =\ -\/0.9f;}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ m\_rightTriggerDeadzone\ =\ -\/0.9f;}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keywordtype}{float}\ m\_lookSensitivity\ =\ 720.f;}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{comment}{//Transform}}
+\DoxyCodeLine{00034\ \ \ \ \ Vector2\ m\_position\{\ 0,0\ \};}
+\DoxyCodeLine{00035\ \ \ \ \ Vector2\ m\_rotation\{\ 0,0\ \};}
+\DoxyCodeLine{00036\ \ \ \ \ Vector2\ m\_right\{\ 0,0\ \};}
+\DoxyCodeLine{00037\ \ \ \ \ Vector2\ m\_up\{\ 0,0\ \};}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{comment}{//Controller\ Variables}}
+\DoxyCodeLine{00039\ \ \ \ \ Vector2\ m\_controllerAxis\{\ 0,0\ \};}
+\DoxyCodeLine{00040\ \ \ \ \ Vector2\ m\_translationUnit\{\ 0,0\ \};}
+\DoxyCodeLine{00041\ \ \ \ \ Vector2\ m\_translationTotal\{\ 0,0\ \};}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{comment}{//game\ stats}}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keywordtype}{float}\ m\_speed\{\ 50.f\ \};}
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keywordtype}{float}\ m\_rotSpeed\{\ 180.f\ \};}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordtype}{float}\ m\_size\{\ 10.f\ \};}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ \};}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

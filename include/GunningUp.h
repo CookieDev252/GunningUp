@@ -22,6 +22,8 @@ static std::vector<raylib::Texture2D> WallTextures;
 
 
 #include "floorGenerator.hpp"
+#include "entity.hpp"
+#include "enemy.hpp"
 #include "player.hpp"
 #include "behaviourTree.hpp"
 

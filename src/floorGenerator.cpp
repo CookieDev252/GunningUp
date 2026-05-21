@@ -14,8 +14,10 @@ void FloorGenerator::draw() {
 	for (const Line2D& wall : m_walls) {
 		DrawLine(wall.startPoint.x, wall.startPoint.y, wall.endPoint.x, wall.endPoint.y, wall.color);
 	}
+	//draw Nodes
 	for (const NavigationNode& node : m_navNodes) {
 		DrawCircleV(node.position, 5, GREEN);
+		//draw all the connection lines
 		for (const NavigationNode* connectedNode : node.m_connectedNodes) {
 			DrawLineV(node.position, connectedNode->position, BLACK);
 		}
@@ -36,7 +38,7 @@ void FloorGenerator::SplitRoom(int selectedRoom)
 				room.h
 				)
 		);
-		m_navNodes.push_back(NavigationNode{ Vector2{(float)(room.x + room.w / 2 + offset), (float)(room.y)} });
+		m_navNodes.push_back(NavigationNode{ Vector2{(float)(room.x + room.w / 2 + offset), (float)(room.y) + 1.5f} });
 		m_rooms.insert(m_rooms.begin() + selectedRoom+1,
 			Room(
 				room.x + room.w / 2 + offset + m_intersection,
@@ -45,7 +47,7 @@ void FloorGenerator::SplitRoom(int selectedRoom)
 				room.h
 			)
 		);
-		m_navNodes.push_back(NavigationNode{ Vector2{(float)(room.x + room.w / 2 + offset), (float)(room.y + room.h)} });
+		m_navNodes.push_back(NavigationNode{ Vector2{(float)(room.x + room.w / 2 + offset), (float)(room.y + room.h)-1.5f} });
 		m_rooms.erase(m_rooms.begin() + selectedRoom);
 	}
 	else {
@@ -58,7 +60,7 @@ void FloorGenerator::SplitRoom(int selectedRoom)
 				room.h / 2 + offset - m_intersection
 			)
 		);
-		m_navNodes.push_back(NavigationNode{ Vector2{(float)(room.x), (float)(room.y + room.h / 2 + offset)} });
+		m_navNodes.push_back(NavigationNode{ Vector2{(float)(room.x) + 1.5f, (float)(room.y + room.h / 2 + offset)} });
 		m_rooms.insert(m_rooms.begin() + selectedRoom+1,
 			Room(
 				room.x,
@@ -67,7 +69,7 @@ void FloorGenerator::SplitRoom(int selectedRoom)
 				room.h / 2 - offset - m_intersection
 			)
 		);
-		m_navNodes.push_back(NavigationNode{ Vector2{(float)(room.x + room.w), (float)(room.y + room.h / 2 + offset)} });
+		m_navNodes.push_back(NavigationNode{ Vector2{(float)(room.x + room.w) - 1.5f, (float)(room.y + room.h / 2 + offset)} });
 		m_rooms.erase(m_rooms.begin() + selectedRoom);
 	}
 }
@@ -134,24 +136,42 @@ void FloorGenerator::GenerateLevel()
 	Vector2* emptyPointer = new Vector2{};
 
 	int skippingNode = 0, currentNode = 0, wallsObstructing = 0;
+	//Loop through all the nodes to connect them to visible nodes
 	for (NavigationNode& node : m_navNodes) {
 		for (NavigationNode& otherNode : m_navNodes) {
 			if (skippingNode != currentNode) {
 				for (Line2D& wall : m_walls) {
 					//check if the line between the two nodes is obstructed by a wall
-					wallsObstructing += CheckCollisionLines(node.position, otherNode.position, wall.startPoint, wall.endPoint, emptyPointer);
-					std::cout << "looping walls" << std::endl;
+					if (CheckCollisionLines(node.position, otherNode.position, wall.startPoint, wall.endPoint, emptyPointer)) {
+						wallsObstructing++;
+					}
 				}
-				if (wallsObstructing == 0) node.m_connectedNodes.push_back(&otherNode);
+				if (wallsObstructing == 0) {
+					node.m_connectedNodes.push_back(&otherNode);
+				}
 			}
+			wallsObstructing = 0;
 			currentNode++;
 		}
 		skippingNode++;
 		currentNode = 0;
-		wallsObstructing = 0;
 	}
-
+	//remove the temporary pointer
 	delete emptyPointer;
+
+	//loop through the Navigation nodes, but this time culling any that have the same neighbour and are closer
+	for (NavigationNode& node : m_navNodes) { // iterate the base nodes
+		for (NavigationNode* otherNode : node.m_connectedNodes) { // iterate the nodes connected to base node
+			for (NavigationNode* otherNodeCompare : otherNode->m_connectedNodes) { // iterate the node inside the connected nodes 
+				for (NavigationNode* nodeCompare : node.m_connectedNodes) {
+					if (otherNodeCompare == nodeCompare && otherNodeCompare != otherNode ) { // remove node if it's not the same one being sampled
+						if (Vector2DistanceSqr(otherNodeCompare->position,node.position) > Vector2DistanceSqr(node.position,otherNode->position))
+							node.RemoveNode(otherNodeCompare);
+					}
+				}
+			}
+		}
+	}
 }
 
 bool FloorGenerator::CanBeSplit(Room& room) const
@@ -160,4 +180,22 @@ bool FloorGenerator::CanBeSplit(Room& room) const
 		room.w > m_minRoomArea * 2 &&
 		room.h > m_minRoomArea * 2
 	);
+}
+
+void NavigationNode::RemoveNode(NavigationNode* node)
+{
+	int i = 0; 
+	//iter through each Node
+	for (NavigationNode* n : m_connectedNodes) 
+	{ 
+		//if the position in memory is the same as the target
+		if (n == node) {
+			//remove it from the list
+			m_connectedNodes.erase(m_connectedNodes.begin() + i);
+			return;
+		}
+		i++;
+	}
+	std::cout << "can't find node" << std::endl;
+	return;
 }

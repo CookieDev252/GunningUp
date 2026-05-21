@@ -30,6 +30,10 @@ private:
 	Vector2 m_endPoint;
 };
 
+
+/** class <App>
+*
+*/
 class App
 {
 public:
@@ -47,7 +51,7 @@ private:
 	int m_fov{ 90 };
 	int m_wallLength{ 8 };
 	float wallSize = 1000.f;
-	float playerHeight = 250.f;
+	float playerHeight = 10.f;
 	float actualAngleDegrees{};
 	char* m_title{ "GunningUp" };
 	Player* m_player;

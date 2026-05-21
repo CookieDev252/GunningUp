@@ -1,0 +1,84 @@
+\doxysection{behaviour\+Tree.\+hpp}
+\hypertarget{behaviour_tree_8hpp_source}{}\label{behaviour_tree_8hpp_source}\index{include/behaviourTree.hpp@{include/behaviourTree.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ BEHAVIOURTREE\_HPP}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ BEHAVIOURTREE\_HPP}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}GunningUp.h"{}}}
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00006\ \textcolor{keyword}{class\ }Node\ \{}
+\DoxyCodeLine{00007\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00008\ \ \ \ \ Node(Node*\ parent)\ \{\ this-\/>m\_parent\ =\ parent;\ \}}
+\DoxyCodeLine{00009\ \ \ \ \ \textcolor{keywordtype}{void}\ \ AddChild(Node*\ child);}
+\DoxyCodeLine{00010\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ IsThereChildren();}
+\DoxyCodeLine{00011\ \ \ \ \ \textcolor{keyword}{const}\ Node*\ GetParent();}
+\DoxyCodeLine{00012\ \ \ \ \ \textcolor{keyword}{const}\ Node*\ GetChild(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ index);}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ OnEnter()\ \{\ 5;\ \}}
+\DoxyCodeLine{00015\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ OnUpdate(\textcolor{keywordtype}{float}\ dt)\ \{\ 4;\ \}}
+\DoxyCodeLine{00016\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ OnExit()\ \{\ 3;\ \}}
+\DoxyCodeLine{00017\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00018\ \ \ \ \ Node*\ m\_parent\{\ \textcolor{keyword}{nullptr}\ \};}
+\DoxyCodeLine{00019\ \ \ \ \ std::vector<Node*>\ m\_children;}
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{keywordtype}{float}\ m\_timeSinceEntered\{\ 0.0f\ \};}
+\DoxyCodeLine{00021\ \};}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \textcolor{comment}{//pre\ declare\ classes}}
+\DoxyCodeLine{00025\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_selector}{Selector}};}
+\DoxyCodeLine{00026\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_sequence}{Sequence}};}
+\DoxyCodeLine{00027\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_action}{Action}};}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \textcolor{keyword}{class\ }BehaviourTree\ \{}
+\DoxyCodeLine{00031\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00032\ \ \ \ \ BehaviourTree();}
+\DoxyCodeLine{00033\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00034\ \ \ \ \ \doxymbox{\hyperlink{class_node}{Node}}*\ root\{\textcolor{keyword}{nullptr}\};}
+\DoxyCodeLine{00035\ \ \ \ \ \doxymbox{\hyperlink{class_node}{Node}}*\ currentNode\{\ root\ \};}
+\DoxyCodeLine{00036\ \};}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \textcolor{comment}{//Things\ to\ Add}}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ \textcolor{comment}{//Selectors}}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \textcolor{keyword}{class\ }Selector\ :\ Node\ \{}
+\DoxyCodeLine{00046\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00047\ \ \ \ \ Selector(Node*\ parent)\ :\ Node(parent)\ \{}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \ \ \ \ \}}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ OnEnter()\textcolor{keyword}{\ override\ }\{\}}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ OnUpdate(\textcolor{keywordtype}{float}\ dt)\textcolor{keyword}{\ override\ }\{\}}
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ OnExit()\textcolor{keyword}{\ override\ }\{\}}
+\DoxyCodeLine{00053\ \};}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00055\ \textcolor{comment}{//Sequennce}}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00057\ \textcolor{keyword}{class\ }Sequence\ :\ Node\ \{}
+\DoxyCodeLine{00058\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00059\ \ \ \ \ Sequence(Node*\ parent)\ :\ Node(parent)\ \{}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ \ \ \ \ \}}
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ OnEnter()\textcolor{keyword}{\ override\ }\{\}}
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ OnUpdate(\textcolor{keywordtype}{float}\ dt)\textcolor{keyword}{\ override\ }\{\}}
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ OnExit()\textcolor{keyword}{\ override\ }\{\}}
+\DoxyCodeLine{00065\ \};}
+\DoxyCodeLine{00066\ }
+\DoxyCodeLine{00067\ \textcolor{comment}{//Actions\ \{multiple\}}}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00069\ \textcolor{keyword}{class\ }Action\ :\ Node\ \{}
+\DoxyCodeLine{00070\ \ \ \ \ Action(Node*\ parent)\ :\ Node(parent)\ \{}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00072\ \ \ \ \ \}}
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ OnEnter()\textcolor{keyword}{\ override\ }\{\}}
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ OnUpdate(\textcolor{keywordtype}{float}\ dt)\textcolor{keyword}{\ override\ }\{\}}
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ OnExit()\textcolor{keyword}{\ override\ }\{\}}
+\DoxyCodeLine{00076\ \};}
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00078\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

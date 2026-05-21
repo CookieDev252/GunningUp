@@ -39,6 +39,7 @@ class NavigationNode {
 public:
 	NavigationNode(Vector2 position) { this->position = position; }
 	void AddNode(NavigationNode* node) { m_connectedNodes.push_back(node); }
+	void RemoveNode(NavigationNode* node);
 	Vector2 position;
 	std::vector<NavigationNode*> m_connectedNodes = {};
 private:
@@ -50,7 +51,7 @@ private:
 	int height{ 0 };
 	int m_splitCount{ 100 }; // default to 3 splits
 	int m_minRoomArea{ 20 }; // small room
-	int m_maxRoomArea{ 50 }; // massive room 
+	int m_maxRoomArea{ 50 }; // massive room
 	int m_intersection{ 10 }; // gap betweem room split (hallways)
 	std::vector<Room> m_rooms = {}; //constains all the rooms
 	std::vector<Line2D> m_walls = {}; // contains all the walls

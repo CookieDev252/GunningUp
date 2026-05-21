@@ -11,7 +11,7 @@ App::App(int winWidth, int winHeight, char* title) :
 	m_floor = new FloorGenerator(1024,1024);
 
 	m_camera = new Camera2D();
-	m_camera->zoom = 1.f;
+	m_camera->zoom = 0.5f;
 	m_camera->offset = { GetScreenWidth() / 8.f, GetScreenHeight() / 8.f };
 	m_minimapTexture = LoadRenderTexture(m_winwidth/4, m_winwidth/4);
 
@@ -87,7 +87,7 @@ void App::draw()
 		//ray data
 		Vector2 startPoint = m_player->getPosition();
 		Vector2 endPoint;
-		float rayDistance = 150.f;
+		float rayDistance = 250.f;
 
 		//Trace Data
 		Color traceColor{ BLACK };
@@ -99,6 +99,9 @@ void App::draw()
 		float percentAlongWall{};
 
 		float tempDistance{ 0 };
+
+		//draw floor
+		DrawRectangle(0, m_winheight / 2 + playerHeight, m_winwidth, m_winheight / 2 - playerHeight, { 122,122,122,255 });
 
 		for (currentRayIndex = 0; currentRayIndex <= m_winwidth; currentRayIndex++) {
 			float angleX = std::cosf(((float)currentRayIndex / (float)m_winwidth * (float)m_fov - (float)m_fov / 2.0f + angle) * TORADIANS);
@@ -155,8 +158,7 @@ void App::draw()
 						
 						y -= height;
 					}
-					//draw floor
-					DrawRectangle(0, m_winheight / 2 + playerHeight, m_winwidth, m_winheight / 2 - playerHeight, {122,122,122,255});
+					
 					//draw a wall
 					DrawTextureNPatch(
 						
@@ -168,7 +170,7 @@ void App::draw()
 							(float)currentRayIndex,
 							y + playerHeight,
 							1,
-							height
+							height*2.0f
 						},
 						
 						Vector2{ 0,0 },	//origin
