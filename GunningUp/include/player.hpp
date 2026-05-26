@@ -3,19 +3,14 @@
 
 #include "GunningUp.h"
 
-class Entity;
-class Player;
-
 class Player : public Entity {
 public:
 	Player();
 	Player(raylib::Vector2& position, raylib::Vector2& rotation);
 	~Player();
 
-	//draws a circle with a line to show facing direction and world space position
-	void draw() const;
 	//updates the game object
-	void update(float dt);
+	virtual void update(float dt) override;
 private:
 	//Axis DeadZones
 	const float m_leftStickDeadzoneX = 0.1f;

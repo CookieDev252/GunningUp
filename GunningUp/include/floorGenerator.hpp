@@ -21,27 +21,19 @@ struct Room {
 
 };
 
-//connects two points
-struct Line2D {
-public:
-	Line2D(Vector2 start, Vector2 end, Color color = BLACK) {
-		this->startPoint = start;
-		this->endPoint = end;
-		this->color = color;
-	}
-	Vector2 startPoint;
-	Vector2 endPoint;
-	Color color;
-};
+
 
 //similar to Line2D but can connect to multiple nodes
 class NavigationNode {
 public:
-	NavigationNode(Vector2 position) { this->position = position; }
+	NavigationNode(Vector2 position) { m_position = position; }
+	~NavigationNode() = default;
 	void AddNode(NavigationNode* node) { m_connectedNodes.push_back(node); }
 	void RemoveNode(NavigationNode* node);
-	Vector2 position;
+	Vector2 getPosition() const { return m_position; };
 	std::vector<NavigationNode*> m_connectedNodes = {};
+private:
+	Vector2 m_position;
 private:
 };
 
@@ -71,6 +63,7 @@ public:
 
 	std::vector<Room>& getRooms() { return m_rooms; }
 	std::vector<Line2D>& getWalls() { return m_walls; }
+	std::vector<NavigationNode>& getNavigationNodes() { return m_navNodes; }
 };
 
 #endif

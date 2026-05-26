@@ -42,7 +42,7 @@ private:
 
 //Selectors
 
-class Selector : Node {
+class Selector : public Node {
 public:
 	Selector(Node* parent) : Node(parent) {
 
@@ -54,7 +54,7 @@ public:
 
 //Sequennce
 
-class Sequence : Node {
+class Sequence : public Node {
 public:
 	Sequence(Node* parent) : Node(parent) {
 
@@ -66,7 +66,7 @@ public:
 
 //Actions {multiple}
 
-class Action : Node {
+class Action : public Node {
 	Action(Node* parent) : Node(parent) {
 
 	}
@@ -76,3 +76,24 @@ class Action : Node {
 };
 
 #endif
+
+
+////adding an enemy behaviour tree
+//#ifndef ENEMYBEHAVIOUR
+//#define ENEMYBEHAVIOUR
+//
+//class EnemyFollowPlayer : public Action {
+//public:
+//	EnemyFollowPlayer(Node* parent) : Action(parent) {}
+//};
+//
+//
+//class EnemyBehaviour : public BehaviourTree {
+//public:
+//	EnemyBehaviour() : BehaviourTree() {}
+//private:
+//	Enemy* enemyLink{nullptr}; // holds a link to the enemy using it
+//
+//};
+//
+//#endif

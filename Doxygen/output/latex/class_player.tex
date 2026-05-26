@@ -1,5 +1,11 @@
 \doxysection{Player Class Reference}
 \hypertarget{class_player}{}\label{class_player}\index{Player@{Player}}
+Inheritance diagram for Player:\+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_player}
+\end{center}
+\end{figure}
 \doxysubsubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
@@ -11,21 +17,44 @@ void {\bfseries draw} () const
 \item 
 \Hypertarget{class_player_ae7812e67381f4c26ae1b963eeaffc3a1}\label{class_player_ae7812e67381f4c26ae1b963eeaffc3a1} 
 void {\bfseries update} (float dt)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \doxymbox{\hyperlink{class_entity}{Entity}}}
+\begin{DoxyCompactItemize}
 \item 
-\Hypertarget{class_player_ac4d11b36116592dfa1ed8c782ebd3d7b}\label{class_player_ac4d11b36116592dfa1ed8c782ebd3d7b} 
 Vector2 {\bfseries get\+Position} ()
 \item 
-\Hypertarget{class_player_a080e21d081b1e23ce90c3fec39cb71a7}\label{class_player_a080e21d081b1e23ce90c3fec39cb71a7} 
 float {\bfseries get\+Rotation\+Horizontals} ()
 \item 
-\Hypertarget{class_player_a36dbd1c282da377f2d07c5232d1f63ca}\label{class_player_a36dbd1c282da377f2d07c5232d1f63ca} 
 float {\bfseries get\+Rotation\+Vertical} ()
 \item 
-\Hypertarget{class_player_a5ab0dfe66a1118ff359aed2e4d4fc356}\label{class_player_a5ab0dfe66a1118ff359aed2e4d4fc356} 
 void {\bfseries Move\+And\+Collide\+With\+Map} (std::\+vector$<$ \doxymbox{\hyperlink{struct_line2_d}{Line2D}} $>$ \&walls)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Protected Attributes inherited from \doxymbox{\hyperlink{class_entity}{Entity}}}
+\begin{DoxyCompactItemize}
+\item 
+Vector2 {\bfseries m\+\_\+position} \{ 0,0 \}
+\item 
+Vector2 {\bfseries m\+\_\+rotation} \{ 0,0 \}
+\item 
+Vector2 {\bfseries m\+\_\+right} \{ 0,0 \}
+\item 
+Vector2 {\bfseries m\+\_\+up} \{ 0,0 \}
+\item 
+Vector2 {\bfseries m\+\_\+controller\+Axis} \{ 0,0 \}
+\item 
+Vector2 {\bfseries m\+\_\+translation\+Unit} \{ 0,0 \}
+\item 
+Vector2 {\bfseries m\+\_\+translation\+Total} \{ 0,0 \}
+\item 
+float {\bfseries m\+\_\+speed} \{ 50.f \}
+\item 
+float {\bfseries m\+\_\+rot\+Speed} \{ 180.f \}
+\item 
+float {\bfseries m\+\_\+size} \{ 10.f \}
 \end{DoxyCompactItemize}
 
 
 The documentation for this class was generated from the following file:\+\begin{DoxyCompactItemize}
 \item 
-include/\+player.\+hpp\end{DoxyCompactItemize}
+Gunning\+Up/\+include/\+player.\+hpp\end{DoxyCompactItemize}

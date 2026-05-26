@@ -2,10 +2,11 @@
 #include <stdio.h>
 
 
+
 Player::Player() : Entity()
 {}
 
-Player::Player(raylib::Vector2& position, raylib::Vector2& rotation) : Entity(){
+Player::Player(raylib::Vector2& position, raylib::Vector2& rotation) : Entity() {
 	m_position = position;
 	m_rotation = rotation;
 }
@@ -14,13 +15,7 @@ Player::~Player()
 {
 }
 
-void Player::draw() const
-{
-	DrawCircle(m_position.x, m_position.y, m_size/2.f, { 0,255,0,255 } );
-	DrawLine(m_position.x, m_position.y, m_position.x + m_up.x*m_size, m_position.y - m_up.y*m_size, {0,122,0,255} ); 
-}
-
-void Player::update(float dt)
+inline void Player::update(float dt)
 {
 
 	if (IsGamepadAvailable(0)) {

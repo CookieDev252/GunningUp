@@ -3,6 +3,7 @@ var annotated_dup =
     [ "Action", "class_action.html", null ],
     [ "App", "class_app.html", null ],
     [ "BehaviourTree", "class_behaviour_tree.html", null ],
+    [ "Entity", "class_entity.html", null ],
     [ "FloorGenerator", "class_floor_generator.html", null ],
     [ "Line2D", "struct_line2_d.html", null ],
     [ "NavigationNode", "class_navigation_node.html", null ],

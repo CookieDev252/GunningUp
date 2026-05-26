@@ -1,6 +1,24 @@
 #include "app.hpp"
 #include <string>
 
+//for the giving application, Pa is Raystart, Pb is RayEnd, and Pc is EnemyPos
+float calculateHeight(Vector2 Pa, Vector2 Pb, Vector2 Pc) {
+	float A, B, C, S, area, h;
+	A = Vector2Distance(Pc, Pb);
+	B = Vector2Distance(Pa, Pc);
+	C = Vector2Distance(Pa, Pb);
+
+	S = (A + B + C) / 2.f;
+
+	area = sqrtf(S * (S - A) * (S - B) * (S - C));
+
+	h = (2.f * area) / C;
+
+	return h;
+}
+
+
+
 App::App(int winWidth, int winHeight, char* title) :
 	m_winwidth(winWidth), m_winheight(winHeight), m_title(title)
 {
@@ -10,13 +28,26 @@ App::App(int winWidth, int winHeight, char* title) :
 
 	m_floor = new FloorGenerator(1024,1024);
 
+	for (int i = 0; i < 20 /*enemies*/; i++) {
+		Enemy tempEnemy = Enemy{ {0,0}, {0,0} };
+		int nodeSelector = GetRandomValue(0, m_floor->getNavigationNodes().size() - 1);
+		tempEnemy.setPosition(m_floor->getNavigationNodes()[nodeSelector].getPosition());
+		tempEnemy.setNavigationNode(&m_floor->getNavigationNodes()[nodeSelector]);
+		tempEnemy.setPlayer(m_player);
+		m_enemies.push_back(tempEnemy);
+	}
+
 	m_camera = new Camera2D();
-	m_camera->zoom = 0.5f;
+	m_camera->zoom = 1.0f;
 	m_camera->offset = { GetScreenWidth() / 8.f, GetScreenHeight() / 8.f };
 	m_minimapTexture = LoadRenderTexture(m_winwidth/4, m_winwidth/4);
 
 	//load in the wall texture
 	basicWall = LoadTexture("..\\assets\\textures\\test_wall.png");
+
+	//load in the enemy
+	basicEnemy = LoadTexture("..\\assets\\textures\\roboguy.png");
+
 	//this will be used to slice up the wall texture
 	m_sliceInfo = NPatchInfo{};
 	m_sliceInfo.layout = NPATCH_NINE_PATCH; // strectch it on both x and y axis
@@ -41,14 +72,19 @@ void App::update(float dt)
 		return;
 	}
 
-	if (IsKeyPressed(KEY_M)) { m_viewMode = RenderMode::FIRSTPERSON; }
-	if (IsKeyPressed(KEY_N)) { m_viewMode = RenderMode::TOPDOWN; }
-
 	m_player->update(dt);
 	m_player->MoveAndCollideWithMap(m_floor->getWalls());
+	for (Enemy& enemy : m_enemies) {
+		enemy.MoveAndCollideWithMap(m_floor->getWalls());
+	}
 
 	m_camera->target = m_player->getPosition();
 	m_camera->rotation = -m_player->getRotationHorizontals() - 90.f;
+
+	for (Enemy& enemy : m_enemies) {
+		enemy.update(dt);
+		enemy.MoveAndCollideWithEnemies(m_enemies);
+	}
 }
 
 void App::draw()
@@ -68,6 +104,10 @@ void App::draw()
 			*/
 
 			m_floor->draw();
+
+			for (Enemy& enemy : m_enemies) {
+				enemy.draw();
+			}
 
 			m_player->draw();
 
@@ -111,6 +151,11 @@ void App::draw()
 				startPoint.x - ( angleX * rayDistance),
 				startPoint.y - ( angleY * rayDistance)
 			};
+			//pre calculate values
+			float height;
+			float y;
+			float currentAngle = (((float)currentRayIndex / (float)m_winwidth) * 2.0f - 1.0f) / 2.0f;	//convert the index to be between -0.5 and 0.5
+			currentAngle *= (float)m_fov;
 			//compare it do other walls
 			for (Line2D& wall : m_floor->getWalls()) {
 				//check for collision
@@ -126,6 +171,7 @@ void App::draw()
 					}
 				}
 			}
+
 
 
 			if (tempDistance > 0)
@@ -146,11 +192,7 @@ void App::draw()
 					m_sliceInfo.left = 0;
 					m_sliceInfo.right = 0;
 
-					//pre calculate values
-					float height;
-					float y;
-					float currentAngle = (((float)currentRayIndex / (float)m_winwidth) * 2.0f - 1.0f) / 2.0f;	//convert the index to be between -0.5 and 0.5
-					currentAngle *= (float)m_fov;																//scale to fov
+					
 					{
 						y = (float)(m_winheight) / 2.0f; //move to halfway down the screen
 						
@@ -186,7 +228,75 @@ void App::draw()
 					);
 				}
 			}
+			//time to draw the enemy over the screen
+			for (Enemy& enemy : m_enemies) {
+				if (CheckCollisionCircleLine(enemy.getPosition(), enemy.getSize()/2.f, startPoint, endPoint)) {
+					tempDistance = Vector2Distance(m_player->getPosition(), enemy.getPosition());
+					if (tempDistance < traceDistance) {
+						{
+							y = (float)(m_winheight) / 2.0f; //move to halfway down the screen
 
+							height = wallSize / (tempDistance);
+
+							y -= height;
+
+							percentAlongWall = calculateHeight(startPoint,endPoint,enemy.getPosition()) / enemy.getSize()/2.f;
+							
+							Vector2 A = Vector2Subtract(endPoint, startPoint);
+							Vector2 B = Vector2Subtract(enemy.getPosition(), startPoint);
+
+							float D = (A.x * B.y) - (A.y * B.x);
+
+							{//convert it to [-1,1] then add 1 to be [0,2]
+								D /= fabsf(D);
+								D += 1.f;
+							}
+
+							percentAlongWall *= D;
+
+							
+						}
+
+						m_sliceInfo.source = {
+						(float)basicEnemy.width * percentAlongWall, // x
+						0,
+						1,
+						(float)basicEnemy.height
+						};
+						m_sliceInfo.top = 0;
+						m_sliceInfo.bottom = 0;
+						m_sliceInfo.left = 0;
+						m_sliceInfo.right = 0;
+
+						//draw a wall
+						DrawTextureNPatch(
+
+							basicEnemy,		//original texture
+
+							m_sliceInfo,	//slice info
+
+							{				//destination
+								(float)currentRayIndex,
+								y + playerHeight,
+								1,
+								height * 2.0f
+							},
+
+							Vector2{ 0,0 },	//origin
+
+							0,				//rotation
+
+							{				//tint (darkens based on distance)
+								(unsigned char)(255.f * (1.0f - tempDistance / rayDistance)),	//r
+								(unsigned char)(255.f * (1.0f - tempDistance / rayDistance)),	//g
+								(unsigned char)(255.f * (1.0f - tempDistance / rayDistance)),	//b
+								255																//a
+							}
+						);
+
+					}
+				}
+			}
 			traceDistance = 9999.f; // some big number
 			traceColor = BLACK;
 

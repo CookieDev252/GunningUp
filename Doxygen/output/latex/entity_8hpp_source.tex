@@ -1,0 +1,43 @@
+\doxysection{entity.\+hpp}
+\hypertarget{entity_8hpp_source}{}\label{entity_8hpp_source}\index{GunningUp/include/entity.hpp@{GunningUp/include/entity.hpp}}
+\doxymbox{\hyperlink{entity_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ ENTITY\_HPP}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ ENTITY\_HPP}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}GunningUp.h"{}}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{struct_line2_d}{Line2D}};}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{keyword}{class\ }Entity\ \{}
+\DoxyCodeLine{00017\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00018\ \ \ \ \ Entity()\ \{\};}
+\DoxyCodeLine{00019\ \ \ \ \ \string~Entity()\ \{\};}
+\DoxyCodeLine{00020\ \ \ \ \ Vector2\ getPosition()\ \{\ \textcolor{keywordflow}{return}\ m\_position;\ \}}
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keywordtype}{float}\ getRotationHorizontals()\ \{\ \textcolor{keywordflow}{return}\ m\_rotation.x;\ \}}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keywordtype}{float}\ getRotationVertical()\ \{\ \textcolor{keywordflow}{return}\ m\_rotation.y;\ \}}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keywordtype}{void}\ MoveAndCollideWithMap(std::vector<Line2D>\&\ walls);}
+\DoxyCodeLine{00024\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{comment}{//Transform}}
+\DoxyCodeLine{00026\ \ \ \ \ Vector2\ m\_position\{\ 0,0\ \};}
+\DoxyCodeLine{00027\ \ \ \ \ Vector2\ m\_rotation\{\ 0,0\ \};}
+\DoxyCodeLine{00028\ \ \ \ \ Vector2\ m\_right\{\ 0,0\ \};}
+\DoxyCodeLine{00029\ \ \ \ \ Vector2\ m\_up\{\ 0,0\ \};}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{comment}{//Controller\ Variables}}
+\DoxyCodeLine{00031\ \ \ \ \ Vector2\ m\_controllerAxis\{\ 0,0\ \};}
+\DoxyCodeLine{00032\ \ \ \ \ Vector2\ m\_translationUnit\{\ 0,0\ \};}
+\DoxyCodeLine{00033\ \ \ \ \ Vector2\ m\_translationTotal\{\ 0,0\ \};}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{comment}{//game\ stats}}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordtype}{float}\ m\_speed\{\ 50.f\ \};}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordtype}{float}\ m\_rotSpeed\{\ 180.f\ \};}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordtype}{float}\ m\_size\{\ 10.f\ \};}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \};}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

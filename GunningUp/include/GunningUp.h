@@ -1,7 +1,9 @@
 #ifndef GUNNINGUP_H
 #define GUNNINGUP_H
 
-//this file holds all the includes
+/** \file GunningUp.h
+* this file holds all the includes
+*/  
 
 
 #include <iostream>
@@ -10,6 +12,25 @@
 //Raylib headers
 #include "raylib-cpp.hpp"
 #include "raymath.hpp"
+
+
+/** \struct Line2D
+*
+* connects two points
+*/
+struct Line2D {
+public:
+	Line2D(Vector2 start, Vector2 end, Color color = BLACK) {
+		this->startPoint = start;
+		this->endPoint = end;
+		this->color = color;
+	}
+	Vector2 startPoint;
+	Vector2 endPoint;
+	Color color;
+};
+
+
 
 #define TORADIANS PI/180.0f
 #define XBOX_ALIAS_1 "xbox"
@@ -22,9 +43,9 @@ static std::vector<raylib::Texture2D> WallTextures;
 
 
 #include "floorGenerator.hpp"
-#include "entity.hpp"
-#include "enemy.hpp"
-#include "player.hpp"
 #include "behaviourTree.hpp"
+#include "entity.hpp"
+#include "player.hpp"
+#include "enemy.hpp"
 
 #endif

@@ -35,12 +35,13 @@ set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 11)
 
 # Collect source files
 file(GLOB_RECURSE SOURCE_FILES CONFIGURE_DEPENDS
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/GunningUp/src/*.cpp"
 )
 
 # Collect header files
 file(GLOB_RECURSE HEADER_FILES CONFIGURE_DEPENDS
-    "${CMAKE_CURRENT_SOURCE_DIR}/include/*.hpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/GunningUp/include/*.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/GunningUp/include/*.hpp"
 )
 
 #create the source for the game
@@ -52,10 +53,9 @@ PUBLIC
     FILE_SET myHeaders
     TYPE HEADERS
     BASE_DIRS
-        include
+        GunningUp/include
     FILES
     # ALL HEADERS GO HERE
-        include/GunningUp.h
         ${HEADER_FILES}
 )
 

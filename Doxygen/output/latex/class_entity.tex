@@ -1,0 +1,68 @@
+\doxysection{Entity Class Reference}
+\hypertarget{class_entity}{}\label{class_entity}\index{Entity@{Entity}}
+
+
+{\ttfamily \+\#include $<$entity.\+hpp$>$}
+
+Inheritance diagram for Entity:\+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_entity}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_entity_aa29d0d4ff82ccdc48c2c5ad9ad739d02}\label{class_entity_aa29d0d4ff82ccdc48c2c5ad9ad739d02} 
+Vector2 {\bfseries get\+Position} ()
+\item 
+\Hypertarget{class_entity_a87f7ca35b48fa82442ff569077ccf915}\label{class_entity_a87f7ca35b48fa82442ff569077ccf915} 
+float {\bfseries get\+Rotation\+Horizontals} ()
+\item 
+\Hypertarget{class_entity_a45f7dc3493bb05b3120ca37b00b395dd}\label{class_entity_a45f7dc3493bb05b3120ca37b00b395dd} 
+float {\bfseries get\+Rotation\+Vertical} ()
+\item 
+\Hypertarget{class_entity_a82ec09f4a69b9b9bc0d9a4bd91cdff1a}\label{class_entity_a82ec09f4a69b9b9bc0d9a4bd91cdff1a} 
+void {\bfseries Move\+And\+Collide\+With\+Map} (std::\+vector$<$ \doxymbox{\hyperlink{struct_line2_d}{Line2D}} $>$ \&walls)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_entity_a6451bd39e8ae4ce39d75adb1b2e300e0}\label{class_entity_a6451bd39e8ae4ce39d75adb1b2e300e0} 
+Vector2 {\bfseries m\+\_\+position} \{ 0,0 \}
+\item 
+\Hypertarget{class_entity_a7d4300872d1bafc0fba05aa7b5c64857}\label{class_entity_a7d4300872d1bafc0fba05aa7b5c64857} 
+Vector2 {\bfseries m\+\_\+rotation} \{ 0,0 \}
+\item 
+\Hypertarget{class_entity_a1881ba5aa6468b39740a3ae4ffaee2ba}\label{class_entity_a1881ba5aa6468b39740a3ae4ffaee2ba} 
+Vector2 {\bfseries m\+\_\+right} \{ 0,0 \}
+\item 
+\Hypertarget{class_entity_af8d988afd1742dde84f81a9c5e463135}\label{class_entity_af8d988afd1742dde84f81a9c5e463135} 
+Vector2 {\bfseries m\+\_\+up} \{ 0,0 \}
+\item 
+\Hypertarget{class_entity_ae1d43955dd81754424598271bbe61e50}\label{class_entity_ae1d43955dd81754424598271bbe61e50} 
+Vector2 {\bfseries m\+\_\+controller\+Axis} \{ 0,0 \}
+\item 
+\Hypertarget{class_entity_acd64c30b5e980ebf7712665db51726cd}\label{class_entity_acd64c30b5e980ebf7712665db51726cd} 
+Vector2 {\bfseries m\+\_\+translation\+Unit} \{ 0,0 \}
+\item 
+\Hypertarget{class_entity_a7026287065e97573ce523e2562549a3e}\label{class_entity_a7026287065e97573ce523e2562549a3e} 
+Vector2 {\bfseries m\+\_\+translation\+Total} \{ 0,0 \}
+\item 
+\Hypertarget{class_entity_a2a8a61a8c0bc0767ea2f2ec9aee66f6a}\label{class_entity_a2a8a61a8c0bc0767ea2f2ec9aee66f6a} 
+float {\bfseries m\+\_\+speed} \{ 50.f \}
+\item 
+\Hypertarget{class_entity_af1d5ac2633127a9d202b6bf42011f9fb}\label{class_entity_af1d5ac2633127a9d202b6bf42011f9fb} 
+float {\bfseries m\+\_\+rot\+Speed} \{ 180.f \}
+\item 
+\Hypertarget{class_entity_a6d801e775a5a169ec7b4bc5c5f184cae}\label{class_entity_a6d801e775a5a169ec7b4bc5c5f184cae} 
+float {\bfseries m\+\_\+size} \{ 10.f \}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A base class for other entities 
+
+The documentation for this class was generated from the following file:\+\begin{DoxyCompactItemize}
+\item 
+Gunning\+Up/\+include/\+\doxymbox{\hyperlink{entity_8hpp}{entity.\+hpp}}\end{DoxyCompactItemize}

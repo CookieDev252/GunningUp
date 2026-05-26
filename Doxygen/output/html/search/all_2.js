@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['floorgenerator_0',['FloorGenerator',['../class_floor_generator.html',1,'']]]
+  ['entity_0',['Entity',['../class_entity.html',1,'']]],
+  ['entity_2ehpp_1',['entity.hpp',['../entity_8hpp.html',1,'']]]
 ];

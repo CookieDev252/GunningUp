@@ -9,6 +9,14 @@ enum RenderMode
 	FIRSTPERSON
 };
 
+enum State {
+	MAINMENU,
+	SPLASHSCREEN,
+	GAMING,
+	PAUSE,
+	DEATH
+};
+
 //holds the data of ray collision in the scene
 struct RayData {
 	Color color{ 255,255,255,255 }; //default white
@@ -46,22 +54,27 @@ private:
 	//minimap
 	RenderTexture m_minimapTexture;
 	Texture2D basicWall;
+	Texture2D basicEnemy;
 	int m_winwidth{ 700 };
 	int m_winheight{ 500 };
 	int m_fov{ 90 };
-	int m_wallLength{ 8 };
-	float wallSize = 1000.f;
+	int m_wallLength{ 8 }; //distance along wall before texture repeats (this prevents texture stretching
+	float wallSize = 2000.f; //height of the wall
 	float playerHeight = 10.f;
 	float actualAngleDegrees{};
+public:
+	unsigned int m_viewMode{RenderMode::TOPDOWN};
+private:
 	char* m_title{ "GunningUp" };
 	Player* m_player;
+	std::vector<Enemy> m_enemies;
 	FloorGenerator* m_floor;
 	Camera2D* m_camera;
 	NPatchInfo m_sliceInfo;
+	short int currentstate{};
 public:
 	bool running{true};
 	raylib::Window* m_window;
-	unsigned int m_viewMode{RenderMode::TOPDOWN};
 };
 
 

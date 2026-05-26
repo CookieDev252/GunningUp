@@ -15,13 +15,13 @@ void FloorGenerator::draw() {
 		DrawLine(wall.startPoint.x, wall.startPoint.y, wall.endPoint.x, wall.endPoint.y, wall.color);
 	}
 	//draw Nodes
-	for (const NavigationNode& node : m_navNodes) {
-		DrawCircleV(node.position, 5, GREEN);
-		//draw all the connection lines
-		for (const NavigationNode* connectedNode : node.m_connectedNodes) {
-			DrawLineV(node.position, connectedNode->position, BLACK);
-		}
-	}
+	//for (const NavigationNode& node : m_navNodes) {
+	//	DrawCircleV(node.getPosition(), 5, GREEN);
+	//	//draw all the connection lines
+	//	for (const NavigationNode* connectedNode : node.m_connectedNodes) {
+	//		DrawLineV(node.getPosition(), connectedNode->getPosition(), BLACK);
+	//	}
+	//}
 }
 
 void FloorGenerator::SplitRoom(int selectedRoom)
@@ -142,7 +142,7 @@ void FloorGenerator::GenerateLevel()
 			if (skippingNode != currentNode) {
 				for (Line2D& wall : m_walls) {
 					//check if the line between the two nodes is obstructed by a wall
-					if (CheckCollisionLines(node.position, otherNode.position, wall.startPoint, wall.endPoint, emptyPointer)) {
+					if (CheckCollisionLines(node.getPosition(), otherNode.getPosition(), wall.startPoint, wall.endPoint, emptyPointer)) {
 						wallsObstructing++;
 					}
 				}
@@ -165,7 +165,7 @@ void FloorGenerator::GenerateLevel()
 			for (NavigationNode* otherNodeCompare : otherNode->m_connectedNodes) { // iterate the node inside the connected nodes 
 				for (NavigationNode* nodeCompare : node.m_connectedNodes) {
 					if (otherNodeCompare == nodeCompare && otherNodeCompare != otherNode ) { // remove node if it's not the same one being sampled
-						if (Vector2DistanceSqr(otherNodeCompare->position,node.position) > Vector2DistanceSqr(node.position,otherNode->position))
+						if (Vector2DistanceSqr(otherNodeCompare->getPosition(), node.getPosition()) > Vector2DistanceSqr(node.getPosition(), otherNode->getPosition()))
 							node.RemoveNode(otherNodeCompare);
 					}
 				}

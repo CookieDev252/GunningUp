@@ -30,7 +30,7 @@ mermaid.initialize({ startOnLoad: true, theme: theme });
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Gunning Up<span id="projectnumber">&#160;V 1.0</span>
+   <div id="projectname">Gunning Up
    </div>
   </td>
  </tr>
@@ -122,13 +122,25 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('class_player.h
 <p>This is the complete list of members for <a class="el" href="class_player.html">Player</a>, including all inherited members.</p>
 <table class="directory">
   <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>draw</b>() const (defined in <a class="el" href="class_player.html">Player</a>)</td><td class="entry"><a class="el" href="class_player.html">Player</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>getPosition</b>() (defined in <a class="el" href="class_player.html">Player</a>)</td><td class="entry"><a class="el" href="class_player.html">Player</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>getRotationHorizontals</b>() (defined in <a class="el" href="class_player.html">Player</a>)</td><td class="entry"><a class="el" href="class_player.html">Player</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>getRotationVertical</b>() (defined in <a class="el" href="class_player.html">Player</a>)</td><td class="entry"><a class="el" href="class_player.html">Player</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>MoveAndCollideWithMap</b>(std::vector&lt; Line2D &gt; &amp;walls) (defined in <a class="el" href="class_player.html">Player</a>)</td><td class="entry"><a class="el" href="class_player.html">Player</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>Player</b>() (defined in <a class="el" href="class_player.html">Player</a>)</td><td class="entry"><a class="el" href="class_player.html">Player</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>Player</b>(raylib::Vector2 &amp;position, raylib::Vector2 &amp;rotation) (defined in <a class="el" href="class_player.html">Player</a>)</td><td class="entry"><a class="el" href="class_player.html">Player</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>update</b>(float dt) (defined in <a class="el" href="class_player.html">Player</a>)</td><td class="entry"><a class="el" href="class_player.html">Player</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>Entity</b>() (defined in <a class="el" href="class_entity.html">Entity</a>)</td><td class="entry"><a class="el" href="class_entity.html">Entity</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>getPosition</b>() (defined in <a class="el" href="class_entity.html">Entity</a>)</td><td class="entry"><a class="el" href="class_entity.html">Entity</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>getRotationHorizontals</b>() (defined in <a class="el" href="class_entity.html">Entity</a>)</td><td class="entry"><a class="el" href="class_entity.html">Entity</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>getRotationVertical</b>() (defined in <a class="el" href="class_entity.html">Entity</a>)</td><td class="entry"><a class="el" href="class_entity.html">Entity</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>m_controllerAxis</b> (defined in <a class="el" href="class_entity.html">Entity</a>)</td><td class="entry"><a class="el" href="class_entity.html">Entity</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>m_position</b> (defined in <a class="el" href="class_entity.html">Entity</a>)</td><td class="entry"><a class="el" href="class_entity.html">Entity</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>m_right</b> (defined in <a class="el" href="class_entity.html">Entity</a>)</td><td class="entry"><a class="el" href="class_entity.html">Entity</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>m_rotation</b> (defined in <a class="el" href="class_entity.html">Entity</a>)</td><td class="entry"><a class="el" href="class_entity.html">Entity</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>m_rotSpeed</b> (defined in <a class="el" href="class_entity.html">Entity</a>)</td><td class="entry"><a class="el" href="class_entity.html">Entity</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>m_size</b> (defined in <a class="el" href="class_entity.html">Entity</a>)</td><td class="entry"><a class="el" href="class_entity.html">Entity</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>m_speed</b> (defined in <a class="el" href="class_entity.html">Entity</a>)</td><td class="entry"><a class="el" href="class_entity.html">Entity</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>m_translationTotal</b> (defined in <a class="el" href="class_entity.html">Entity</a>)</td><td class="entry"><a class="el" href="class_entity.html">Entity</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>m_translationUnit</b> (defined in <a class="el" href="class_entity.html">Entity</a>)</td><td class="entry"><a class="el" href="class_entity.html">Entity</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>m_up</b> (defined in <a class="el" href="class_entity.html">Entity</a>)</td><td class="entry"><a class="el" href="class_entity.html">Entity</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>MoveAndCollideWithMap</b>(std::vector&lt; Line2D &gt; &amp;walls) (defined in <a class="el" href="class_entity.html">Entity</a>)</td><td class="entry"><a class="el" href="class_entity.html">Entity</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>Player</b>() (defined in <a class="el" href="class_player.html">Player</a>)</td><td class="entry"><a class="el" href="class_player.html">Player</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>Player</b>(raylib::Vector2 &amp;position, raylib::Vector2 &amp;rotation) (defined in <a class="el" href="class_player.html">Player</a>)</td><td class="entry"><a class="el" href="class_player.html">Player</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>update</b>(float dt) (defined in <a class="el" href="class_player.html">Player</a>)</td><td class="entry"><a class="el" href="class_player.html">Player</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>~Entity</b>() (defined in <a class="el" href="class_entity.html">Entity</a>)</td><td class="entry"><a class="el" href="class_entity.html">Entity</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>~Player</b>() (defined in <a class="el" href="class_player.html">Player</a>)</td><td class="entry"><a class="el" href="class_player.html">Player</a></td><td class="entry"></td></tr>
 </table></div><!-- contents -->
 </div><!-- doc-content -->

@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['navigationnode_0',['NavigationNode',['../class_navigation_node.html',1,'']]],
-  ['node_1',['Node',['../class_node.html',1,'']]]
+  ['line2d_0',['Line2D',['../struct_line2_d.html',1,'']]]
 ];
