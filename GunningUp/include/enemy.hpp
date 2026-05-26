@@ -6,10 +6,7 @@
 class NavigationNode;
 class Player;
 
-/** \class Enemy
-* 
-*   \brief enemy 
-*/
+/** \class Enemy */
 class Enemy : public Entity {
 public:
 	Enemy(Vector2 position, Vector2 rotation);

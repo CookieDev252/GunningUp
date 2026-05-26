@@ -1,5 +1,12 @@
 #include "enemy.hpp"
 
+/*! \addtogroup enemyFunctions
+* @{
+*/
+
+/*!
+* Class constructor
+*/
 Enemy::Enemy(Vector2 position, Vector2 rotation)
 	: Entity()
 {
@@ -8,11 +15,13 @@ Enemy::Enemy(Vector2 position, Vector2 rotation)
 	m_speed /= 1.75f;
 }
 
+/*! Draw - draws the enemy in 2D view */
 void Enemy::draw() const
 {
 	DrawCircle(m_position.x, m_position.y, m_size / 2.f, RED);
 }
 
+/*! Update - updates the enemy */
 inline void Enemy::update(float dt)
 {
 	//check if enemy is close enough to the node
@@ -46,21 +55,25 @@ inline void Enemy::update(float dt)
 	
 }
 
+/*! SetPlayer - assigns the location of the Player class to m_playerRef */
 void Enemy::setPlayer(Player* player)
 {
 	m_playerRef = player;
 }
 
+/*! SetNavigationNode - assigns the location of the NavigationNode class to m_navRef */
 void Enemy::setNavigationNode(NavigationNode* node)
 {
 	m_navRef = node;
 }
 
+/*! MoveAndCollideWithEnemies - displaces the enemy if a collision has occured with another Enemy object */
 void Enemy::MoveAndCollideWithEnemies(std::vector<Enemy>& enemies) {
 	for (Enemy& enemy : enemies) {
 		if (CheckCollisionCircles(m_position, m_size / 2.f, enemy.getPosition(), enemy.getSize() / 2.f)) {
-/*			m_position = Vector2Subtract(m_position,
-				Vector2SubtractValue(Vector2Subtract(m_position, enemy.getPosition()),enemy.getSize()/2.f+getSize()/2.f)); */
+			m_position = Vector2Add(enemy.getPosition(),Vector2Scale(Vector2Normalize(Vector2Subtract(getPosition(), enemy.getPosition())),enemy.getSize()/2.0f+getSize()/2.0f));
 		}
 	}
 }
+
+/*! @} */
