@@ -1,5 +1,6 @@
 var NAVTREEINDEX0 =
 {
+"_gunning_up_8h.html":[1,0,0,0,5],
 "_gunning_up_8h_source.html":[1,0,0,0,5],
 "annotated.html":[0,0],
 "app_8hpp_source.html":[1,0,0,0,0],
@@ -7,14 +8,15 @@ var NAVTREEINDEX0 =
 "class_action.html":[0,0,0],
 "class_app.html":[0,0,1],
 "class_behaviour_tree.html":[0,0,2],
-"class_entity.html":[0,0,3],
-"class_floor_generator.html":[0,0,4],
-"class_navigation_node.html":[0,0,6],
-"class_node.html":[0,0,7],
-"class_player.html":[0,0,8],
-"class_ray2_d.html":[0,0,9],
-"class_selector.html":[0,0,12],
-"class_sequence.html":[0,0,13],
+"class_enemy.html":[0,0,3],
+"class_entity.html":[0,0,4],
+"class_floor_generator.html":[0,0,5],
+"class_navigation_node.html":[0,0,7],
+"class_node.html":[0,0,8],
+"class_player.html":[0,0,9],
+"class_ray2_d.html":[0,0,10],
+"class_selector.html":[0,0,13],
+"class_sequence.html":[0,0,14],
 "classes.html":[0,1],
 "dir_12a228acf3403ce2ccced3dbdf308a87.html":[1,0,0],
 "dir_afbd6c0339dd8497039fd005c007efd4.html":[1,0,0,0],
@@ -27,7 +29,7 @@ var NAVTREEINDEX0 =
 "index.html":[],
 "pages.html":[],
 "player_8hpp_source.html":[1,0,0,0,6],
-"struct_line2_d.html":[0,0,5],
-"struct_ray_data.html":[0,0,10],
-"struct_room.html":[0,0,11]
+"struct_line2_d.html":[0,0,6],
+"struct_ray_data.html":[0,0,11],
+"struct_room.html":[0,0,12]
 };

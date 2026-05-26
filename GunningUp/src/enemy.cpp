@@ -59,8 +59,8 @@ void Enemy::setNavigationNode(NavigationNode* node)
 void Enemy::MoveAndCollideWithEnemies(std::vector<Enemy>& enemies) {
 	for (Enemy& enemy : enemies) {
 		if (CheckCollisionCircles(m_position, m_size / 2.f, enemy.getPosition(), enemy.getSize() / 2.f)) {
-			m_position = Vector2Subtract(m_position,
-				Vector2SubtractValue(Vector2Subtract(m_position, enemy.getPosition()),enemy.getSize()/2.f+getSize()/2.f));
+/*			m_position = Vector2Subtract(m_position,
+				Vector2SubtractValue(Vector2Subtract(m_position, enemy.getPosition()),enemy.getSize()/2.f+getSize()/2.f)); */
 		}
 	}
 }

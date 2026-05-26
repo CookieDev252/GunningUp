@@ -111,16 +111,17 @@ void FloorGenerator::GenerateLevel()
 			//create a random door
 			int selected = GetRandomValue(1, 4);
 			Line2D wall = m_walls.at(m_walls.size() - selected);
+			Vector2 normalDirection = Vector2Normalize(Vector2Subtract(wall.endPoint, wall.startPoint));
 			m_walls.erase(m_walls.end() - selected);
 			//top and bottom
 			m_walls.push_back(Line2D{
 				wall.startPoint, 
-				Vector2Add(wall.startPoint,Vector2Scale(Vector2Subtract(wall.endPoint, wall.startPoint),0.4)),
+				Vector2Add(wall.startPoint,Vector2Subtract(Vector2Scale(Vector2Subtract(wall.endPoint, wall.startPoint),0.5),Vector2Scale(normalDirection,m_intersection))),
 				wall.color
 				}
 			);
 			m_walls.push_back(Line2D{
-				Vector2Add(wall.startPoint,Vector2Scale(Vector2Subtract(wall.endPoint, wall.startPoint),0.6)),
+				Vector2Add(wall.startPoint,Vector2Add(Vector2Scale(Vector2Subtract(wall.endPoint, wall.startPoint),0.5), Vector2Scale(normalDirection,m_intersection))),
 				wall.endPoint,
 				wall.color
 				}

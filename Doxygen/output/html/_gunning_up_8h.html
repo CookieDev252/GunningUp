@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.17.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Gunning Up: Ray2D Class Reference</title>
+<title>Gunning Up: H:/Documents/GitHub/C++ Projects/GunningUp/GunningUp/include/GunningUp.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="codefolding.js"></script>
 <script type="text/javascript" src="clipboard.js"></script>
@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
   </div>
 </div>
 <script type="text/javascript">
-document.addEventListener('DOMContentLoaded',() => { initNavTree('class_ray2_d.html','','class_ray2_d-members'); });
+document.addEventListener('DOMContentLoaded',() => { initNavTree('_gunning_up_8h.html','',''); });
 </script>
 <div id="container">
 <div id="doc-content">
@@ -115,19 +115,43 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('class_ray2_d.h
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">Ray2D Class Reference</div></div>
+  <div class="headertitle"><div class="title">GunningUp.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
+<div class="textblock"><code>#include &lt;iostream&gt;</code><br />
+<code>#include &lt;vector&gt;</code><br />
+<code>#include &quot;raylib-cpp.hpp&quot;</code><br />
+<code>#include &quot;raymath.hpp&quot;</code><br />
+<code>#include &quot;floorGenerator.hpp&quot;</code><br />
+<code>#include &quot;behaviourTree.hpp&quot;</code><br />
+<code>#include &quot;<a class="el" href="entity_8hpp_source.html">entity.hpp</a>&quot;</code><br />
+<code>#include &quot;player.hpp&quot;</code><br />
+<code>#include &quot;enemy.hpp&quot;</code><br />
+</div>
+<p><a href="_gunning_up_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
-Public Member Functions</h2></td></tr>
-<tr class="memitem:ad2b0a43359de3a371710e238822be8c3" id="r_ad2b0a43359de3a371710e238822be8c3"><td class="memItemLeft"><a id="ad2b0a43359de3a371710e238822be8c3" name="ad2b0a43359de3a371710e238822be8c3"></a>
-&#160;</td><td class="memItemRight"><b>Ray2D</b> (Vector2 position, Vector2 direction, float distance)</td></tr>
+<tr class="heading"><td colspan="2"><h2 id="header-nested-classes" class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:Line2D" id="r_Line2D"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="struct_line2_d.html">Line2D</a></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-define-members" class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:adc53a92f2228ddb2616f9294a5563e5c" id="r_adc53a92f2228ddb2616f9294a5563e5c"><td class="memItemLeft"><a id="adc53a92f2228ddb2616f9294a5563e5c" name="adc53a92f2228ddb2616f9294a5563e5c"></a>
+#define&#160;</td><td class="memItemRight"><b>TORADIANS</b>&#160;&#160;&#160;PI/180.0f</td></tr>
+<tr class="memitem:ad08e00cede3ddd013788081f2c987835" id="r_ad08e00cede3ddd013788081f2c987835"><td class="memItemLeft"><a id="ad08e00cede3ddd013788081f2c987835" name="ad08e00cede3ddd013788081f2c987835"></a>
+#define&#160;</td><td class="memItemRight"><b>XBOX_ALIAS_1</b>&#160;&#160;&#160;&quot;xbox&quot;</td></tr>
+<tr class="memitem:acda371ecb0a8c2c5828867949ee9bb6f" id="r_acda371ecb0a8c2c5828867949ee9bb6f"><td class="memItemLeft"><a id="acda371ecb0a8c2c5828867949ee9bb6f" name="acda371ecb0a8c2c5828867949ee9bb6f"></a>
+#define&#160;</td><td class="memItemRight"><b>XBOX_ALIAS_2</b>&#160;&#160;&#160;&quot;x-box&quot;</td></tr>
+<tr class="memitem:a7e1fe99b6366c5655990a49bbbacc8d3" id="r_a7e1fe99b6366c5655990a49bbbacc8d3"><td class="memItemLeft"><a id="a7e1fe99b6366c5655990a49bbbacc8d3" name="a7e1fe99b6366c5655990a49bbbacc8d3"></a>
+#define&#160;</td><td class="memItemRight"><b>PS_ALIAS_1</b>&#160;&#160;&#160;&quot;playstation&quot;</td></tr>
+<tr class="memitem:ad368e468747b9293366849298602d294" id="r_ad368e468747b9293366849298602d294"><td class="memItemLeft"><a id="ad368e468747b9293366849298602d294" name="ad368e468747b9293366849298602d294"></a>
+#define&#160;</td><td class="memItemRight"><b>PS_ALIAS_2</b>&#160;&#160;&#160;&quot;sony&quot;</td></tr>
+<tr class="memitem:aaba262429a637565be50b2f1580d42a4" id="r_aaba262429a637565be50b2f1580d42a4"><td class="memItemLeft"><a id="aaba262429a637565be50b2f1580d42a4" name="aaba262429a637565be50b2f1580d42a4"></a>
+#define&#160;</td><td class="memItemRight"><b>GLSL_VERSION</b>&#160;&#160;&#160;330</td></tr>
 </table>
-<hr/>The documentation for this class was generated from the following file:<ul>
-<li>H:/Documents/GitHub/C++ Projects/GunningUp/GunningUp/include/<a class="el" href="app_8hpp_source.html">app.hpp</a></li>
-</ul>
-</div><!-- contents -->
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>this file holds all the includes </p>
+</div></div><!-- contents -->
 </div><!-- doc-content -->
 <div id="page-nav" class="page-nav-panel">
 <div id="page-nav-resize-handle"></div>
@@ -140,7 +164,7 @@ Public Member Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a href="class_ray2_d.html">Ray2D</a></li>
+    <li class="navelem"><b>GunningUp</b></li><li class="navelem"><b>include</b></li><li class="navelem"><a href="_gunning_up_8h.html">GunningUp.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.17.0 </li>
   </ul>
 </div>

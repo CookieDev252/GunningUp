@@ -240,7 +240,6 @@ void App::draw()
 
 							y -= height;
 
-							percentAlongWall = calculateHeight(startPoint,endPoint,enemy.getPosition()) / enemy.getSize()/2.f;
 							
 							Vector2 A = Vector2Subtract(endPoint, startPoint);
 							Vector2 B = Vector2Subtract(enemy.getPosition(), startPoint);
@@ -252,9 +251,7 @@ void App::draw()
 								D += 1.f;
 							}
 
-							percentAlongWall *= D;
-
-							
+							percentAlongWall = calculateHeight(startPoint, endPoint, enemy.getPosition()) * D / enemy.getSize() ;
 						}
 
 						m_sliceInfo.source = {

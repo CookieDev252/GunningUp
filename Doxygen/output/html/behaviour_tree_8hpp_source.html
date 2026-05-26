@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.17.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Gunning Up: GunningUp/include/behaviourTree.hpp Source File</title>
+<title>Gunning Up: H:/Documents/GitHub/C++ Projects/GunningUp/GunningUp/include/behaviourTree.hpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="codefolding.js"></script>
 <script type="text/javascript" src="clipboard.js"></script>
@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('behaviour_tree
 <div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef BEHAVIOURTREE_HPP</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#define BEHAVIOURTREE_HPP</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;GunningUp.h&quot;</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;<a class="code" href="_gunning_up_8h.html">GunningUp.h</a>&quot;</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
 <div class="foldopen" id="foldopen00006" data-start="{" data-end="};">
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno"><a class="line" href="class_node.html">    6</a></span><span class="keyword">class </span>Node {</div>
@@ -167,7 +167,7 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('behaviour_tree
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="comment">//Selectors</span></div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
 <div class="foldopen" id="foldopen00045" data-start="{" data-end="};">
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="class_selector.html">   45</a></span><span class="keyword">class </span>Selector : Node {</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="class_selector.html">   45</a></span><span class="keyword">class </span>Selector : <span class="keyword">public</span> Node {</div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="keyword">public</span>:</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    Selector(Node* parent) : Node(parent) {</div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
@@ -181,7 +181,7 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('behaviour_tree
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="comment">//Sequennce</span></div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
 <div class="foldopen" id="foldopen00057" data-start="{" data-end="};">
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="class_sequence.html">   57</a></span><span class="keyword">class </span>Sequence : Node {</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="class_sequence.html">   57</a></span><span class="keyword">class </span>Sequence : <span class="keyword">public</span> Node {</div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="keyword">public</span>:</div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    Sequence(Node* parent) : Node(parent) {</div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
@@ -195,7 +195,7 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('behaviour_tree
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="comment">//Actions {multiple}</span></div>
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
 <div class="foldopen" id="foldopen00069" data-start="{" data-end="};">
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno"><a class="line" href="class_action.html">   69</a></span><span class="keyword">class </span>Action : Node {</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno"><a class="line" href="class_action.html">   69</a></span><span class="keyword">class </span>Action : <span class="keyword">public</span> Node {</div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    Action(Node* parent) : Node(parent) {</div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    }</div>
@@ -206,6 +206,27 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('behaviour_tree
 </div>
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> </div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span></div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="comment">//#ifndef ENEMYBEHAVIOUR</span></div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span><span class="comment">//#define ENEMYBEHAVIOUR</span></div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span><span class="comment">//</span></div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span><span class="comment">//class EnemyFollowPlayer : public Action {</span></div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span><span class="comment">//public:</span></div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span><span class="comment">//  EnemyFollowPlayer(Node* parent) : Action(parent) {}</span></div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span><span class="comment">//};</span></div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span><span class="comment">//</span></div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span><span class="comment">//</span></div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span><span class="comment">//class EnemyBehaviour : public BehaviourTree {</span></div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span><span class="comment">//public:</span></div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span><span class="comment">//  EnemyBehaviour() : BehaviourTree() {}</span></div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span><span class="comment">//private:</span></div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span><span class="comment">//  Enemy* enemyLink{nullptr}; // holds a link to the enemy using it</span></div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span><span class="comment">//</span></div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span><span class="comment">//};</span></div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span><span class="comment">//</span></div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span><span class="comment">//#endif</span></div>
+<div class="ttc" id="a_gunning_up_8h_html"><div class="ttname"><a href="_gunning_up_8h.html">GunningUp.h</a></div></div>
 <div class="ttc" id="aclass_action_html"><div class="ttname"><a href="class_action.html">Action</a></div><div class="ttdef"><b>Definition</b> behaviourTree.hpp:69</div></div>
 <div class="ttc" id="aclass_node_html"><div class="ttname"><a href="class_node.html">Node</a></div><div class="ttdef"><b>Definition</b> behaviourTree.hpp:6</div></div>
 <div class="ttc" id="aclass_selector_html"><div class="ttname"><a href="class_selector.html">Selector</a></div><div class="ttdef"><b>Definition</b> behaviourTree.hpp:45</div></div>

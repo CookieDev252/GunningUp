@@ -1,37 +1,32 @@
 \doxysection{player.\+hpp}
-\hypertarget{player_8hpp_source}{}\label{player_8hpp_source}\index{GunningUp/include/player.hpp@{GunningUp/include/player.hpp}}
+\hypertarget{player_8hpp_source}{}\label{player_8hpp_source}\index{H:/Documents/GitHub/C++ Projects/GunningUp/GunningUp/include/player.hpp@{H:/Documents/GitHub/C++ Projects/GunningUp/GunningUp/include/player.hpp}}
 
 \begin{DoxyCode}{0}
 \DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ PLAYER\_HPP}}
 \DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ PLAYER\_HPP}}
 \DoxyCodeLine{00003\ }
-\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}GunningUp.h"{}}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_gunning_up_8h}{GunningUp.h}}"{}}}
 \DoxyCodeLine{00005\ }
-\DoxyCodeLine{00006\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_entity}{Entity}};}
-\DoxyCodeLine{00007\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_player}{Player}};}
-\DoxyCodeLine{00008\ }
-\DoxyCodeLine{00009\ \textcolor{keyword}{class\ }Player\ :\ \textcolor{keyword}{public}\ Entity\ \{}
-\DoxyCodeLine{00010\ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00011\ \ \ \ \ Player();}
-\DoxyCodeLine{00012\ \ \ \ \ Player(raylib::Vector2\&\ position,\ raylib::Vector2\&\ rotation);}
-\DoxyCodeLine{00013\ \ \ \ \ \string~Player();}
-\DoxyCodeLine{00014\ }
-\DoxyCodeLine{00015\ \ \ \ \ \textcolor{comment}{//draws\ a\ circle\ with\ a\ line\ to\ show\ facing\ direction\ and\ world\ space\ position}}
-\DoxyCodeLine{00016\ \ \ \ \ \textcolor{keywordtype}{void}\ draw()\ \textcolor{keyword}{const};}
-\DoxyCodeLine{00017\ \ \ \ \ \textcolor{comment}{//updates\ the\ game\ object}}
-\DoxyCodeLine{00018\ \ \ \ \ \textcolor{keywordtype}{void}\ update(\textcolor{keywordtype}{float}\ dt);}
-\DoxyCodeLine{00019\ \textcolor{keyword}{private}:}
-\DoxyCodeLine{00020\ \ \ \ \ \textcolor{comment}{//Axis\ DeadZones}}
-\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ m\_leftStickDeadzoneX\ =\ 0.1f;}
-\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ m\_leftStickDeadzoneY\ =\ 0.1f;}
-\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ m\_rightStickDeadzoneX\ =\ 0.1f;}
-\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ m\_rightStickDeadzoneY\ =\ 0.1f;}
-\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ m\_leftTriggerDeadzone\ =\ -\/0.9f;}
-\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ m\_rightTriggerDeadzone\ =\ -\/0.9f;}
-\DoxyCodeLine{00027\ }
-\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keywordtype}{float}\ m\_lookSensitivity\ =\ 720.f;}
-\DoxyCodeLine{00029\ \};}
-\DoxyCodeLine{00030\ }
-\DoxyCodeLine{00031\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00006\ \textcolor{keyword}{class\ }Player\ :\ \textcolor{keyword}{public}\ Entity\ \{}
+\DoxyCodeLine{00007\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00008\ \ \ \ \ Player();}
+\DoxyCodeLine{00009\ \ \ \ \ Player(raylib::Vector2\&\ position,\ raylib::Vector2\&\ rotation);}
+\DoxyCodeLine{00010\ \ \ \ \ \string~Player();}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \ \ \ \ \textcolor{comment}{//updates\ the\ game\ object}}
+\DoxyCodeLine{00013\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ update(\textcolor{keywordtype}{float}\ dt)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00014\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00015\ \ \ \ \ \textcolor{comment}{//Axis\ DeadZones}}
+\DoxyCodeLine{00016\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ m\_leftStickDeadzoneX\ =\ 0.1f;}
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ m\_leftStickDeadzoneY\ =\ 0.1f;}
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ m\_rightStickDeadzoneX\ =\ 0.1f;}
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ m\_rightStickDeadzoneY\ =\ 0.1f;}
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ m\_leftTriggerDeadzone\ =\ -\/0.9f;}
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ m\_rightTriggerDeadzone\ =\ -\/0.9f;}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keywordtype}{float}\ m\_lookSensitivity\ =\ 720.f;}
+\DoxyCodeLine{00024\ \};}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \textcolor{preprocessor}{\#endif}}
 
 \end{DoxyCode}

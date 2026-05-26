@@ -1,36 +1,50 @@
 \doxysection{Gunning\+Up.\+h}
-\hypertarget{_gunning_up_8h_source}{}\label{_gunning_up_8h_source}\index{GunningUp/include/GunningUp.h@{GunningUp/include/GunningUp.h}}
-
+\hypertarget{_gunning_up_8h_source}{}\label{_gunning_up_8h_source}\index{H:/Documents/GitHub/C++ Projects/GunningUp/GunningUp/include/GunningUp.h@{H:/Documents/GitHub/C++ Projects/GunningUp/GunningUp/include/GunningUp.h}}
+\doxymbox{\hyperlink{_gunning_up_8h}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
 \DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ GUNNINGUP\_H}}
 \DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ GUNNINGUP\_H}}
-\DoxyCodeLine{00003\ }
-\DoxyCodeLine{00004\ \textcolor{comment}{//this\ file\ holds\ all\ the\ includes}}
-\DoxyCodeLine{00005\ }
-\DoxyCodeLine{00006\ }
-\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <iostream>}}
-\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <vector>}}
-\DoxyCodeLine{00009\ }
-\DoxyCodeLine{00010\ \textcolor{comment}{//Raylib\ headers}}
-\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ "{}raylib-\/cpp.hpp"{}}}
-\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}raymath.hpp"{}}}
-\DoxyCodeLine{00013\ }
-\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#define\ TORADIANS\ PI/180.0f}}
-\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#define\ XBOX\_ALIAS\_1\ "{}xbox"{}}}
-\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#define\ XBOX\_ALIAS\_2\ "{}x-\/box"{}}}
-\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#define\ PS\_ALIAS\_1\ \ \ "{}playstation"{}}}
-\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#define\ PS\_ALIAS\_2\ \ \ "{}sony"{}}}
-\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#define\ GLSL\_VERSION\ 330\ }\textcolor{comment}{//Desktop\ Version}}
-\DoxyCodeLine{00020\ }
-\DoxyCodeLine{00021\ \textcolor{keyword}{static}\ std::vector<raylib::Texture2D>\ WallTextures;}
-\DoxyCodeLine{00022\ }
-\DoxyCodeLine{00023\ }
-\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#include\ "{}floorGenerator.hpp"{}}}
-\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{entity_8hpp}{entity.hpp}}"{}}}
-\DoxyCodeLine{00026\ \textcolor{preprocessor}{\#include\ "{}enemy.hpp"{}}}
-\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#include\ "{}player.hpp"{}}}
-\DoxyCodeLine{00028\ \textcolor{preprocessor}{\#include\ "{}behaviourTree.hpp"{}}}
-\DoxyCodeLine{00029\ }
-\DoxyCodeLine{00030\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00003\ \ \ }
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <iostream>}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{comment}{//Raylib\ headers}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}raylib-\/cpp.hpp"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}raymath.hpp"{}}}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00021\ \textcolor{keyword}{struct\ }Line2D\ \{}
+\DoxyCodeLine{00022\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00023\ \ \ \ \ Line2D(Vector2\ start,\ Vector2\ end,\ Color\ color\ =\ BLACK)\ \{}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ this-\/>startPoint\ =\ start;}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ this-\/>endPoint\ =\ end;}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ this-\/>color\ =\ color;}
+\DoxyCodeLine{00027\ \ \ \ \ \}}
+\DoxyCodeLine{00028\ \ \ \ \ Vector2\ startPoint;}
+\DoxyCodeLine{00029\ \ \ \ \ Vector2\ endPoint;}
+\DoxyCodeLine{00030\ \ \ \ \ Color\ color;}
+\DoxyCodeLine{00031\ \};}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \textcolor{preprocessor}{\#define\ TORADIANS\ PI/180.0f}}
+\DoxyCodeLine{00036\ \textcolor{preprocessor}{\#define\ XBOX\_ALIAS\_1\ "{}xbox"{}}}
+\DoxyCodeLine{00037\ \textcolor{preprocessor}{\#define\ XBOX\_ALIAS\_2\ "{}x-\/box"{}}}
+\DoxyCodeLine{00038\ \textcolor{preprocessor}{\#define\ PS\_ALIAS\_1\ \ \ "{}playstation"{}}}
+\DoxyCodeLine{00039\ \textcolor{preprocessor}{\#define\ PS\_ALIAS\_2\ \ \ "{}sony"{}}}
+\DoxyCodeLine{00040\ \textcolor{preprocessor}{\#define\ GLSL\_VERSION\ 330\ }\textcolor{comment}{//Desktop\ Version}}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \textcolor{keyword}{static}\ std::vector<raylib::Texture2D>\ WallTextures;}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \textcolor{preprocessor}{\#include\ "{}floorGenerator.hpp"{}}}
+\DoxyCodeLine{00046\ \textcolor{preprocessor}{\#include\ "{}behaviourTree.hpp"{}}}
+\DoxyCodeLine{00047\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{entity_8hpp}{entity.hpp}}"{}}}
+\DoxyCodeLine{00048\ \textcolor{preprocessor}{\#include\ "{}player.hpp"{}}}
+\DoxyCodeLine{00049\ \textcolor{preprocessor}{\#include\ "{}enemy.hpp"{}}}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \textcolor{preprocessor}{\#endif}}
 
 \end{DoxyCode}

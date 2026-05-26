@@ -1,5 +1,14 @@
 \doxysection{Navigation\+Node Class Reference}
 \hypertarget{class_navigation_node}{}\label{class_navigation_node}\index{NavigationNode@{NavigationNode}}
+
+
+Similar to \doxylink{struct_line2_d}{Line2D} but can connect to multiple nodes.  
+
+
+
+
+{\ttfamily \+\#include $<$floor\+Generator.\+hpp$>$}
+
 \doxysubsubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
@@ -11,18 +20,21 @@ void {\bfseries Add\+Node} (\doxymbox{\hyperlink{class_navigation_node}{Navigati
 \item 
 \Hypertarget{class_navigation_node_aa9d6931187d928937524b92683e0b063}\label{class_navigation_node_aa9d6931187d928937524b92683e0b063} 
 void {\bfseries Remove\+Node} (\doxymbox{\hyperlink{class_navigation_node}{Navigation\+Node}} \texorpdfstring{$\ast$}{*}node)
+\item 
+\Hypertarget{class_navigation_node_aca904924dc82c63f3926119c0e87a40d}\label{class_navigation_node_aca904924dc82c63f3926119c0e87a40d} 
+Vector2 {\bfseries get\+Position} () const
 \end{DoxyCompactItemize}
 \doxysubsubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
-\item 
-\Hypertarget{class_navigation_node_a32c6f27b8a3505de6c7887f23c64b1bf}\label{class_navigation_node_a32c6f27b8a3505de6c7887f23c64b1bf} 
-Vector2 {\bfseries position}
 \item 
 \Hypertarget{class_navigation_node_a2cc1eb5d26ffddbbcbb4c0f71d35e06b}\label{class_navigation_node_a2cc1eb5d26ffddbbcbb4c0f71d35e06b} 
 std::\+vector$<$ \doxymbox{\hyperlink{class_navigation_node}{Navigation\+Node}} \texorpdfstring{$\ast$}{*} $>$ {\bfseries m\+\_\+connected\+Nodes} = \{\}
 \end{DoxyCompactItemize}
 
 
+\doxysubsection{Detailed Description}
+Similar to \doxylink{struct_line2_d}{Line2D} but can connect to multiple nodes. 
+
 The documentation for this class was generated from the following file:\+\begin{DoxyCompactItemize}
 \item 
-Gunning\+Up/\+include/\+floor\+Generator.\+hpp\end{DoxyCompactItemize}
+H:\+/\+\+Documents/\+\+Git\+Hub/\+\+C++ Projects/\+\+Gunning\+Up/\+\+Gunning\+Up/\+include/\+floor\+Generator.\+hpp\end{DoxyCompactItemize}

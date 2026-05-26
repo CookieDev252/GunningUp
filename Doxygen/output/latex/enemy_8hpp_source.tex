@@ -1,7 +1,33 @@
 \doxysection{enemy.\+hpp}
-\hypertarget{enemy_8hpp_source}{}\label{enemy_8hpp_source}\index{GunningUp/include/enemy.hpp@{GunningUp/include/enemy.hpp}}
+\hypertarget{enemy_8hpp_source}{}\label{enemy_8hpp_source}\index{H:/Documents/GitHub/C++ Projects/GunningUp/GunningUp/include/enemy.hpp@{H:/Documents/GitHub/C++ Projects/GunningUp/GunningUp/include/enemy.hpp}}
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ ENEMY\_HPP}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ ENEMY\_HPP}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_gunning_up_8h}{GunningUp.h}}"{}}}
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00006\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_navigation_node}{NavigationNode}};}
+\DoxyCodeLine{00007\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_player}{Player}};}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{class\ }Enemy\ :\ \textcolor{keyword}{public}\ Entity\ \{}
+\DoxyCodeLine{00014\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00015\ \ \ \ \ Enemy(Vector2\ position,\ Vector2\ rotation);}
+\DoxyCodeLine{00016\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ draw()\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ update(\textcolor{keywordtype}{float}\ dt)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{keywordtype}{void}\ setPlayer(\doxymbox{\hyperlink{class_player}{Player}}*\ player);}
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{keywordtype}{void}\ setNavigationNode(\doxymbox{\hyperlink{class_navigation_node}{NavigationNode}}*\ node);}
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{keywordtype}{void}\ MoveAndCollideWithEnemies(std::vector<Enemy>\&\ enemies);}
+\DoxyCodeLine{00021\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00022\ \ \ \ \ \doxymbox{\hyperlink{class_player}{Player}}*\ m\_playerRef\{\ \textcolor{keyword}{nullptr}\ \};}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{comment}{//nav\ variables}}
+\DoxyCodeLine{00024\ \ \ \ \ \doxymbox{\hyperlink{class_navigation_node}{NavigationNode}}*\ m\_navRef\{\ \textcolor{keyword}{nullptr}\ \};}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keywordtype}{float}\ distanceBeforeSwitchSqr\{\ 64.f\ \};}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keywordtype}{float}\ distanceBeforeShootingSqr\{\ 100.f\ \};}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keywordtype}{bool}\ shouldChargePlayer\{\ \textcolor{keyword}{false}\ \};}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keywordtype}{bool}\ shouldShootPlayer\{\ \textcolor{keyword}{false}\ \};}
+\DoxyCodeLine{00029\ \};}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \textcolor{preprocessor}{\#endif}}
 
 \end{DoxyCode}

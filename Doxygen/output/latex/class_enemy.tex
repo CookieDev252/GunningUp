@@ -1,0 +1,116 @@
+\doxysection{Enemy Class Reference}
+\hypertarget{class_enemy}{}\label{class_enemy}\index{Enemy@{Enemy}}
+
+
+enemy  
+
+
+
+
+{\ttfamily \+\#include $<$enemy.\+hpp$>$}
+
+Inheritance diagram for Enemy:\+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_enemy}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_enemy_a1448a65b4b6c137dee27797c98198ec9}\label{class_enemy_a1448a65b4b6c137dee27797c98198ec9} 
+{\bfseries Enemy} (Vector2 position, Vector2 rotation)
+\item 
+virtual void \doxymbox{\hyperlink{class_enemy_a6b6111fac5869307a158618b90c4642b}{draw}} () const override
+\item 
+virtual void \doxymbox{\hyperlink{class_enemy_a6bb6f6a59cc221885b3f59cf5495437f}{update}} (float dt) override
+\item 
+\Hypertarget{class_enemy_aca87cf40d1ca18aa5f37828302a951ac}\label{class_enemy_aca87cf40d1ca18aa5f37828302a951ac} 
+void {\bfseries set\+Player} (\doxymbox{\hyperlink{class_player}{Player}} \texorpdfstring{$\ast$}{*}player)
+\item 
+\Hypertarget{class_enemy_ab9deddf7e22a68d565f256fcee0d5cb8}\label{class_enemy_ab9deddf7e22a68d565f256fcee0d5cb8} 
+void {\bfseries set\+Navigation\+Node} (\doxymbox{\hyperlink{class_navigation_node}{Navigation\+Node}} \texorpdfstring{$\ast$}{*}node)
+\item 
+\Hypertarget{class_enemy_ad028db13f4da32f2735df7ea3e149c7c}\label{class_enemy_ad028db13f4da32f2735df7ea3e149c7c} 
+void {\bfseries Move\+And\+Collide\+With\+Enemies} (std::\+vector$<$ \doxymbox{\hyperlink{class_enemy}{Enemy}} $>$ \&enemies)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \doxymbox{\hyperlink{class_entity}{Entity}}}
+\begin{DoxyCompactItemize}
+\item 
+const Vector2 {\bfseries get\+Position} ()
+\item 
+const float {\bfseries get\+Rotation\+Horizontals} ()
+\item 
+const float {\bfseries get\+Rotation\+Vertical} ()
+\item 
+const float {\bfseries get\+Size} ()
+\item 
+void {\bfseries set\+Position} (Vector2 \&pos)
+\item 
+void {\bfseries set\+Rotation\+Horizontal} (float rotX)
+\item 
+void {\bfseries set\+Rotation\+Vertical} (float rotY)
+\item 
+void {\bfseries Move\+And\+Collide\+With\+Map} (std::\+vector$<$ \doxymbox{\hyperlink{struct_line2_d}{Line2D}} $>$ \&walls)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Protected Attributes inherited from \doxymbox{\hyperlink{class_entity}{Entity}}}
+\begin{DoxyCompactItemize}
+\item 
+Vector2 {\bfseries m\+\_\+position} \{ 0,0 \}
+\item 
+Vector2 {\bfseries m\+\_\+rotation} \{ 0,0 \}
+\item 
+Vector2 {\bfseries m\+\_\+right} \{ 0,0 \}
+\item 
+Vector2 {\bfseries m\+\_\+up} \{ 0,0 \}
+\item 
+Vector2 {\bfseries m\+\_\+controller\+Axis} \{ 0,0 \}
+\item 
+Vector2 {\bfseries m\+\_\+translation\+Unit} \{ 0,0 \}
+\item 
+Vector2 {\bfseries m\+\_\+translation\+Total} \{ 0,0 \}
+\item 
+float {\bfseries m\+\_\+speed} \{ 50.f \}
+\item 
+float {\bfseries m\+\_\+rot\+Speed} \{ 180.f \}
+\item 
+float {\bfseries m\+\_\+size} \{ 10.f \}
+\item 
+int {\bfseries m\+\_\+health} \{ 100 \}
+\item 
+int {\bfseries m\+\_\+weapon\+Damage} \{ 10 \}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+enemy 
+
+\label{class_enemy_doc-func-members}
+\Hypertarget{class_enemy_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_enemy_a6b6111fac5869307a158618b90c4642b}\index{Enemy@{Enemy}!draw@{draw}}
+\index{draw@{draw}!Enemy@{Enemy}}
+\doxysubsubsection{\texorpdfstring{draw()}{draw()}}
+{\footnotesize\ttfamily \label{class_enemy_a6b6111fac5869307a158618b90c4642b} 
+virtual void Enemy::\+draw (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \doxymbox{\hyperlink{class_entity}{Entity}}.
+
+\Hypertarget{class_enemy_a6bb6f6a59cc221885b3f59cf5495437f}\index{Enemy@{Enemy}!update@{update}}
+\index{update@{update}!Enemy@{Enemy}}
+\doxysubsubsection{\texorpdfstring{update()}{update()}}
+{\footnotesize\ttfamily \label{class_enemy_a6bb6f6a59cc221885b3f59cf5495437f} 
+virtual void Enemy::\+update (\begin{DoxyParamCaption}\item[{float}]{dt}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \doxymbox{\hyperlink{class_entity}{Entity}}.
+
+
+
+The documentation for this class was generated from the following file:\+\begin{DoxyCompactItemize}
+\item 
+H:\+/\+\+Documents/\+\+Git\+Hub/\+\+C++ Projects/\+\+Gunning\+Up/\+\+Gunning\+Up/\+include/\+enemy.\+hpp\end{DoxyCompactItemize}

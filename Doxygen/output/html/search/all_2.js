@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['entity_0',['Entity',['../class_entity.html',1,'']]],
-  ['entity_2ehpp_1',['entity.hpp',['../entity_8hpp.html',1,'']]]
+  ['enemy_0',['Enemy',['../class_enemy.html',1,'']]],
+  ['entity_1',['Entity',['../class_entity.html',1,'']]],
+  ['entity_2ehpp_2',['entity.hpp',['../entity_8hpp.html',1,'']]]
 ];

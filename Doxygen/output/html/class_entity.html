@@ -115,9 +115,12 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('class_entity.h
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">Entity Class Reference</div></div>
+  <div class="headertitle"><div class="title">Entity Class Reference<span class="mlabels"><span class="mlabel abstract">abstract</span></span></div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>A base class for other entities it holds basic information, like position, rotation and has a collision function inside for walls.  
+ <a href="#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="entity_8hpp_source.html">entity.hpp</a>&gt;</code></p>
 <div class="dynheader">
@@ -126,18 +129,31 @@ Inheritance diagram for Entity:</div>
  <div class="center">
   <img src="class_entity.png" usemap="#Entity_map" alt=""/>
   <map id="Entity_map" name="Entity_map">
-<area href="class_player.html" alt="Player" shape="rect" coords="0,56,49,80"/>
+<area href="class_enemy.html" title="enemy" alt="Enemy" shape="rect" coords="0,56,50,80"/>
+<area href="class_player.html" alt="Player" shape="rect" coords="60,56,110,80"/>
   </map>
 </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aa29d0d4ff82ccdc48c2c5ad9ad739d02" id="r_aa29d0d4ff82ccdc48c2c5ad9ad739d02"><td class="memItemLeft"><a id="aa29d0d4ff82ccdc48c2c5ad9ad739d02" name="aa29d0d4ff82ccdc48c2c5ad9ad739d02"></a>
-Vector2&#160;</td><td class="memItemRight"><b>getPosition</b> ()</td></tr>
-<tr class="memitem:a87f7ca35b48fa82442ff569077ccf915" id="r_a87f7ca35b48fa82442ff569077ccf915"><td class="memItemLeft"><a id="a87f7ca35b48fa82442ff569077ccf915" name="a87f7ca35b48fa82442ff569077ccf915"></a>
-float&#160;</td><td class="memItemRight"><b>getRotationHorizontals</b> ()</td></tr>
-<tr class="memitem:a45f7dc3493bb05b3120ca37b00b395dd" id="r_a45f7dc3493bb05b3120ca37b00b395dd"><td class="memItemLeft"><a id="a45f7dc3493bb05b3120ca37b00b395dd" name="a45f7dc3493bb05b3120ca37b00b395dd"></a>
-float&#160;</td><td class="memItemRight"><b>getRotationVertical</b> ()</td></tr>
+<tr class="memitem:ae68fc12f1c715bf17a20f0e4a754ae50" id="r_ae68fc12f1c715bf17a20f0e4a754ae50"><td class="memItemLeft"><a id="ae68fc12f1c715bf17a20f0e4a754ae50" name="ae68fc12f1c715bf17a20f0e4a754ae50"></a>
+virtual void&#160;</td><td class="memItemRight"><b>draw</b> () const</td></tr>
+<tr class="memitem:a20563d72d08ac8bdf84bfe1944530a20" id="r_a20563d72d08ac8bdf84bfe1944530a20"><td class="memItemLeft"><a id="a20563d72d08ac8bdf84bfe1944530a20" name="a20563d72d08ac8bdf84bfe1944530a20"></a>
+virtual void&#160;</td><td class="memItemRight"><b>update</b> (float dt)=0</td></tr>
+<tr class="memitem:a91e5b6a82f039ff9980ddbe80e2f8ef9" id="r_a91e5b6a82f039ff9980ddbe80e2f8ef9"><td class="memItemLeft"><a id="a91e5b6a82f039ff9980ddbe80e2f8ef9" name="a91e5b6a82f039ff9980ddbe80e2f8ef9"></a>
+const Vector2&#160;</td><td class="memItemRight"><b>getPosition</b> ()</td></tr>
+<tr class="memitem:a44cc043540f6ba17d3c31613cac90483" id="r_a44cc043540f6ba17d3c31613cac90483"><td class="memItemLeft"><a id="a44cc043540f6ba17d3c31613cac90483" name="a44cc043540f6ba17d3c31613cac90483"></a>
+const float&#160;</td><td class="memItemRight"><b>getRotationHorizontals</b> ()</td></tr>
+<tr class="memitem:a20c7e062432afb98ec5bd289707c5912" id="r_a20c7e062432afb98ec5bd289707c5912"><td class="memItemLeft"><a id="a20c7e062432afb98ec5bd289707c5912" name="a20c7e062432afb98ec5bd289707c5912"></a>
+const float&#160;</td><td class="memItemRight"><b>getRotationVertical</b> ()</td></tr>
+<tr class="memitem:a3b576640fce7fcd9389b8839ea7a0cff" id="r_a3b576640fce7fcd9389b8839ea7a0cff"><td class="memItemLeft"><a id="a3b576640fce7fcd9389b8839ea7a0cff" name="a3b576640fce7fcd9389b8839ea7a0cff"></a>
+const float&#160;</td><td class="memItemRight"><b>getSize</b> ()</td></tr>
+<tr class="memitem:a1aa75c7ac9733f49ff22155c4794bbb9" id="r_a1aa75c7ac9733f49ff22155c4794bbb9"><td class="memItemLeft"><a id="a1aa75c7ac9733f49ff22155c4794bbb9" name="a1aa75c7ac9733f49ff22155c4794bbb9"></a>
+void&#160;</td><td class="memItemRight"><b>setPosition</b> (Vector2 &amp;pos)</td></tr>
+<tr class="memitem:a6a30fecc2f843326b09bf1d03432bcae" id="r_a6a30fecc2f843326b09bf1d03432bcae"><td class="memItemLeft"><a id="a6a30fecc2f843326b09bf1d03432bcae" name="a6a30fecc2f843326b09bf1d03432bcae"></a>
+void&#160;</td><td class="memItemRight"><b>setRotationHorizontal</b> (float rotX)</td></tr>
+<tr class="memitem:ae680c8b4f37647fe12acf350f92ed6f0" id="r_ae680c8b4f37647fe12acf350f92ed6f0"><td class="memItemLeft"><a id="ae680c8b4f37647fe12acf350f92ed6f0" name="ae680c8b4f37647fe12acf350f92ed6f0"></a>
+void&#160;</td><td class="memItemRight"><b>setRotationVertical</b> (float rotY)</td></tr>
 <tr class="memitem:a82ec09f4a69b9b9bc0d9a4bd91cdff1a" id="r_a82ec09f4a69b9b9bc0d9a4bd91cdff1a"><td class="memItemLeft"><a id="a82ec09f4a69b9b9bc0d9a4bd91cdff1a" name="a82ec09f4a69b9b9bc0d9a4bd91cdff1a"></a>
 void&#160;</td><td class="memItemRight"><b>MoveAndCollideWithMap</b> (std::vector&lt; <a class="el" href="struct_line2_d.html">Line2D</a> &gt; &amp;walls)</td></tr>
 </table><table class="memberdecls">
@@ -163,11 +179,15 @@ float&#160;</td><td class="memItemRight"><b>m_speed</b> { 50.f }</td></tr>
 float&#160;</td><td class="memItemRight"><b>m_rotSpeed</b> { 180.f }</td></tr>
 <tr class="memitem:a6d801e775a5a169ec7b4bc5c5f184cae" id="r_a6d801e775a5a169ec7b4bc5c5f184cae"><td class="memItemLeft"><a id="a6d801e775a5a169ec7b4bc5c5f184cae" name="a6d801e775a5a169ec7b4bc5c5f184cae"></a>
 float&#160;</td><td class="memItemRight"><b>m_size</b> { 10.f }</td></tr>
+<tr class="memitem:a828e935bc4a897ee7942ed6fa87a8736" id="r_a828e935bc4a897ee7942ed6fa87a8736"><td class="memItemLeft"><a id="a828e935bc4a897ee7942ed6fa87a8736" name="a828e935bc4a897ee7942ed6fa87a8736"></a>
+int&#160;</td><td class="memItemRight"><b>m_health</b> { 100 }</td></tr>
+<tr class="memitem:aadd2844a9e001a0d94ff28c462fde726" id="r_aadd2844a9e001a0d94ff28c462fde726"><td class="memItemLeft"><a id="aadd2844a9e001a0d94ff28c462fde726" name="aadd2844a9e001a0d94ff28c462fde726"></a>
+int&#160;</td><td class="memItemRight"><b>m_weaponDamage</b> { 10 }</td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>A base class for other entities </p>
+<div class="textblock"><p>A base class for other entities it holds basic information, like position, rotation and has a collision function inside for walls. </p>
 </div><hr/>The documentation for this class was generated from the following file:<ul>
-<li>GunningUp/include/<a class="el" href="entity_8hpp_source.html">entity.hpp</a></li>
+<li>H:/Documents/GitHub/C++ Projects/GunningUp/GunningUp/include/<a class="el" href="entity_8hpp_source.html">entity.hpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

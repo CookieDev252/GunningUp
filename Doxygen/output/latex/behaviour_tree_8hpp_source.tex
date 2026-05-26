@@ -1,11 +1,11 @@
 \doxysection{behaviour\+Tree.\+hpp}
-\hypertarget{behaviour_tree_8hpp_source}{}\label{behaviour_tree_8hpp_source}\index{GunningUp/include/behaviourTree.hpp@{GunningUp/include/behaviourTree.hpp}}
+\hypertarget{behaviour_tree_8hpp_source}{}\label{behaviour_tree_8hpp_source}\index{H:/Documents/GitHub/C++ Projects/GunningUp/GunningUp/include/behaviourTree.hpp@{H:/Documents/GitHub/C++ Projects/GunningUp/GunningUp/include/behaviourTree.hpp}}
 
 \begin{DoxyCode}{0}
 \DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ BEHAVIOURTREE\_HPP}}
 \DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ BEHAVIOURTREE\_HPP}}
 \DoxyCodeLine{00003\ }
-\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}GunningUp.h"{}}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_gunning_up_8h}{GunningUp.h}}"{}}}
 \DoxyCodeLine{00005\ }
 \DoxyCodeLine{00006\ \textcolor{keyword}{class\ }Node\ \{}
 \DoxyCodeLine{00007\ \textcolor{keyword}{public}:}
@@ -46,7 +46,7 @@
 \DoxyCodeLine{00042\ }
 \DoxyCodeLine{00043\ \textcolor{comment}{//Selectors}}
 \DoxyCodeLine{00044\ }
-\DoxyCodeLine{00045\ \textcolor{keyword}{class\ }Selector\ :\ Node\ \{}
+\DoxyCodeLine{00045\ \textcolor{keyword}{class\ }Selector\ :\ \textcolor{keyword}{public}\ Node\ \{}
 \DoxyCodeLine{00046\ \textcolor{keyword}{public}:}
 \DoxyCodeLine{00047\ \ \ \ \ Selector(Node*\ parent)\ :\ Node(parent)\ \{}
 \DoxyCodeLine{00048\ }
@@ -58,7 +58,7 @@
 \DoxyCodeLine{00054\ }
 \DoxyCodeLine{00055\ \textcolor{comment}{//Sequennce}}
 \DoxyCodeLine{00056\ }
-\DoxyCodeLine{00057\ \textcolor{keyword}{class\ }Sequence\ :\ Node\ \{}
+\DoxyCodeLine{00057\ \textcolor{keyword}{class\ }Sequence\ :\ \textcolor{keyword}{public}\ Node\ \{}
 \DoxyCodeLine{00058\ \textcolor{keyword}{public}:}
 \DoxyCodeLine{00059\ \ \ \ \ Sequence(Node*\ parent)\ :\ Node(parent)\ \{}
 \DoxyCodeLine{00060\ }
@@ -70,7 +70,7 @@
 \DoxyCodeLine{00066\ }
 \DoxyCodeLine{00067\ \textcolor{comment}{//Actions\ \{multiple\}}}
 \DoxyCodeLine{00068\ }
-\DoxyCodeLine{00069\ \textcolor{keyword}{class\ }Action\ :\ Node\ \{}
+\DoxyCodeLine{00069\ \textcolor{keyword}{class\ }Action\ :\ \textcolor{keyword}{public}\ Node\ \{}
 \DoxyCodeLine{00070\ \ \ \ \ Action(Node*\ parent)\ :\ Node(parent)\ \{}
 \DoxyCodeLine{00071\ }
 \DoxyCodeLine{00072\ \ \ \ \ \}}
@@ -80,5 +80,25 @@
 \DoxyCodeLine{00076\ \};}
 \DoxyCodeLine{00077\ }
 \DoxyCodeLine{00078\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00079\ }
+\DoxyCodeLine{00080\ }
+\DoxyCodeLine{00082\ \textcolor{comment}{//\#ifndef\ ENEMYBEHAVIOUR}}
+\DoxyCodeLine{00083\ \textcolor{comment}{//\#define\ ENEMYBEHAVIOUR}}
+\DoxyCodeLine{00084\ \textcolor{comment}{//}}
+\DoxyCodeLine{00085\ \textcolor{comment}{//class\ EnemyFollowPlayer\ :\ public\ Action\ \{}}
+\DoxyCodeLine{00086\ \textcolor{comment}{//public:}}
+\DoxyCodeLine{00087\ \textcolor{comment}{//\ \ EnemyFollowPlayer(Node*\ parent)\ :\ Action(parent)\ \{\}}}
+\DoxyCodeLine{00088\ \textcolor{comment}{//\};}}
+\DoxyCodeLine{00089\ \textcolor{comment}{//}}
+\DoxyCodeLine{00090\ \textcolor{comment}{//}}
+\DoxyCodeLine{00091\ \textcolor{comment}{//class\ EnemyBehaviour\ :\ public\ BehaviourTree\ \{}}
+\DoxyCodeLine{00092\ \textcolor{comment}{//public:}}
+\DoxyCodeLine{00093\ \textcolor{comment}{//\ \ EnemyBehaviour()\ :\ BehaviourTree()\ \{\}}}
+\DoxyCodeLine{00094\ \textcolor{comment}{//private:}}
+\DoxyCodeLine{00095\ \textcolor{comment}{//\ \ Enemy*\ enemyLink\{nullptr\};\ //\ holds\ a\ link\ to\ the\ enemy\ using\ it}}
+\DoxyCodeLine{00096\ \textcolor{comment}{//}}
+\DoxyCodeLine{00097\ \textcolor{comment}{//\};}}
+\DoxyCodeLine{00098\ \textcolor{comment}{//}}
+\DoxyCodeLine{00099\ \textcolor{comment}{//\#endif}}
 
 \end{DoxyCode}

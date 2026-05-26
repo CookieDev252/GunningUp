@@ -3,6 +3,7 @@ var hierarchy =
     [ "App", "class_app.html", null ],
     [ "BehaviourTree", "class_behaviour_tree.html", null ],
     [ "Entity", "class_entity.html", [
+      [ "Enemy", "class_enemy.html", null ],
       [ "Player", "class_player.html", null ]
     ] ],
     [ "FloorGenerator", "class_floor_generator.html", null ],

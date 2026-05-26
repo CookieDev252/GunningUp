@@ -3,6 +3,8 @@
 
 #include "GunningUp.h"
 
+/// @struct Room
+/// @brief Holds the x,y,width, and height values
 struct Room {
 	int x, y, w, h;
 	Color roomFillColor{ 0,0,0,0 };
@@ -18,12 +20,12 @@ struct Room {
 			255
 		};
 	}
-
 };
 
 
 
-//similar to Line2D but can connect to multiple nodes
+/// @class NavigationNode
+/// @brief Similar to Line2D but can connect to multiple nodes
 class NavigationNode {
 public:
 	NavigationNode(Vector2 position) { m_position = position; }
@@ -33,8 +35,7 @@ public:
 	Vector2 getPosition() const { return m_position; };
 	std::vector<NavigationNode*> m_connectedNodes = {};
 private:
-	Vector2 m_position;
-private:
+	Vector2 m_position; ///< The position of the node in world space
 };
 
 class FloorGenerator {
@@ -42,7 +43,7 @@ private:
 	int width{ 0 };
 	int height{ 0 };
 	int m_splitCount{ 100 }; // default to 3 splits
-	int m_minRoomArea{ 20 }; // small room
+	int m_minRoomArea{ 30 }; // small room
 	int m_maxRoomArea{ 50 }; // massive room
 	int m_intersection{ 10 }; // gap betweem room split (hallways)
 	std::vector<Room> m_rooms = {}; //constains all the rooms
