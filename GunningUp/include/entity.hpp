@@ -5,7 +5,10 @@
 
 #include "GunningUp.h"
 
+
 class Enemy;
+class Bullet;
+
 
 inline Vector2 ClosestPoint(Vector2 a, Vector2 b, Vector2 p) {
 
@@ -33,14 +36,16 @@ inline Vector2 ClosestPoint(Vector2 a, Vector2 b, Vector2 p) {
 */
 class Entity {
 public:
-	Entity() = default;
-	~Entity() = default;
+	Entity() {};
 	virtual void draw() const;
 	virtual void update(float dt) = 0;
 	const Vector2 getPosition() { return m_position; };
 	const float getRotationHorizontals() { return m_rotation.x; };
 	const float getRotationVertical() { return m_rotation.y; };
 	const float getSize() { return m_size; };
+	const int getHealth() { return m_health; };
+	std::vector<Bullet>& getBullets(){ return m_bullets; }
+	void Damage(int amount) { m_health -= amount; };
 	void setPosition(Vector2& pos) { m_position = pos; };
 	void setRotationHorizontal(float rotX) { m_rotation.x = rotX; };
 	void setRotationVertical(float rotY) { m_rotation.y = rotY; };
@@ -61,6 +66,10 @@ protected:
 	float m_size{ 10.f };
 	int m_health{ 100 };
 	int m_weaponDamage{ 10 };
+	//gun variables
+	float m_shotCooldown{ 0 }; ///< time before the next shot (0 means can shoot)
+	float m_timeBetweenShots{ 2.f }; ///< the amount of time before another shot can be made
+	std::vector<Bullet> m_bullets{}; ///< using object pooling to prevent lag from instantiation
 
 };
 
@@ -88,7 +97,5 @@ inline void Entity::MoveAndCollideWithMap(std::vector<Line2D>& walls) {
 		}
 	}
 }
-
-
 
 #endif

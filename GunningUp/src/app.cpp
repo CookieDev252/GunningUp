@@ -66,25 +66,55 @@ App::~App()
 
 void App::update(float dt)
 {
-	//check if the window should close first
-	if (m_window->ShouldClose()) {
-		running = false;
-		return;
+	switch (currentState)
+	{
+	case State::SPLASHSCREEN:
+	{
+		currentState = State::MAINMENU;
+	}
+	case State::MAINMENU:
+	{
+		currentState = State::GAMING;
+	}
+	case State::GAMING:
+	{
+		//check if the window should close first
+		if (m_window->ShouldClose()) {
+			running = false;
+			return;
+		}
+
+		m_player->update(dt);
+		m_player->MoveAndCollideWithMap(m_floor->getWalls());
+		for (Enemy& enemy : m_enemies) {
+			enemy.MoveAndCollideWithMap(m_floor->getWalls());
+		}
+
+		m_camera->target = m_player->getPosition();
+		m_camera->rotation = -m_player->getRotationHorizontals() - 90.f;
+
+		for (Enemy& enemy : m_enemies) {
+			enemy.update(dt);
+			enemy.MoveAndCollideWithEnemies(m_enemies);
+		}
+	}
+	case State::PAUSE:
+	{
+		//to be filled in
+	}
+	case State::DEATH:
+	{
+		//to be filled in
+	}
+	default:
+	{
+		currentState = State::SPLASHSCREEN;
 	}
 
-	m_player->update(dt);
-	m_player->MoveAndCollideWithMap(m_floor->getWalls());
-	for (Enemy& enemy : m_enemies) {
-		enemy.MoveAndCollideWithMap(m_floor->getWalls());
 	}
+		
 
-	m_camera->target = m_player->getPosition();
-	m_camera->rotation = -m_player->getRotationHorizontals() - 90.f;
-
-	for (Enemy& enemy : m_enemies) {
-		enemy.update(dt);
-		enemy.MoveAndCollideWithEnemies(m_enemies);
-	}
+	
 }
 
 void App::draw()
@@ -107,9 +137,15 @@ void App::draw()
 
 			for (Enemy& enemy : m_enemies) {
 				enemy.draw();
+				for (Bullet bullet : enemy.getBullets()) {
+					//bullet.Draw();
+				}
 			}
 
 			m_player->draw();
+			for (Bullet& bullet : m_player->getBullets()) {
+				//bullet.Draw();
+			}
 
 			EndMode2D();
 		}
@@ -236,7 +272,7 @@ void App::draw()
 						{
 							y = (float)(m_winheight) / 2.0f; //move to halfway down the screen
 
-							height = wallSize / (tempDistance);
+							height = enemy.getHeight() / (tempDistance);
 
 							y -= height;
 

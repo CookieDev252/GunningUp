@@ -1,10 +1,11 @@
 #include "player.hpp"
 #include <stdio.h>
 
-
+class Bullet;
 
 Player::Player() : Entity()
-{}
+{
+}
 
 Player::Player(raylib::Vector2& position, raylib::Vector2& rotation) : Entity() {
 	m_position = position;
@@ -75,6 +76,20 @@ inline void Player::update(float dt)
 		else if (IsKeyReleased(KEY_S)) { m_controllerAxis.y += 1.f; }
 		if (IsKeyPressed(KEY_D)) { m_controllerAxis.x += 1.f; }
 		else if (IsKeyReleased(KEY_D)) { m_controllerAxis.x -= 1.f; }
+		if (IsKeyDown(KEY_LEFT_CONTROL)) {
+			if (m_shotCooldown <= 0) {
+				for (Bullet& bullet : m_bullets) {
+					if (bullet.CanBeFired()) {
+						bullet.Fire(m_position, m_up);
+						m_shotCooldown = m_timeBetweenShots;
+						break;
+					}
+				}
+			}
+			else {
+				m_shotCooldown -= dt;
+			}
+		}
 	}
 
 	//apply movement to up and right vectors
@@ -83,6 +98,11 @@ inline void Player::update(float dt)
 		((m_up.x * m_controllerAxis.y) + (m_right.x * m_controllerAxis.x)),
 		((m_up.y * m_controllerAxis.y) + (m_right.y * m_controllerAxis.x))
 	};
+
+	//update the bullets
+	for (Bullet& bullet : m_bullets) {
+		bullet.Update(dt);
+	}
 
 	float weight = sqrtf(m_translationTotal.x * m_translationTotal.x + m_translationTotal.y * m_translationTotal.y);
 

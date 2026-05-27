@@ -24,12 +24,13 @@ public:
 		this->startPoint = start;
 		this->endPoint = end;
 		this->color = color;
+		this->normal = Vector2Rotate(Vector2Normalize(Vector2Subtract(end,start)),90.f);
 	}
 	Vector2 startPoint;
 	Vector2 endPoint;
+	Vector2 normal;
 	Color color;
 };
-
 
 
 #define TORADIANS PI/180.0f
@@ -41,7 +42,7 @@ public:
 
 static std::vector<raylib::Texture2D> WallTextures;
 
-
+#include "bullet.hpp"
 #include "floorGenerator.hpp"
 #include "behaviourTree.hpp"
 #include "entity.hpp"

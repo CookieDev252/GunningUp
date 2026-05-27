@@ -15,14 +15,17 @@ public:
 	void setPlayer(Player* player);
 	void setNavigationNode(NavigationNode* node);
 	void MoveAndCollideWithEnemies(std::vector<Enemy>& enemies);
+	float getHeight() const { return enemyHeight; };
 private:
 	Player* m_playerRef{ nullptr };
 	//nav variables
 	NavigationNode* m_navRef{ nullptr };
 	float distanceBeforeSwitchSqr{ 64.f };
 	float distanceBeforeShootingSqr{ 100.f };
+	float enemyHeight{ 1000.f };
 	bool shouldChargePlayer{ false };
 	bool shouldShootPlayer{ false };
+	
 };
 
 #endif

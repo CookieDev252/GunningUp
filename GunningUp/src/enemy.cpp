@@ -1,6 +1,6 @@
 #include "enemy.hpp"
 
-/*! \addtogroup enemyFunctions
+/*! \defgroup enemyFunctions
 * @{
 */
 

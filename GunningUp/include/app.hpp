@@ -75,6 +75,7 @@ private:
 public:
 	bool running{true};
 	raylib::Window* m_window;
+	State currentState{ State::SPLASHSCREEN };
 };
 
 
