@@ -2,6 +2,7 @@
 #define APP_HPP
 
 #include "GunningUp.h"
+#include<string>
 
 enum State {
 	MAINMENU,
@@ -50,11 +51,12 @@ private:
 	Texture2D TX2D_basicWall; ///< a texture for the wall
 	Texture2D TX2D_basicEnemy; ///< a texture for the enemy
 	Texture2D TX2D_gunHolding; ///< a texture for the gun
-	int m_winwidth{ 700 }; ///< 
-	int m_winheight{ 500 };
-	int m_fov{ 90 };
-	int m_wallLength{ 8 }; //distance along wall before texture repeats (this prevents texture stretching
-	float wallSize = 2000.f; //height of the wall
+	float m_gunImageScale{0.75f};
+	int m_winwidth{ 700 }; ///< width of the screen
+	int m_winheight{ 500 }; ///< height of the screen
+	int m_fov{ 90 }; ///< fov of the character
+	int m_wallLength{ 8 }; ///< distance along wall before texture repeats (this prevents texture stretching
+	float wallSize = 2000.f; ///< height of the wall
 	float playerHeight = 10.f;
 	float actualAngleDegrees{};
 private:

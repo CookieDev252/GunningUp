@@ -7,24 +7,7 @@
 
 
 class Enemy;
-
-
-
-inline Vector2 ClosestPoint(Vector2 a, Vector2 b, Vector2 p) {
-
-	// get vector differences
-	Vector2 D = Vector2Subtract(b, a);
-	Vector2 AP = Vector2Subtract(p, a);
-
-	// projected length + normalization
-	float t = Vector2DotProduct(AP, D) / Vector2DotProduct(D, D);
-
-	//clamp to [0,1]
-	t = fmaxf(0, fminf(1, t));
-
-	//calculate point
-	return Vector2Add(a, Vector2Scale(D, t));
-}
+class Bullet;
 
 
 /** \class Entity entity.hpp "GunningUp/include"
@@ -43,7 +26,9 @@ public:
 	const float getRotationHorizontals() { return m_rotation.x; }; ///< gets the horizontal rotation of the entity
 	const float getRotationVertical() { return m_rotation.y; }; ///< gets the vertical rotation of the entity
 	const float getSize() { return m_size; }; ///< gets the height of the entity
+	const float getCooldown() { return m_shotCooldown; }
 	const int getHealth() { return m_health; }; ///< gets the health of the entity
+	const int getDamage() { return m_weaponDamage; }
 	void Damage(int amount) { m_health -= amount; }; ///< applies damage to m_health
 	void setPosition(Vector2& pos) { m_position = pos; }; ///< sets the position of the entity
 	void setRotationHorizontal(float rotX) { m_rotation.x = rotX; }; ///< sets the horizontal rotation of the entity
@@ -65,10 +50,11 @@ protected:
 	float m_rotSpeed{ 180.f }; ///< how fast the entity rotates per second
 	float m_size{ 10.f }; ///< how big the entity's hitbox is (also the general size for drawing too
 	int m_health{ 100 }; ///< how much health the entity has
+	int m_maxHealth{ 100 }; ///< the maximum health of the enemy
 	int m_weaponDamage{ 10 }; ///< how much damage the entity deals
 	//gun variables
 	float m_shotCooldown{ 0 }; ///< time before the next shot (0 means can shoot)
-	float m_timeBetweenShots{ 2.f }; ///< the amount of time before another shot can be made
+	float m_timeBetweenShots{ 0.5f }; ///< the amount of time before another shot can be made
 	std::vector<Bullet> m_bullets{}; ///< using object pooling to prevent lag from instantiation
 
 };

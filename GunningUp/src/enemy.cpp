@@ -13,6 +13,10 @@ Enemy::Enemy(Vector2 position, Vector2 rotation)
 	m_position = position;
 	m_rotation = rotation;
 	m_speed /= 1.75f;
+
+	for (int i = 0; i < 10; i++) {
+		m_bullets.push_back(Bullet{});
+	}
 }
 
 /*! Draw - draws the enemy in 2D view */

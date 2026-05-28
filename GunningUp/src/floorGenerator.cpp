@@ -15,13 +15,13 @@ void FloorGenerator::draw() {
 		DrawLine(wall.startPoint.x, wall.startPoint.y, wall.endPoint.x, wall.endPoint.y, wall.color);
 	}
 	//draw Nodes
-	//for (const NavigationNode& node : m_navNodes) {
-	//	DrawCircleV(node.getPosition(), 5, GREEN);
-	//	//draw all the connection lines
-	//	for (const NavigationNode* connectedNode : node.m_connectedNodes) {
-	//		DrawLineV(node.getPosition(), connectedNode->getPosition(), BLACK);
-	//	}
-	//}
+	for (const NavigationNode& node : m_navNodes) {
+		DrawCircleV(node.getPosition(), 5, GREEN);
+		//draw all the connection lines
+		for (const NavigationNode* connectedNode : node.m_connectedNodes) {
+			DrawLineV(node.getPosition(), connectedNode->getPosition(), BLACK);
+		}
+	}
 }
 
 void FloorGenerator::SplitRoom(int selectedRoom)

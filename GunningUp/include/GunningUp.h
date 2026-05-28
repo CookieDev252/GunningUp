@@ -14,6 +14,22 @@
 #include "raymath.hpp"
 
 
+inline Vector2 ClosestPoint(Vector2 a, Vector2 b, Vector2 p) {
+
+	// get vector differences
+	Vector2 D = Vector2Subtract(b, a);
+	Vector2 AP = Vector2Subtract(p, a);
+
+	// projected length + normalization
+	float t = Vector2DotProduct(AP, D) / Vector2DotProduct(D, D);
+
+	//clamp to [0,1]
+	t = fmaxf(0, fminf(1, t));
+
+	//calculate point
+	return Vector2Add(a, Vector2Scale(D, t));
+}
+
 /** \struct Line2D
 *
 * connects two points

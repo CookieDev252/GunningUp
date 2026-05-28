@@ -5,11 +5,18 @@ class Bullet;
 
 Player::Player() : Entity()
 {
+	for (int i = 0; i < 10; i++) {
+		m_bullets.push_back(Bullet{});
+	}
 }
 
 Player::Player(raylib::Vector2& position, raylib::Vector2& rotation) : Entity() {
 	m_position = position;
 	m_rotation = rotation;
+
+	for (int i = 0; i < 10; i++) {
+		m_bullets.push_back(Bullet{});
+	}
 }
 
 Player::~Player()
@@ -76,21 +83,21 @@ inline void Player::update(float dt)
 		else if (IsKeyReleased(KEY_S)) { m_controllerAxis.y += 1.f; }
 		if (IsKeyPressed(KEY_D)) { m_controllerAxis.x += 1.f; }
 		else if (IsKeyReleased(KEY_D)) { m_controllerAxis.x -= 1.f; }
-		if (IsKeyDown(KEY_LEFT_CONTROL)) {
+		if (IsKeyPressed(KEY_SPACE) || IsGamepadButtonPressed(0,GAMEPAD_BUTTON_RIGHT_TRIGGER_1)) {
 			if (m_shotCooldown <= 0) {
 				for (Bullet& bullet : m_bullets) {
 					if (bullet.CanBeFired()) {
-						bullet.Fire(m_position, m_up);
+						bullet.Fire(m_position, Vector2Multiply(m_up, Vector2{ 1,-1 }));
 						m_shotCooldown = m_timeBetweenShots;
 						break;
 					}
 				}
 			}
-			else {
-				m_shotCooldown -= dt;
-			}
 		}
+		
 	}
+
+	m_shotCooldown -= dt;
 
 	//apply movement to up and right vectors
 
@@ -114,5 +121,15 @@ inline void Player::update(float dt)
 		m_position.y += m_translationUnit.y * -m_speed * dt;
 	}
 
+}
+
+void Player::draw() const
+{
+	for (auto& bullet : m_bullets) {
+		bullet.Draw();
+	}
+	DrawCircle(m_position.x, m_position.y, m_size / 2.f, { 0,255,0,255 });
+	DrawLine(m_position.x, m_position.y, m_position.x + m_up.x * m_size, m_position.y - m_up.y * m_size, { 0,122,0,255 });
+	
 }
 

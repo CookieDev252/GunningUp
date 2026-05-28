@@ -43,10 +43,13 @@ App::App(int winWidth, int winHeight, char* title) :
 	m_minimapTexture = LoadRenderTexture(m_winwidth/4, m_winwidth/4);
 
 	//load in the wall texture
-	basicWall = LoadTexture("..\\assets\\textures\\test_wall.png");
+	TX2D_basicWall = LoadTexture("..\\assets\\textures\\officeWallTexture.png");
 
 	//load in the enemy
-	basicEnemy = LoadTexture("..\\assets\\textures\\roboguy.png");
+	TX2D_basicEnemy = LoadTexture("..\\assets\\textures\\roboguy.png");
+
+	//load in the hand
+	TX2D_gunHolding = LoadTexture("..\\assets\\textures\\gun_spriteSheet.png");
 
 	//this will be used to slice up the wall texture
 	m_sliceInfo = NPatchInfo{};
@@ -61,7 +64,10 @@ App::~App()
 	delete m_camera;
 
 	UnloadRenderTexture(m_minimapTexture); // unload minimap texture
-	UnloadTexture(basicWall);
+	UnloadTexture(TX2D_basicWall);
+	UnloadTexture(TX2D_basicEnemy);
+	UnloadTexture(TX2D_gunHolding);
+
 }
 
 void App::update(float dt)
@@ -88,6 +94,26 @@ void App::update(float dt)
 		m_player->MoveAndCollideWithMap(m_floor->getWalls());
 		for (Enemy& enemy : m_enemies) {
 			enemy.MoveAndCollideWithMap(m_floor->getWalls());
+			for (Bullet& bullet : enemy.getBullets()) {
+				if (bullet.CollidesWithCircle(m_player->getPosition(), m_player->getSize())) {
+					m_player->Damage(enemy.getDamage());
+				}
+				else {
+					for (Line2D& wall : m_floor->getWalls()) {
+						bullet.CollidesWithLine(wall);
+					}
+				}
+			}
+			for (Bullet& bullet : m_player->getBullets()) {
+				if (bullet.CollidesWithCircle(enemy.getPosition(), enemy.getSize())) {
+					enemy.Damage(m_player->getDamage());
+				}
+				else {
+					for (Line2D& wall : m_floor->getWalls()) {
+						bullet.CollidesWithLine(wall);
+					}
+				}
+			}
 		}
 
 		m_camera->target = m_player->getPosition();
@@ -218,10 +244,10 @@ void App::draw()
 				//takes a sample of the texture for the wall and trnasforms it into the correct shape for the wall
 				{
 					m_sliceInfo.source = {
-						(float)basicWall.width * percentAlongWall, // x
+						(float)TX2D_basicWall.width * percentAlongWall, // x
 						0,
 						1,
-						(float)basicWall.height
+						(float)TX2D_basicWall.height
 					};
 					m_sliceInfo.top = 0;
 					m_sliceInfo.bottom = 0;
@@ -240,7 +266,7 @@ void App::draw()
 					//draw a wall
 					DrawTextureNPatch(
 						
-						basicWall,		//original texture
+						TX2D_basicWall,		//original texture
 						
 						m_sliceInfo,	//slice info
 						
@@ -291,10 +317,10 @@ void App::draw()
 						}
 
 						m_sliceInfo.source = {
-						(float)basicEnemy.width * percentAlongWall, // x
+						(float)TX2D_basicEnemy.width * percentAlongWall, // x
 						0,
 						1,
-						(float)basicEnemy.height
+						(float)TX2D_basicEnemy.height
 						};
 						m_sliceInfo.top = 0;
 						m_sliceInfo.bottom = 0;
@@ -304,7 +330,7 @@ void App::draw()
 						//draw a wall
 						DrawTextureNPatch(
 
-							basicEnemy,		//original texture
+							TX2D_basicEnemy,		//original texture
 
 							m_sliceInfo,	//slice info
 
@@ -357,6 +383,31 @@ void App::draw()
 			},
 			WHITE //no tint
 		);
+	}
+	//handDrawing
+	{
+		if (m_player->getCooldown() > 0)
+		{
+			DrawTexturePro(
+				TX2D_gunHolding,
+				{ (float)TX2D_gunHolding.width / 2.f,0,(float)TX2D_gunHolding.width / 2.f,(float)TX2D_gunHolding.height },
+				{ (float)m_winwidth / 2.f, (float)m_winheight / 4.f * 3.f, (float)TX2D_gunHolding.width / 2.f * m_gunImageScale, (float)TX2D_gunHolding.height * m_gunImageScale },
+				{ 0,0 },
+				0,
+				{ WHITE }
+			);
+		}
+		else {
+			DrawTexturePro(
+				TX2D_gunHolding,
+				{ 0,0,(float)TX2D_gunHolding.width / 2.f,(float)TX2D_gunHolding.height },
+				{ (float)m_winwidth / 2.f, (float)m_winheight / 4.f * 3.f, (float)TX2D_gunHolding.width / 2.f * m_gunImageScale, (float)TX2D_gunHolding.height * m_gunImageScale },
+				{ 0,0 },
+				0,
+				{ WHITE }
+			);
+		}
+		DrawText(std::to_string(m_player->getCooldown()).c_str(), 0, 0, 20, BLACK);
 	}
 
 	m_window->EndDrawing();

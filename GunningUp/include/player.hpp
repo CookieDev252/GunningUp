@@ -13,6 +13,7 @@ public:
 
 	//updates the game object
 	virtual void update(float dt) override;
+	virtual void draw() const override;
 private:
 	//Axis DeadZones
 	const float m_leftStickDeadzoneX = 0.1f;
