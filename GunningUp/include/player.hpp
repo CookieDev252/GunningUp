@@ -3,6 +3,8 @@
 
 #include "GunningUp.h"
 
+class Bullet;
+
 class Player : public Entity {
 public:
 	Player();
@@ -21,6 +23,7 @@ private:
 	const float m_rightTriggerDeadzone = -0.9f;
 
 	float m_lookSensitivity = 720.f;
+	
 };
 
 

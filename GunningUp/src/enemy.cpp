@@ -25,7 +25,7 @@ void Enemy::draw() const
 inline void Enemy::update(float dt)
 {
 	//check if enemy is close enough to the node
-	if (distanceBeforeSwitchSqr >= Vector2DistanceSqr(m_position, m_navRef->getPosition()) ){
+	if (m_distanceBeforeSwitchSqr >= Vector2DistanceSqr(m_position, m_navRef->getPosition()) ){
 		//check surrounding nodes
 		float currentDistance = 9999;
 		NavigationNode* optimalNode = m_navRef;
@@ -35,19 +35,19 @@ inline void Enemy::update(float dt)
 				currentDistance = Vector2DistanceSqr(m_playerRef->getPosition(), node->getPosition());
 			}
 		}
-		shouldChargePlayer = (currentDistance <= Vector2DistanceSqr(m_position, m_playerRef->getPosition()));
-		shouldShootPlayer = (currentDistance <= distanceBeforeShootingSqr);
+		m_shouldChargePlayer = (currentDistance <= Vector2DistanceSqr(m_position, m_playerRef->getPosition()));
+		m_shouldShootPlayer = (currentDistance <= m_distanceBeforeShootingSqr);
 		
 		//assign the most optimal node based on distance
 		m_navRef = optimalNode;
 	}
 
 	//move towards node or player
-	if (shouldShootPlayer) {
+	if (m_shouldShootPlayer) {
 
 	}
 	else{
-		if (!shouldChargePlayer)
+		if (!m_shouldChargePlayer)
 			m_position = Vector2MoveTowards(m_position, m_navRef->getPosition(), m_speed * dt);
 		else
 			m_position = Vector2MoveTowards(m_position, m_playerRef->getPosition(), m_speed * dt);

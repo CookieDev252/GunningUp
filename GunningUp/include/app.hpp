@@ -3,12 +3,6 @@
 
 #include "GunningUp.h"
 
-enum RenderMode
-{
-	TOPDOWN,
-	FIRSTPERSON
-};
-
 enum State {
 	MAINMENU,
 	SPLASHSCREEN,
@@ -52,18 +46,17 @@ public:
 
 private:
 	//minimap
-	RenderTexture m_minimapTexture;
-	Texture2D basicWall;
-	Texture2D basicEnemy;
-	int m_winwidth{ 700 };
+	RenderTexture m_minimapTexture; ///< a rectangular texture which will have the minimap drawn onto before rendering to the screen
+	Texture2D TX2D_basicWall; ///< a texture for the wall
+	Texture2D TX2D_basicEnemy; ///< a texture for the enemy
+	Texture2D TX2D_gunHolding; ///< a texture for the gun
+	int m_winwidth{ 700 }; ///< 
 	int m_winheight{ 500 };
 	int m_fov{ 90 };
 	int m_wallLength{ 8 }; //distance along wall before texture repeats (this prevents texture stretching
 	float wallSize = 2000.f; //height of the wall
 	float playerHeight = 10.f;
 	float actualAngleDegrees{};
-public:
-	unsigned int m_viewMode{RenderMode::TOPDOWN};
 private:
 	char* m_title{ "GunningUp" };
 	Player* m_player;

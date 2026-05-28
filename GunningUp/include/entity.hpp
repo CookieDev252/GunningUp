@@ -7,7 +7,7 @@
 
 
 class Enemy;
-class Bullet;
+
 
 
 inline Vector2 ClosestPoint(Vector2 a, Vector2 b, Vector2 p) {
@@ -27,7 +27,7 @@ inline Vector2 ClosestPoint(Vector2 a, Vector2 b, Vector2 p) {
 }
 
 
-/** \class Entity 
+/** \class Entity entity.hpp "GunningUp/include"
 *
 *  \brief 
 *  A base class for other entities
@@ -37,35 +37,35 @@ inline Vector2 ClosestPoint(Vector2 a, Vector2 b, Vector2 p) {
 class Entity {
 public:
 	Entity() {};
-	virtual void draw() const;
-	virtual void update(float dt) = 0;
-	const Vector2 getPosition() { return m_position; };
-	const float getRotationHorizontals() { return m_rotation.x; };
-	const float getRotationVertical() { return m_rotation.y; };
-	const float getSize() { return m_size; };
-	const int getHealth() { return m_health; };
-	std::vector<Bullet>& getBullets(){ return m_bullets; }
-	void Damage(int amount) { m_health -= amount; };
-	void setPosition(Vector2& pos) { m_position = pos; };
-	void setRotationHorizontal(float rotX) { m_rotation.x = rotX; };
-	void setRotationVertical(float rotY) { m_rotation.y = rotY; };
-	void MoveAndCollideWithMap(std::vector<Line2D>& walls);
+	virtual void draw() const; ///< draws the entity
+	virtual void update(float dt) = 0; ///< updates the entity (behaviour goes here) 
+	const Vector2 getPosition() { return m_position; }; ///< gets the position of the entity
+	const float getRotationHorizontals() { return m_rotation.x; }; ///< gets the horizontal rotation of the entity
+	const float getRotationVertical() { return m_rotation.y; }; ///< gets the vertical rotation of the entity
+	const float getSize() { return m_size; }; ///< gets the height of the entity
+	const int getHealth() { return m_health; }; ///< gets the health of the entity
+	void Damage(int amount) { m_health -= amount; }; ///< applies damage to m_health
+	void setPosition(Vector2& pos) { m_position = pos; }; ///< sets the position of the entity
+	void setRotationHorizontal(float rotX) { m_rotation.x = rotX; }; ///< sets the horizontal rotation of the entity
+	void setRotationVertical(float rotY) { m_rotation.y = rotY; }; ///< sets the vertical rotation of the entity
+	void MoveAndCollideWithMap(std::vector<Line2D>& walls); ///< tests all the walls and moves the entity appropriately away from the wall
+	std::vector<Bullet>& getBullets() { return m_bullets; } ///< return the bullet vector
 protected:
 	//Transform
-	Vector2 m_position{ 0,0 };
-	Vector2 m_rotation{ 0,0 };
-	Vector2 m_right{ 0,0 };
-	Vector2 m_up{ 0,0 };
+	Vector2 m_position{ 0,0 }; ///< the position of the entity
+	Vector2 m_rotation{ 0,0 }; ///< the rotation of the entity (x = horizontal, y = vertical)
+	Vector2 m_right{ 0,0 }; ///< the right vector
+	Vector2 m_up{ 0,0 }; ///< the Up vector
 	//Controller Variables
-	Vector2 m_controllerAxis{ 0,0 };
+	Vector2 m_controllerAxis{ 0,0 }; ///< the input axis (keyboard or left stick)
+	Vector2 m_translationTotal{ 0,0 }; ///< the translation amount (not normalised)
 	Vector2 m_translationUnit{ 0,0 };
-	Vector2 m_translationTotal{ 0,0 };
 	//game stats
-	float m_speed{ 50.f };
-	float m_rotSpeed{ 180.f };
-	float m_size{ 10.f };
-	int m_health{ 100 };
-	int m_weaponDamage{ 10 };
+	float m_speed{ 50.f }; ///< how fast the entity moves per second
+	float m_rotSpeed{ 180.f }; ///< how fast the entity rotates per second
+	float m_size{ 10.f }; ///< how big the entity's hitbox is (also the general size for drawing too
+	int m_health{ 100 }; ///< how much health the entity has
+	int m_weaponDamage{ 10 }; ///< how much damage the entity deals
 	//gun variables
 	float m_shotCooldown{ 0 }; ///< time before the next shot (0 means can shoot)
 	float m_timeBetweenShots{ 2.f }; ///< the amount of time before another shot can be made
