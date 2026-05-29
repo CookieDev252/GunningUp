@@ -4,6 +4,8 @@
 #include "GunningUp.h"
 #include<string>
 
+
+
 enum State {
 	MAINMENU,
 	SPLASHSCREEN,

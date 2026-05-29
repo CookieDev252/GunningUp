@@ -29,11 +29,13 @@ public:
 	const float getCooldown() { return m_shotCooldown; }
 	const int getHealth() { return m_health; }; ///< gets the health of the entity
 	const int getDamage() { return m_weaponDamage; }
-	void Damage(int amount) { m_health -= amount; }; ///< applies damage to m_health
+	bool getAliveStatus() const { return m_isAlive; }
+	void Damage(int amount) { m_health -= amount; m_isAlive = m_health > 0; }; ///< applies damage to m_health
 	void setPosition(Vector2& pos) { m_position = pos; }; ///< sets the position of the entity
 	void setRotationHorizontal(float rotX) { m_rotation.x = rotX; }; ///< sets the horizontal rotation of the entity
 	void setRotationVertical(float rotY) { m_rotation.y = rotY; }; ///< sets the vertical rotation of the entity
 	void MoveAndCollideWithMap(std::vector<Line2D>& walls); ///< tests all the walls and moves the entity appropriately away from the wall
+
 	std::vector<Bullet>& getBullets() { return m_bullets; } ///< return the bullet vector
 protected:
 	//Transform
@@ -56,6 +58,7 @@ protected:
 	float m_shotCooldown{ 0 }; ///< time before the next shot (0 means can shoot)
 	float m_timeBetweenShots{ 0.5f }; ///< the amount of time before another shot can be made
 	std::vector<Bullet> m_bullets{}; ///< using object pooling to prevent lag from instantiation
+	bool m_isAlive{ true }; ///< is the enemy alive
 
 };
 

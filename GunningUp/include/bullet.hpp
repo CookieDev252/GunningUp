@@ -5,7 +5,7 @@
 
 class Line2D;
 
-static Sound shootSound = LoadSound("..\\assets\\audio\\shootSound.wav");
+
 
 /*! \class Bullet bullet.hpp "GunningUp/include/bullet.hpp"
 *	\brief this is the bullet class
@@ -77,6 +77,7 @@ inline void Bullet::reset() {
 	m_direction = { 0,0 };
 	m_active = false;
 	m_lifetime = 0;
+	m_ricochetsLeft = m_ricochetAmount;
 }
 
 /// <summary>
@@ -89,7 +90,7 @@ inline void Bullet::Fire(Vector2 position, Vector2 direction)
 		m_position = position;
 		m_prevPos = position;
 		m_direction = direction;
-		PlaySound(shootSound);
+		PlaySound(shootingSound);
 	}
 }
 
@@ -118,6 +119,7 @@ inline bool Bullet::CollidesWithLine(Line2D& wall)
 			m_direction = Vector2Reflect(m_direction, Vector2Normalize(Vector2Subtract(m_position,ClosestPoint(wall.startPoint,wall.endPoint,m_position))));
 			//move bullet away from wall from the point of collision by the difference in how far the bullet should've gone compared to the actual distance it went
 			m_position = Vector2Add(m_collisionPoint, Vector2Scale(m_direction, Vector2Length(Vector2Subtract(m_prevPos, m_position)) - Vector2Length(Vector2Subtract(m_prevPos, m_collisionPoint))));
+			m_ricochetsLeft--;
 		}
 		else
 			reset();

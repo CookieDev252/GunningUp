@@ -17,7 +17,7 @@ public:
 	void setNavigationNode(NavigationNode* node); ///< sets the navigation node
 	void MoveAndCollideWithEnemies(std::vector<Enemy>& enemies); ///< moves and collides the enemy with other enemies
 	float getHeight() const { return m_enemyHeight; }; ///< returns the height of the enemy
-	bool getAliveStatus() const { return m_isAlive; }
+	
 	std::vector<Bullet>& getBullets() { return m_bullets; } ///< returns the vector of bullets
 private:
 	Player* m_playerRef{ nullptr }; ///< a reference to the player class
@@ -31,7 +31,7 @@ private:
 	bool m_shouldShootPlayer{ false }; ///< should the enemy shoot the player (priority over shouldChargePlayer)
 	//bullet variables
 	std::vector<Bullet> m_bullets{}; ///< using object pooling to prevent lag from instantiation
-	bool m_isAlive{ true }; ///< is the enemy alive
+	
 };
 
 #endif

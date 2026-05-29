@@ -73,6 +73,18 @@ inline void Player::update(float dt)
 		if (m_controllerAxis.x < m_leftStickDeadzoneX && m_controllerAxis.x > -m_leftStickDeadzoneX) m_controllerAxis.x = 0;
 		m_controllerAxis.y = -GetGamepadAxisMovement(0, GAMEPAD_AXIS_LEFT_Y);
 		if (m_controllerAxis.y < m_leftStickDeadzoneY && m_controllerAxis.y > -m_leftStickDeadzoneY) m_controllerAxis.y = 0;
+		if (IsGamepadButtonPressed(0, GamepadButton::GAMEPAD_BUTTON_RIGHT_TRIGGER_1)) {
+			if (m_shotCooldown <= 0) {
+				for (Bullet& bullet : m_bullets) {
+					if (bullet.CanBeFired()) {
+						bullet.Fire(m_position, Vector2Multiply(m_up, Vector2{ 1,-1 }));
+						m_shotCooldown = m_timeBetweenShots;
+						PlaySound(shootingSound);
+						break;
+					}
+				}
+			}
+		}
 	} 
 	else {
 		if (IsKeyPressed(KEY_W)) { m_controllerAxis.y += 1.f; }
@@ -83,12 +95,13 @@ inline void Player::update(float dt)
 		else if (IsKeyReleased(KEY_S)) { m_controllerAxis.y += 1.f; }
 		if (IsKeyPressed(KEY_D)) { m_controllerAxis.x += 1.f; }
 		else if (IsKeyReleased(KEY_D)) { m_controllerAxis.x -= 1.f; }
-		if (IsKeyPressed(KEY_SPACE) || IsGamepadButtonPressed(0,GAMEPAD_BUTTON_RIGHT_TRIGGER_1)) {
+		if (IsKeyPressed(KEY_SPACE)) {
 			if (m_shotCooldown <= 0) {
 				for (Bullet& bullet : m_bullets) {
 					if (bullet.CanBeFired()) {
 						bullet.Fire(m_position, Vector2Multiply(m_up, Vector2{ 1,-1 }));
 						m_shotCooldown = m_timeBetweenShots;
+						PlaySound(shootingSound);
 						break;
 					}
 				}

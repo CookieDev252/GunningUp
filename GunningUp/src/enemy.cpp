@@ -23,6 +23,10 @@ Enemy::Enemy(Vector2 position, Vector2 rotation)
 void Enemy::draw() const
 {
 	DrawCircle(m_position.x, m_position.y, m_size / 2.f, RED);
+	//fully dead line
+	DrawLine(m_position.x - m_size, m_position.y + m_size, m_position.x + m_size, m_position.y + m_size, RED);
+	//health line
+	DrawLine(m_position.x - m_size, m_position.y + m_size, m_position.x - m_size + (m_size * 2.f * ((float)m_health / (float)m_maxHealth)), m_position.y+m_size ,GREEN);
 }
 
 /*! Update - updates the enemy */
@@ -39,12 +43,12 @@ inline void Enemy::update(float dt)
 				currentDistance = Vector2DistanceSqr(m_playerRef->getPosition(), node->getPosition());
 			}
 		}
-		m_shouldChargePlayer = (currentDistance <= Vector2DistanceSqr(m_position, m_playerRef->getPosition()));
-		m_shouldShootPlayer = (currentDistance <= m_distanceBeforeShootingSqr);
 		
 		//assign the most optimal node based on distance
 		m_navRef = optimalNode;
 	}
+	m_shouldChargePlayer = (Vector2DistanceSqr(m_playerRef->getPosition(), m_position) <= Vector2DistanceSqr(m_position, m_playerRef->getPosition()));
+	m_shouldShootPlayer = (Vector2DistanceSqr(m_playerRef->getPosition(), m_position) <= m_distanceBeforeShootingSqr);
 
 	//move towards node or player
 	if (m_shouldShootPlayer) {

@@ -13,6 +13,7 @@
 #include "raylib-cpp.hpp"
 #include "raymath.hpp"
 
+static Sound shootingSound;
 
 inline Vector2 ClosestPoint(Vector2 a, Vector2 b, Vector2 p) {
 
@@ -55,8 +56,6 @@ public:
 #define PS_ALIAS_1   "playstation"
 #define PS_ALIAS_2   "sony"
 #define GLSL_VERSION 330 //Desktop Version
-
-static std::vector<raylib::Texture2D> WallTextures;
 
 #include "bullet.hpp"
 #include "floorGenerator.hpp"
