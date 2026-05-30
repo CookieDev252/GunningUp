@@ -55,7 +55,7 @@ App::App(int winWidth, int winHeight, char* title) :
 
 	//load in the gun sound
 
-	shootingSound = LoadSound("..\\assets\\audio\\shootSound.wav");
+	shootingSound = LoadSoundFromWave(LoadWave("..\\assets\\audio\\shootSound.wav"));
 
 	//this will be used to slice up the wall texture
 	m_sliceInfo = NPatchInfo{};
@@ -83,7 +83,12 @@ void App::update(float dt)
 	{
 	case State::SPLASHSCREEN:
 	{
-		currentState = State::MAINMENU;
+		timer += dt;
+		if(timer > 5.f)
+		{
+			timer = 0;
+			currentState = State::MAINMENU;
+		}
 	}
 	case State::MAINMENU:
 	{
@@ -92,9 +97,17 @@ void App::update(float dt)
 	case State::GAMING:
 	{
 		//check if the window should close first
-		if (m_window->ShouldClose()) {
+		if (WindowShouldClose()) {
 			running = false;
 			return;
+		}
+
+		for (Enemy& enemy : m_enemies) {
+			if (enemy.getAliveStatus())
+			{
+				enemy.update(dt);
+				enemy.MoveAndCollideWithEnemies(m_enemies);
+			}
 		}
 
 		m_player->update(dt);
@@ -117,6 +130,7 @@ void App::update(float dt)
 				for (Bullet& bullet : m_player->getBullets()) {
 					if (bullet.CollidesWithCircle(enemy.getPosition(), enemy.getSize())) {
 						enemy.Damage(m_player->getDamage());
+						enemy.setHit(true);
 					}
 					else {
 						for (Line2D& wall : m_floor->getWalls()) {
@@ -129,18 +143,13 @@ void App::update(float dt)
 
 		m_camera->target = m_player->getPosition();
 		m_camera->rotation = -m_player->getRotationHorizontals() - 90.f;
-
-		for (Enemy& enemy : m_enemies) {
-			if (enemy.getAliveStatus())
-			{
-				enemy.update(dt);
-				enemy.MoveAndCollideWithEnemies(m_enemies);
-			}
-		}
 	}
 	case State::PAUSE:
 	{
-		//to be filled in
+		//return back to gameplay
+		if (IsGamepadButtonPressed(0, GAMEPAD_BUTTON_MIDDLE_RIGHT) || IsKeyPressed(KEY_ESCAPE)) {
+			currentState = State::GAMING;
+		}
 	}
 	case State::DEATH:
 	{
@@ -148,289 +157,315 @@ void App::update(float dt)
 	}
 	default:
 	{
-		currentState = State::SPLASHSCREEN;
+		currentState = State::GAMING;
 	}
 
 	}
-		
-
-	
 }
 
 void App::draw()
 {
-	m_window->BeginDrawing();
 
-	//Draw MiniMap
+	switch (currentState)
 	{
-		BeginTextureMode(m_minimapTexture);
-		{
-			BeginMode2D(*m_camera);
+	case State::MAINMENU:
+	{
+		//something
+	}
+	case State::DEATH:
+	{
+		//something
+	}
+	case State::PAUSE: 
+	{
+		int x = 0;
+	}
+	case State::GAMING :
+	{
+		m_window->BeginDrawing();
 
+		//Draw MiniMap
+		{
+			BeginTextureMode(m_minimapTexture);
+			{
+				BeginMode2D(*m_camera);
+
+				m_window->ClearBackground(WHITE);
+
+				/*
+				* all drawing is done here
+				*/
+
+				m_floor->draw();
+
+				for (Enemy& enemy : m_enemies) {
+					if (enemy.getAliveStatus())
+						enemy.draw();
+				}
+
+				m_player->draw();
+
+				EndMode2D();
+			}
+			EndTextureMode();
+		}
+
+		//Draw Rays
+		{
 			m_window->ClearBackground(WHITE);
 
-			/*
-			* all drawing is done here
-			*/
+			//start by casting rays into the scene
+			int currentRayIndex;
+			float angle = m_player->getRotationHorizontals();
 
-			m_floor->draw();
+			//ray data
+			Vector2 startPoint = m_player->getPosition();
+			Vector2 endPoint;
+			float rayDistance = 250.f;
 
-			for (Enemy& enemy : m_enemies) {
-				if (enemy.getAliveStatus())
-					enemy.draw();
-			}
+			//Trace Data
+			Color traceColor{ BLACK };
+			float traceDistance{ 99999 };
+			Vector2 collisionPoint;
+			Vector2 wallStart{};
+			Vector2 wallEnd{};
+			Vector2 pointAlongWall{};
+			float percentAlongWall{};
 
-			m_player->draw();
+			float tempDistance{ 0 };
 
-			EndMode2D();
-		}
-		EndTextureMode();
-	}
-	
-	//Draw Rays
-	{
-		m_window->ClearBackground(WHITE);
+			//draw floor
+			DrawRectangle(0, m_winheight / 2 + playerHeight, m_winwidth, m_winheight / 2 - playerHeight, { 122,122,122,255 });
 
-		//start by casting rays into the scene
-		int currentRayIndex;
-		float angle = m_player->getRotationHorizontals();
-
-		//ray data
-		Vector2 startPoint = m_player->getPosition();
-		Vector2 endPoint;
-		float rayDistance = 250.f;
-
-		//Trace Data
-		Color traceColor{ BLACK };
-		float traceDistance{ 99999 };
-		Vector2 collisionPoint;
-		Vector2 wallStart{};
-		Vector2 wallEnd{};
-		Vector2 pointAlongWall{};
-		float percentAlongWall{};
-
-		float tempDistance{ 0 };
-
-		//draw floor
-		DrawRectangle(0, m_winheight / 2 + playerHeight, m_winwidth, m_winheight / 2 - playerHeight, { 122,122,122,255 });
-
-		for (currentRayIndex = 0; currentRayIndex <= m_winwidth; currentRayIndex++) {
-			float angleX = std::cosf(((float)currentRayIndex / (float)m_winwidth * (float)m_fov - (float)m_fov / 2.0f + angle) * TORADIANS);
-			float angleY = std::sinf(((float)currentRayIndex / (float)m_winwidth * (float)m_fov - (float)m_fov / 2.0f + angle) * TORADIANS);
-			//get the end point of the ray
-			endPoint = {
-				startPoint.x - ( angleX * rayDistance),
-				startPoint.y - ( angleY * rayDistance)
-			};
-			//pre calculate values
-			float height;
-			float y;
-			float currentAngle = (((float)currentRayIndex / (float)m_winwidth) * 2.0f - 1.0f) / 2.0f;	//convert the index to be between -0.5 and 0.5
-			currentAngle *= (float)m_fov;
-			//compare it do other walls
-			for (Line2D& wall : m_floor->getWalls()) {
-				//check for collision
-				if (CheckCollisionLines(startPoint, endPoint, wall.startPoint, wall.endPoint, &collisionPoint)) {
-					tempDistance = Vector2Distance(startPoint, collisionPoint);
-					if (tempDistance < traceDistance) {
-						//update the trace data
-						traceDistance = tempDistance;
-						traceColor = wall.color;
-						wallStart = wall.startPoint;
-						wallEnd = wall.endPoint;
-						pointAlongWall = collisionPoint;
-					}
-				}
-			}
-
-
-
-			if (tempDistance > 0)
-			{
-				percentAlongWall = Vector2Distance(wallStart, pointAlongWall);
-				percentAlongWall /= m_wallLength;
-				percentAlongWall = percentAlongWall - (float)(int)percentAlongWall;
-				//takes a sample of the texture for the wall and trnasforms it into the correct shape for the wall
-				{
-					m_sliceInfo.source = {
-						(float)TX2D_basicWall.width * percentAlongWall, // x
-						0,
-						1,
-						(float)TX2D_basicWall.height
-					};
-					m_sliceInfo.top = 0;
-					m_sliceInfo.bottom = 0;
-					m_sliceInfo.left = 0;
-					m_sliceInfo.right = 0;
-
-					
-					{
-						y = (float)(m_winheight) / 2.0f; //move to halfway down the screen
-						
-						height = wallSize / (traceDistance * cosf(currentAngle * TORADIANS));
-						
-						y -= height;
-					}
-					
-					//draw a wall
-					DrawTextureNPatch(
-						
-						TX2D_basicWall,		//original texture
-						
-						m_sliceInfo,	//slice info
-						
-						{				//destination
-							(float)currentRayIndex,
-							y + playerHeight,
-							1,
-							height*2.0f
-						},
-						
-						Vector2{ 0,0 },	//origin
-
-						0,				//rotation
-						
-						{				//tint (darkens based on distance)
-							(unsigned char)(255.f * (1.0f - traceDistance / rayDistance)),	//r
-							(unsigned char)(255.f * (1.0f - traceDistance / rayDistance)),	//g
-							(unsigned char)(255.f * (1.0f - traceDistance / rayDistance)),	//b
-							255																//a
-						}
-					);
-				}
-			}
-			//time to draw the enemy over the screen
-			for (Enemy& enemy : m_enemies) {
-				if (enemy.getAliveStatus())
-				{
-					if (CheckCollisionCircleLine(enemy.getPosition(), enemy.getSize() / 2.f, startPoint, endPoint)) {
-						tempDistance = Vector2Distance(m_player->getPosition(), enemy.getPosition());
+			for (currentRayIndex = 0; currentRayIndex <= m_winwidth; currentRayIndex++) {
+				float angleX = std::cosf(((float)currentRayIndex / (float)m_winwidth * (float)m_fov - (float)m_fov / 2.0f + angle) * TORADIANS);
+				float angleY = std::sinf(((float)currentRayIndex / (float)m_winwidth * (float)m_fov - (float)m_fov / 2.0f + angle) * TORADIANS);
+				//get the end point of the ray
+				endPoint = {
+					startPoint.x - (angleX * rayDistance),
+					startPoint.y - (angleY * rayDistance)
+				};
+				//pre calculate values
+				float height;
+				float y;
+				float currentAngle = (((float)currentRayIndex / (float)m_winwidth) * 2.0f - 1.0f) / 2.0f;	//convert the index to be between -0.5 and 0.5
+				currentAngle *= (float)m_fov;
+				//compare it do other walls
+				for (Line2D& wall : m_floor->getWalls()) {
+					//check for collision
+					if (CheckCollisionLines(startPoint, endPoint, wall.startPoint, wall.endPoint, &collisionPoint)) {
+						tempDistance = Vector2Distance(startPoint, collisionPoint);
 						if (tempDistance < traceDistance) {
-							{
-								y = (float)(m_winheight) / 2.0f; //move to halfway down the screen
+							//update the trace data
+							traceDistance = tempDistance;
+							traceColor = wall.color;
+							wallStart = wall.startPoint;
+							wallEnd = wall.endPoint;
+							pointAlongWall = collisionPoint;
+						}
+					}
+				}
 
-								height = enemy.getHeight() / (tempDistance);
-
-								y -= height;
-
-
-								Vector2 A = Vector2Subtract(endPoint, startPoint);
-								Vector2 B = Vector2Subtract(enemy.getPosition(), startPoint);
-
-								float D = (A.x * B.y) - (A.y * B.x);
-
-								{//convert it to [-1,1] then add 1 to be [0,2]
-									D /= fabsf(D);
-									D += 1.f;
-								}
-
-								percentAlongWall = calculateHeight(startPoint, endPoint, enemy.getPosition()) * D / enemy.getSize();
-							}
-
-							m_sliceInfo.source = {
-							(float)TX2D_basicEnemy.width * percentAlongWall, // x
+				if (tempDistance > 0)
+				{
+					percentAlongWall = Vector2Distance(wallStart, pointAlongWall);
+					percentAlongWall /= m_wallLength;
+					percentAlongWall = percentAlongWall - (float)(int)percentAlongWall;
+					//takes a sample of the texture for the wall and trnasforms it into the correct shape for the wall
+					{
+						m_sliceInfo.source = {
+							(float)TX2D_basicWall.width * percentAlongWall, // x
 							0,
 							1,
-							(float)TX2D_basicEnemy.height
-							};
-							m_sliceInfo.top = 0;
-							m_sliceInfo.bottom = 0;
-							m_sliceInfo.left = 0;
-							m_sliceInfo.right = 0;
+							(float)TX2D_basicWall.height
+						};
+						m_sliceInfo.top = 0;
+						m_sliceInfo.bottom = 0;
+						m_sliceInfo.left = 0;
+						m_sliceInfo.right = 0;
 
-							//draw a wall
-							DrawTextureNPatch(
 
-								TX2D_basicEnemy,		//original texture
+						{
+							y = (float)(m_winheight) / 2.0f; //move to halfway down the screen
 
-								m_sliceInfo,	//slice info
+							height = wallSize / (traceDistance * cosf(currentAngle * TORADIANS));
 
-								{				//destination
-									(float)currentRayIndex,
-									y + playerHeight,
-									1,
-									height * 2.0f
-								},
-
-								Vector2{ 0,0 },	//origin
-
-								0,				//rotation
-
-								{				//tint (darkens based on distance)
-									(unsigned char)(255.f * (1.0f - tempDistance / rayDistance)),	//r
-									(unsigned char)(255.f * (1.0f - tempDistance / rayDistance)),	//g
-									(unsigned char)(255.f * (1.0f - tempDistance / rayDistance)),	//b
-									255																//a
-								}
-							);
+							y -= height;
 						}
 
+						//draw a wall
+						DrawTextureNPatch(
+
+							TX2D_basicWall,		//original texture
+
+							m_sliceInfo,	//slice info
+
+							{				//destination
+								(float)currentRayIndex,
+								y + playerHeight,
+								1,
+								height * 2.0f
+							},
+
+							Vector2{ 0,0 },	//origin
+
+							0,				//rotation
+
+							{				//tint (darkens based on distance)
+								(unsigned char)(255.f * (1.0f - traceDistance / rayDistance)),	//r
+								(unsigned char)(255.f * (1.0f - traceDistance / rayDistance)),	//g
+								(unsigned char)(255.f * (1.0f - traceDistance / rayDistance)),	//b
+								255																//a
+							}
+						);
 					}
 				}
-			}
-			traceDistance = 9999.f; // some big number
-			traceColor = BLACK;
+				//time to draw the enemy over the screen
+				for (Enemy& enemy : m_enemies) {
+					if (enemy.getAliveStatus())
+					{
+						if (CheckCollisionCircleLine(enemy.getPosition(), enemy.getSize() / 2.f, startPoint, endPoint)) {
+							tempDistance = Vector2Distance(m_player->getPosition(), enemy.getPosition());
+							if (tempDistance < traceDistance) {
+								{
+									y = (float)(m_winheight) / 2.0f; //move to halfway down the screen
 
+									height = enemy.getHeight() / (tempDistance);
+
+									y -= height;
+
+
+									Vector2 A = Vector2Subtract(endPoint, startPoint);
+									Vector2 B = Vector2Subtract(enemy.getPosition(), startPoint);
+
+									float D = (A.x * B.y) - (A.y * B.x);
+
+									{//convert it to [-1,1] then add 1 to be [0,2]
+										D /= fabsf(D);
+										D += 1.f;
+									}
+
+									percentAlongWall = calculateHeight(startPoint, endPoint, enemy.getPosition()) * D / enemy.getSize();
+								}
+
+								m_sliceInfo.source = {
+								(float)TX2D_basicEnemy.width * percentAlongWall, // x
+								0,
+								1,
+								(float)TX2D_basicEnemy.height
+								};
+								m_sliceInfo.top = 0;
+								m_sliceInfo.bottom = 0;
+								m_sliceInfo.left = 0;
+								m_sliceInfo.right = 0;
+
+								unsigned char ColourTint = (unsigned char)(255.f * (1.0f - tempDistance / rayDistance) * (float)!enemy.isHit());
+
+								//draw a wall
+								DrawTextureNPatch(
+
+									TX2D_basicEnemy,		//original texture
+
+									m_sliceInfo,	//slice info
+
+									{				//destination
+										(float)currentRayIndex,
+										y ,
+										1,
+										height * 2.0f
+									},
+
+									Vector2{ 0,0 },	//origin
+
+									0,				//rotation
+
+									{				//tint (darkens based on distance)
+										(unsigned char)(ColourTint + (125 * enemy.isHit())),	//r
+										ColourTint,	//g
+										ColourTint,	//b
+										255																//a
+									}
+								);
+							}
+
+						}
+					}
+				}
+				traceDistance = 9999.f; // some big number
+				traceColor = BLACK;
+
+			}
 		}
-	}
-	
-	//minimap rendering
-	{
-		//border for minimap
-		DrawRectangle(m_winwidth / 8 * 5 , m_winheight * 0.125 , m_winwidth / 4 + 4, m_winheight / 4 + 4, BLACK);
-		//draw in minimap over screen
-		DrawTextureRec(
-			m_minimapTexture.texture,
-			//minimap to screen size rect
-			{
-				0,
-				0,
-				-(float)m_winwidth / 4.f,
-				(float)m_winheight / 4.f
-			},
-			//minimap position
+
+		//minimap rendering
+		{
+			//border for minimap
+			DrawRectangle(m_winwidth / 8 * 5, m_winheight * 0.125, m_winwidth / 4 + 4, m_winheight / 4 + 4, BLACK);
+			//draw in minimap over screen
+			DrawTextureRec(
+				m_minimapTexture.texture,
+				//minimap to screen size rect
+				{
+					0,
+					0,
+					-(float)m_winwidth / 4.f,
+					(float)m_winheight / 4.f
+				},
+				//minimap position
 			{
 				(float)m_winwidth / 8.f * 5.f,
 				(float)m_winheight / 8.f
 			},
-			WHITE //no tint
-		);
-	}
-	//handDrawing
-	{
-		if (m_player->getCooldown() > 0)
+				WHITE //no tint
+			);
+		}
+		//handDrawing
 		{
-			DrawTexturePro(
-				TX2D_gunHolding,
-				{ (float)TX2D_gunHolding.width / 2.f,0,(float)TX2D_gunHolding.width / 2.f,(float)TX2D_gunHolding.height },
-				{ (float)m_winwidth / 2.f, (float)m_winheight / 4.f * 3.f, (float)TX2D_gunHolding.width / 2.f * m_gunImageScale, (float)TX2D_gunHolding.height * m_gunImageScale },
-				{ 0.5,0.5 },
-				0,
-				{ WHITE }
-			);
-		}
-		else {
-			DrawTexturePro(
-				TX2D_gunHolding,
-				{ 0,0,(float)TX2D_gunHolding.width / 2.f,(float)TX2D_gunHolding.height },
-				{ (float)m_winwidth / 2.f, (float)m_winheight / 4.f * 3.f, (float)TX2D_gunHolding.width / 2.f * m_gunImageScale, (float)TX2D_gunHolding.height * m_gunImageScale },
-				{ 0,0 },
-				0,
-				{ WHITE }
-			);
-		}
-		
-	}
-	//HUD
-	{
-		DrawRectangle(20, m_winheight - 60, m_winwidth - 40, 40, YELLOW);
-		DrawText(("Health : "+std::to_string(m_player->getHealth())).c_str(), 30, m_winheight - 38, 8, BLACK);
-		int numberOfRoundsLeft = 0;
-		for (Bullet& bullet : m_player->getBullets()) {
-			numberOfRoundsLeft += bullet.CanBeFired();
-		}
-		DrawText(("Ammo : "+std::to_string(numberOfRoundsLeft)).c_str(), m_winwidth - 50, m_winheight - 38, 8, BLACK);
-	}
+			if (m_player->getCooldown() > 0)
+			{
+				DrawTexturePro(
+					TX2D_gunHolding,
+					{ (float)TX2D_gunHolding.width / 2.f,0,(float)TX2D_gunHolding.width / 2.f,(float)TX2D_gunHolding.height },
+					{ (float)m_winwidth / 2.f, (float)m_winheight / 4.f * 3.f, (float)TX2D_gunHolding.width / 2.f * m_gunImageScale, (float)TX2D_gunHolding.height * m_gunImageScale },
+					{ 0.5,0.5 },
+					0,
+					{ WHITE }
+				);
+			}
+			else {
+				DrawTexturePro(
+					TX2D_gunHolding,
+					{ 0,0,(float)TX2D_gunHolding.width / 2.f,(float)TX2D_gunHolding.height },
+					{ (float)m_winwidth / 2.f, (float)m_winheight / 4.f * 3.f, (float)TX2D_gunHolding.width / 2.f * m_gunImageScale, (float)TX2D_gunHolding.height * m_gunImageScale },
+					{ 0,0 },
+					0,
+					{ WHITE }
+				);
+			}
 
-	m_window->EndDrawing();
+		}
+		//HUD
+		{
+			DrawRectangle(20, m_winheight - 60, m_winwidth - 40, 40, YELLOW);
+			DrawText(("Health : " + std::to_string(m_player->getHealth())).c_str(), 30, m_winheight - 38, 8, BLACK);
+			int numberOfRoundsLeft = 0;
+			for (Bullet& bullet : m_player->getBullets()) {
+				numberOfRoundsLeft += bullet.CanBeFired();
+			}
+			DrawText(("Ammo : " + std::to_string(numberOfRoundsLeft)).c_str(), m_winwidth - 80, m_winheight - 38, 8, BLACK);
+		}
+
+		m_window->EndDrawing();
+
+		if (IsGamepadButtonDown(0, GAMEPAD_BUTTON_MIDDLE_LEFT) || IsKeyPressed(KEY_ESCAPE)) {
+			currentState = State::PAUSE;
+
+		}
+
+	}
+	default:
+	{
+		currentState = State::GAMING;
+	}
+	}
 }

@@ -24,7 +24,7 @@ public:
 	bool CollidesWithCircle(Vector2 center, float size); ///< checks for collision with enemy/player
 	bool CollidesWithLine(Line2D& wall); ///< checks for collision with walls
 private:
-	float m_speed{ 50.f }; ///< speed of the bullet per second
+	float m_speed{ 150.f }; ///< speed of the bullet per second
 	Vector2 m_position{ -9999,-9999 }; ///< the position of the bullet
 	Vector2 m_prevPos{ -9999,-9999 }; ///< the previous position of the bullet
 	Vector2 m_collisionPoint{0,0}; ///< the point of a line on line collision (for colliding with walls)

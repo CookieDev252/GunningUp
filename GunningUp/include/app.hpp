@@ -61,6 +61,7 @@ private:
 	float wallSize = 2000.f; ///< height of the wall
 	float playerHeight = 10.f;
 	float actualAngleDegrees{};
+	float timer{0.f};
 private:
 	char* m_title{ "GunningUp" };
 	Player* m_player;
@@ -68,11 +69,11 @@ private:
 	FloorGenerator* m_floor;
 	Camera2D* m_camera;
 	NPatchInfo m_sliceInfo;
-	short int currentstate{};
+	
 public:
 	bool running{true};
 	raylib::Window* m_window;
-	State currentState{ State::SPLASHSCREEN };
+	State currentState{ State::GAMING };
 };
 
 

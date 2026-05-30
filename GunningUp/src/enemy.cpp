@@ -17,6 +17,11 @@ Enemy::Enemy(Vector2 position, Vector2 rotation)
 	for (int i = 0; i < 10; i++) {
 		m_bullets.push_back(Bullet{});
 	}
+
+	m_timeBetweenShots = 3.f;
+	m_shotCooldown = m_timeBetweenShots;
+
+
 }
 
 /*! Draw - draws the enemy in 2D view */
@@ -27,13 +32,18 @@ void Enemy::draw() const
 	DrawLine(m_position.x - m_size, m_position.y + m_size, m_position.x + m_size, m_position.y + m_size, RED);
 	//health line
 	DrawLine(m_position.x - m_size, m_position.y + m_size, m_position.x - m_size + (m_size * 2.f * ((float)m_health / (float)m_maxHealth)), m_position.y+m_size ,GREEN);
+
+	for (auto& bullet : m_bullets) {
+		bullet.Draw();
+	}
 }
 
 /*! Update - updates the enemy */
 inline void Enemy::update(float dt)
 {
+	m_beenShot = false;
 	//check if enemy is close enough to the node
-	if (m_distanceBeforeSwitchSqr >= Vector2DistanceSqr(m_position, m_navRef->getPosition()) ){
+	if (m_distanceBeforeSwitchSqr >= Vector2DistanceSqr(m_position, m_navRef->getPosition())) {
 		//check surrounding nodes
 		float currentDistance = 9999;
 		NavigationNode* optimalNode = m_navRef;
@@ -43,7 +53,7 @@ inline void Enemy::update(float dt)
 				currentDistance = Vector2DistanceSqr(m_playerRef->getPosition(), node->getPosition());
 			}
 		}
-		
+
 		//assign the most optimal node based on distance
 		m_navRef = optimalNode;
 	}
@@ -52,13 +62,31 @@ inline void Enemy::update(float dt)
 
 	//move towards node or player
 	if (m_shouldShootPlayer) {
-
+		if (m_shotCooldown < 0) {
+			for (Bullet& bullet : m_bullets)
+			{
+				if (bullet.CanBeFired()) {
+					bullet.Fire(m_position, Vector2Normalize(Vector2Subtract(m_playerRef->getPosition(), m_position)));
+   					m_shotCooldown = m_timeBetweenShots;
+					break;
+				}
+			}
+		}
+		else {
+			m_shotCooldown -= dt;
+		}
 	}
 	else{
 		if (!m_shouldChargePlayer)
 			m_position = Vector2MoveTowards(m_position, m_navRef->getPosition(), m_speed * dt);
 		else
 			m_position = Vector2MoveTowards(m_position, m_playerRef->getPosition(), m_speed * dt);
+	}
+
+	for (Bullet& bullet : m_bullets) 
+	{
+		if (!bullet.CanBeFired())
+			bullet.Update(dt);
 	}
 	
 }
