@@ -110,6 +110,7 @@ void App::update(float dt)
 
 		//return back to gameplay
 		if (IsKeyPressed(KEY_ENTER) || IsGamepadButtonPressed(0, GAMEPAD_BUTTON_RIGHT_FACE_DOWN)) {
+			NavigationNode* node;
 			if (m_currentSelectionUI == 0)
 			{
 				m_floor = new FloorGenerator(m_floor->getWidth(), m_floor->getHeight());
@@ -117,7 +118,9 @@ void App::update(float dt)
 				m_player->setPosition(m_floor->getNavigationNodes()[GetRandomValue(0, m_floor->getNavigationNodes().size() - 1)].getPosition());
 				for (Enemy& enemy : m_enemies) {
 					enemy.Reset();
-					enemy.setPosition(m_floor->getNavigationNodes()[GetRandomValue(0, m_floor->getNavigationNodes().size() - 1)].getPosition());
+					node = &m_floor->getNavigationNodes()[GetRandomValue(0, m_floor->getNavigationNodes().size() - 1)];
+					enemy.setPosition(node->getPosition());
+					enemy.setNavigationNode(node);
 				}
 				UnloadMusicStream(backgroundMusic);
 				backgroundMusic = LoadMusicStream("..\\assets\\audio\\gameTheme.mp3");
