@@ -49,7 +49,10 @@ enable_testing()
 
 # Define your test executable
 add_executable(my_tests GTesting/test.cpp)
-target_link_libraries(my_tests GTest::gtest_main)
+target_link_libraries(my_tests 
+    GTest::gtest_main
+    raylib raylib_cpp
+)
 
 # Automatically discover tests from the binary
 include(GoogleTest)
@@ -65,6 +68,7 @@ file(GLOB_RECURSE HEADER_FILES CONFIGURE_DEPENDS
     "${CMAKE_CURRENT_SOURCE_DIR}/GunningUp/include/*.h"
     "${CMAKE_CURRENT_SOURCE_DIR}/GunningUp/include/*.hpp"
 )
+
 
 #create the source for the game
 target_sources(${PROJECT_NAME} 
@@ -85,3 +89,20 @@ target_link_libraries(${PROJECT_NAME}
 PUBLIC 
     raylib raylib_cpp
 )
+
+list(REMOVE_ITEM SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/GunningUp/src/main.cpp")
+#create the source for the game
+target_sources(my_tests
+PRIVATE
+    # ALL SOURCES GO HERE
+        ${SOURCE_FILES}
+PUBLIC
+    FILE_SET myHeaders
+    TYPE HEADERS
+    BASE_DIRS
+        GunningUp/include
+    FILES
+    # ALL HEADERS GO HERE
+        ${HEADER_FILES}
+)
+
