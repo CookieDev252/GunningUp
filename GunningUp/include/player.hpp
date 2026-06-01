@@ -8,7 +8,7 @@ class Bullet;
 class Player : public Entity {
 public:
 	Player();
-	Player(raylib::Vector2& position, raylib::Vector2& rotation);
+	Player(raylib::Vector2 position, raylib::Vector2 rotation);
 	~Player();
 
 	//updates the game object

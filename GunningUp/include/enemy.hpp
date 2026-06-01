@@ -21,6 +21,7 @@ public:
 	bool isHit() const { return m_beenShot; }; ///< returns whether or not the enemy has been shot
 	void setHit(bool state) { m_beenShot = state; } ///< sets the state of m_beenShot
 	void setEnemyDeathSound(char* filepath) { enemyDeathSound = LoadSound(filepath); }
+	Player* getPlayer() { return m_playerRef; };
 	
 	std::vector<Bullet>& getBullets() { return m_bullets; } ///< returns the vector of bullets
 private:

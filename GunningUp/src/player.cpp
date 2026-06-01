@@ -10,7 +10,7 @@ Player::Player() : Entity()
 	}
 }
 
-Player::Player(raylib::Vector2& position, raylib::Vector2& rotation) : Entity() {
+Player::Player(raylib::Vector2 position, raylib::Vector2 rotation) : Entity() {
 	m_position = position;
 	m_rotation = rotation;
 

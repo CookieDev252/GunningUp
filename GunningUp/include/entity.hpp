@@ -31,7 +31,7 @@ public:
 	const int getMaxHealth() { return m_maxHealth; } ///< returns the max health
 	const int getDamage() { return m_weaponDamage; } ///< returns the amount of damage dealt
 	bool getAliveStatus() const { return m_isAlive; } ///< is the entity still alive
-	void Damage(int amount) { m_health -= amount; m_isAlive = m_health > 0; PlaySound(hurtSound); }; ///< applies damage to m_health
+	void Damage(int amount) { m_health -= amount; m_isAlive = m_health > 0; PlaySound(hurtSound);}; ///< applies damage to m_health
 	void setShootSound(char* filename) { shootSound = LoadSound(filename); };
 	void setHurtSound(char* filename) { hurtSound = LoadSound(filename); };
 	void setPosition(Vector2& pos) { m_position = pos; }; ///< sets the position of the entity
