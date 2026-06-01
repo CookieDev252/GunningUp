@@ -79,7 +79,7 @@ inline void Player::update(float dt)
 					if (bullet.CanBeFired()) {
 						bullet.Fire(m_position, Vector2Multiply(m_up, Vector2{ 1,-1 }));
 						m_shotCooldown = m_timeBetweenShots;
-						PlaySound(shootingSound);
+						PlaySound(shootSound);
 						break;
 					}
 				}
@@ -101,7 +101,6 @@ inline void Player::update(float dt)
 					if (bullet.CanBeFired()) {
 						bullet.Fire(m_position, Vector2Multiply(m_up, Vector2{ 1,-1 }));
 						m_shotCooldown = m_timeBetweenShots;
-						PlaySound(shootingSound);
 						break;
 					}
 				}

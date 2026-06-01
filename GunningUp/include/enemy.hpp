@@ -17,24 +17,29 @@ public:
 	void setNavigationNode(NavigationNode* node); ///< sets the navigation node
 	void MoveAndCollideWithEnemies(std::vector<Enemy>& enemies); ///< moves and collides the enemy with other enemies
 	float getHeight() const { return m_enemyHeight; }; ///< returns the height of the enemy
+	bool isShootingPlayer() { return m_shouldShootPlayer; }; ///< is the enemy currently shooting the player
 	bool isHit() const { return m_beenShot; }; ///< returns whether or not the enemy has been shot
 	void setHit(bool state) { m_beenShot = state; } ///< sets the state of m_beenShot
+	void setEnemyDeathSound(char* filepath) { enemyDeathSound = LoadSound(filepath); }
 	
 	std::vector<Bullet>& getBullets() { return m_bullets; } ///< returns the vector of bullets
 private:
 	Player* m_playerRef{ nullptr }; ///< a reference to the player class
+	//sounds
+	Sound enemyDeathSound;
 	//nav variables
 	NavigationNode* m_navRef{ nullptr }; ///< a reference pointer to a node, the node has attatched nodes which is how the enemy navigates the scene
-	float m_enemyHeight{ 1000.f }; ///< the height that the enemy is drawn to the screen
+	float m_enemyHeight{ 3000.f }; ///< the height that the enemy is drawn to the screen
 	//behaviour variables
-	float m_distanceBeforeSwitchSqr{ 64.f }; ///< required distance to switch nodes squared
+	float m_distanceBeforeSwitchSqr{ 800.f }; ///< required distance to switch nodes squared
 	float m_distanceBeforeShootingSqr{ 800.f }; ///< required distance to shoot the player squared
+	float m_timer{ 0 }; ///< time since alive (for animations)
 	bool m_shouldChargePlayer{ false }; //< should the enemy charge towards the player
 	bool m_shouldShootPlayer{ false }; ///< should the enemy shoot the player (priority over shouldChargePlayer)
 	bool m_beenShot{ false }; ///< has the enemy been hit by a bullet
+
 	//bullet variables
 	std::vector<Bullet> m_bullets{}; ///< using object pooling to prevent lag from instantiation
-	
 };
 
 #endif

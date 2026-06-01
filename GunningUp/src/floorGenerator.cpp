@@ -4,24 +4,16 @@
 FloorGenerator::FloorGenerator(int width, int height)
 {
 	m_rooms.push_back(Room(0, 0, width, height));
-	this->width = width;
-	this->height = height;
+	this->m_width = width;
+	this->m_height = height;
 
 	GenerateLevel();
 }
 
 void FloorGenerator::draw() {
-	for (const Line2D& wall : m_walls) {
+	for (const Line2D& wall : m_walls) { 
 		DrawLine(wall.startPoint.x, wall.startPoint.y, wall.endPoint.x, wall.endPoint.y, wall.color);
 	}
-	//draw Nodes
-	//for (const NavigationNode& node : m_navNodes) {
-	//	DrawCircleV(node.getPosition(), 5, GREEN);
-	//	//draw all the connection lines
-	//	for (const NavigationNode* connectedNode : node.m_connectedNodes) {
-	//		DrawLineV(node.getPosition(), connectedNode->getPosition(), BLACK);
-	//	}
-	//}
 }
 
 void FloorGenerator::SplitRoom(int selectedRoom)
@@ -113,7 +105,6 @@ void FloorGenerator::GenerateLevel()
 			Line2D wall = m_walls.at(m_walls.size() - selected);
 			Vector2 normalDirection = Vector2Normalize(Vector2Subtract(wall.endPoint, wall.startPoint));
 			m_walls.erase(m_walls.end() - selected);
-			//top and bottom
 			m_walls.push_back(Line2D{
 				wall.startPoint, 
 				Vector2Add(wall.startPoint,Vector2Subtract(Vector2Scale(Vector2Subtract(wall.endPoint, wall.startPoint),0.5),Vector2Scale(normalDirection,m_intersection))),
@@ -126,13 +117,16 @@ void FloorGenerator::GenerateLevel()
 				wall.color
 				}
 			);
+			m_navNodes.push_back(NavigationNode{ Vector2Add(Vector2Scale(Vector2Add(wall.startPoint,wall.endPoint),0.5),Vector2Scale(wall.normal,m_intersection/2.f)) });
+
+			m_navNodes.push_back(NavigationNode{ Vector2Subtract(Vector2Scale(Vector2Add(wall.startPoint,wall.endPoint),0.5),Vector2Scale(wall.normal,m_intersection / 2.f))});
 		}
 	}
 	//add back in the map walls
-	m_walls.push_back(Line2D{ Vector2{0,0}, Vector2{(float)width,0}, {0,0,0,0} });
-	m_walls.push_back(Line2D{ Vector2{(float)width,0}, Vector2{(float)width,(float)height}, {0,0,0,0}});
-	m_walls.push_back(Line2D{ Vector2{(float)width,(float)height}, Vector2{0,(float)height}, {0,0,0,0}});
-	m_walls.push_back(Line2D{ Vector2{0,(float)height}, Vector2{0,0}, {0,0,0,0} });
+	m_walls.push_back(Line2D{ Vector2{0,0}, Vector2{(float)m_width,0}, {0,0,0,0} });
+	m_walls.push_back(Line2D{ Vector2{(float)m_width,0}, Vector2{(float)m_width,(float)m_height}, {0,0,0,0}});
+	m_walls.push_back(Line2D{ Vector2{(float)m_width,(float)m_height}, Vector2{0,(float)m_height}, {0,0,0,0}});
+	m_walls.push_back(Line2D{ Vector2{0,(float)m_height}, Vector2{0,0}, {0,0,0,0} });
 
 	Vector2* emptyPointer = new Vector2{};
 

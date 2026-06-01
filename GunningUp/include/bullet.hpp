@@ -90,7 +90,6 @@ inline void Bullet::Fire(Vector2 position, Vector2 direction)
 		m_position = position;
 		m_prevPos = position;
 		m_direction = direction;
-		PlaySound(shootingSound);
 	}
 }
 

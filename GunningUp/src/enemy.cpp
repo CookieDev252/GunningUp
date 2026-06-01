@@ -21,17 +21,19 @@ Enemy::Enemy(Vector2 position, Vector2 rotation)
 	m_timeBetweenShots = 3.f;
 	m_shotCooldown = m_timeBetweenShots;
 
-
 }
 
 /*! Draw - draws the enemy in 2D view */
 void Enemy::draw() const
 {
+	//draw enemy circle
 	DrawCircle(m_position.x, m_position.y, m_size / 2.f, RED);
-	//fully dead line
-	DrawLine(m_position.x - m_size, m_position.y + m_size, m_position.x + m_size, m_position.y + m_size, RED);
-	//health line
-	DrawLine(m_position.x - m_size, m_position.y + m_size, m_position.x - m_size + (m_size * 2.f * ((float)m_health / (float)m_maxHealth)), m_position.y+m_size ,GREEN);
+	{//Draw health Bar
+		//fully dead line
+		DrawLine(m_position.x - m_size, m_position.y + m_size, m_position.x + m_size, m_position.y + m_size, RED);
+		//health line
+		DrawLine(m_position.x - m_size, m_position.y + m_size, m_position.x - m_size + (m_size * 2.f * ((float)m_health / (float)m_maxHealth)), m_position.y + m_size, GREEN);
+	}
 
 	for (auto& bullet : m_bullets) {
 		bullet.Draw();
@@ -57,7 +59,7 @@ inline void Enemy::update(float dt)
 		//assign the most optimal node based on distance
 		m_navRef = optimalNode;
 	}
-	m_shouldChargePlayer = (Vector2DistanceSqr(m_playerRef->getPosition(), m_position) <= Vector2DistanceSqr(m_position, m_playerRef->getPosition()));
+	m_shouldChargePlayer = (Vector2DistanceSqr(m_playerRef->getPosition(), m_position) <= 64.f);
 	m_shouldShootPlayer = (Vector2DistanceSqr(m_playerRef->getPosition(), m_position) <= m_distanceBeforeShootingSqr);
 
 	//move towards node or player
@@ -68,6 +70,7 @@ inline void Enemy::update(float dt)
 				if (bullet.CanBeFired()) {
 					bullet.Fire(m_position, Vector2Normalize(Vector2Subtract(m_playerRef->getPosition(), m_position)));
    					m_shotCooldown = m_timeBetweenShots;
+					PlaySound(shootSound);
 					break;
 				}
 			}

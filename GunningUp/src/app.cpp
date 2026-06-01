@@ -26,7 +26,11 @@ App::App(int winWidth, int winHeight, char* title) :
 
 	InitAudioDevice();
 
+	shootingSound = raylib::Sound{  };
+	
 	m_player = new Player(raylib::Vector2(512,512), raylib::Vector2(0,0));
+	m_player->setShootSound("..\\assets\\audio\\shootSound.wav");
+	m_player->setHurtSound("..\\assets\\audio\\hitHurt.wav");
 
 	m_floor = new FloorGenerator(1024,1024);
 
@@ -36,6 +40,9 @@ App::App(int winWidth, int winHeight, char* title) :
 		tempEnemy.setPosition(m_floor->getNavigationNodes()[nodeSelector].getPosition());
 		tempEnemy.setNavigationNode(&m_floor->getNavigationNodes()[nodeSelector]);
 		tempEnemy.setPlayer(m_player);
+		tempEnemy.setShootSound("..\\assets\\audio\\shootSound.wav");
+		tempEnemy.setHurtSound("..\\assets\\audio\\hitHurt.wav");
+	
 		m_enemies.push_back(tempEnemy);
 	}
 
@@ -43,6 +50,8 @@ App::App(int winWidth, int winHeight, char* title) :
 	m_camera->zoom = 1.0f;
 	m_camera->offset = { GetScreenWidth() / 8.f, GetScreenHeight() / 8.f };
 	m_minimapTexture = LoadRenderTexture(m_winwidth/4, m_winwidth/4);
+	m_screenShot.height = m_winheight;
+	m_screenShot.width = m_winwidth;
 
 	//load in the wall texture
 	TX2D_basicWall = LoadTexture("..\\assets\\textures\\officeWallTexture.png");
@@ -51,11 +60,20 @@ App::App(int winWidth, int winHeight, char* title) :
 	TX2D_basicEnemy = LoadTexture("..\\assets\\textures\\roboguy.png");
 
 	//load in the hand
+	TX2D_skybox = LoadTexture("..\\assets\\textures\\skybox.png");
+	
+	//load in the hand
 	TX2D_gunHolding = LoadTexture("..\\assets\\textures\\gun_spriteSheet.png");
 
-	//load in the gun sound
+	//load in the Title card
+	TX2D_Title = LoadTexture("..\\assets\\textures\\TitleCard.png");
 
-	shootingSound = LoadSoundFromWave(LoadWave("..\\assets\\audio\\shootSound.wav"));
+	backgroundMusic = LoadMusicStream("..\\assets\\audio\\SplashScreen.mp3");
+	backgroundMusic.looping = true;
+	PlayMusicStream(backgroundMusic);
+
+	explosionSound = LoadSound("..\\assets\\audio\\explosion.wav");
+
 
 	//this will be used to slice up the wall texture
 	m_sliceInfo = NPatchInfo{};
@@ -70,38 +88,80 @@ App::~App()
 	delete m_camera;
 
 	UnloadRenderTexture(m_minimapTexture); // unload minimap texture
-	UnloadTexture(TX2D_basicWall);
-	UnloadTexture(TX2D_basicEnemy);
-	UnloadTexture(TX2D_gunHolding);
+	UnloadTexture(m_screenShot); // unload the screenshot texture
+	UnloadTexture(TX2D_basicWall); // unload the wall texture
+	UnloadTexture(TX2D_basicEnemy); // unload the enemy texture
+	UnloadTexture(TX2D_gunHolding); //  
+	UnloadTexture(TX2D_skybox);
+	UnloadTexture(TX2D_Title);
+	UnloadMusicStream(backgroundMusic);
 	CloseAudioDevice();
 
 }
 
 void App::update(float dt)
 {
-	switch (currentState)
+	if (currentState == MAINMENU)
 	{
-	case State::SPLASHSCREEN:
+		UpdateMusicStream(backgroundMusic);
+
+		//return back to gameplay
+		if (IsKeyPressed(KEY_ENTER) || IsGamepadButtonPressed(0, GAMEPAD_BUTTON_RIGHT_FACE_DOWN)) {
+			if (m_currentSelectionUI == 0)
+			{
+				m_floor = new FloorGenerator(m_floor->getWidth(), m_floor->getHeight());
+				m_player->Reset();
+				m_player->setPosition(m_floor->getNavigationNodes()[GetRandomValue(0, m_floor->getNavigationNodes().size() - 1)].getPosition());
+				for (Enemy& enemy : m_enemies) {
+					enemy.Reset();
+					enemy.setPosition(m_floor->getNavigationNodes()[GetRandomValue(0, m_floor->getNavigationNodes().size() - 1)].getPosition());
+				}
+				UnloadMusicStream(backgroundMusic);
+				backgroundMusic = LoadMusicStream("..\\assets\\audio\\gameTheme.mp3");
+				backgroundMusic.looping = true;
+				PlayMusicStream(backgroundMusic);
+				currentState = GAMING;
+			}
+
+			else if (m_currentSelectionUI == 2)
+				currentState = running = false;
+		}
+		if (IsKeyPressed(KEY_UP) ||
+			IsKeyPressed(KEY_W) ||
+			IsKeyPressed(KEY_D) ||
+			GetGamepadAxisMovement(0, GAMEPAD_AXIS_LEFT_Y) > m_leftStickDeadzoneY ||
+			IsGamepadButtonPressed(0, GAMEPAD_BUTTON_LEFT_FACE_UP)) {
+			m_currentSelectionUI++;
+			if (m_currentSelectionUI == 3)m_currentSelectionUI = 0;
+		}
+		if (IsKeyPressed(KEY_DOWN) ||
+			IsKeyPressed(KEY_S) ||
+			IsKeyPressed(KEY_A) ||
+			GetGamepadAxisMovement(0, GAMEPAD_AXIS_LEFT_Y) < -m_leftStickDeadzoneY ||
+			IsGamepadButtonPressed(0, GAMEPAD_BUTTON_LEFT_FACE_DOWN)) {
+			m_currentSelectionUI--;
+			if (m_currentSelectionUI == -1)m_currentSelectionUI = 2;
+		}
+		return;
+	}
+	else if (currentState == SPLASHSCREEN)
 	{
+		UpdateMusicStream(backgroundMusic);
 		timer += dt;
 		if(timer > 5.f)
 		{
 			timer = 0;
-			currentState = State::MAINMENU;
+			currentState = MAINMENU;
+			UnloadMusicStream(backgroundMusic);
+			backgroundMusic = LoadMusicStream("..\\assets\\audio\\mainmenuTheme.mp3");
+			backgroundMusic.looping = true;
+			PlayMusicStream(backgroundMusic);
 		}
+		return;
 	}
-	case State::MAINMENU:
+	else if (currentState == GAMING)
 	{
-		currentState = State::GAMING;
-	}
-	case State::GAMING:
-	{
-		//check if the window should close first
-		if (WindowShouldClose()) {
-			running = false;
-			return;
-		}
-
+		UpdateMusicStream(backgroundMusic);
 		for (Enemy& enemy : m_enemies) {
 			if (enemy.getAliveStatus())
 			{
@@ -131,6 +191,8 @@ void App::update(float dt)
 					if (bullet.CollidesWithCircle(enemy.getPosition(), enemy.getSize())) {
 						enemy.Damage(m_player->getDamage());
 						enemy.setHit(true);
+						if (!enemy.getAliveStatus())
+							PlaySound(explosionSound);
 					}
 					else {
 						for (Line2D& wall : m_floor->getWalls()) {
@@ -143,44 +205,123 @@ void App::update(float dt)
 
 		m_camera->target = m_player->getPosition();
 		m_camera->rotation = -m_player->getRotationHorizontals() - 90.f;
+
+		return;
 	}
-	case State::PAUSE:
+	else if (currentState == PAUSE)
 	{
 		//return back to gameplay
-		if (IsGamepadButtonPressed(0, GAMEPAD_BUTTON_MIDDLE_RIGHT) || IsKeyPressed(KEY_ESCAPE)) {
-			currentState = State::GAMING;
+		if (IsKeyPressed(KEY_ENTER) || IsGamepadButtonPressed(0, GAMEPAD_BUTTON_RIGHT_FACE_DOWN)) { 
+			if (m_currentSelectionUI == 0)
+				currentState = GAMING;
+			else if (m_currentSelectionUI == 2)
+			{
+				UnloadMusicStream(backgroundMusic);
+				backgroundMusic = LoadMusicStream("..\\assets\\audio\\mainmenuTheme.mp3");
+				backgroundMusic.looping = true;
+				PlayMusicStream(backgroundMusic);
+				currentState = MAINMENU;
+			}
 		}
-	}
-	case State::DEATH:
-	{
-		//to be filled in
-	}
-	default:
-	{
-		currentState = State::GAMING;
-	}
+		if (IsKeyPressed(KEY_UP) ||	
+			IsKeyPressed(KEY_W) ||
+			IsKeyPressed(KEY_D) ||
+			GetGamepadAxisMovement(0, GAMEPAD_AXIS_LEFT_Y) > m_leftStickDeadzoneY ||
+			IsGamepadButtonPressed(0, GAMEPAD_BUTTON_LEFT_FACE_UP)) {
+			m_currentSelectionUI++;
+			if (m_currentSelectionUI == 3)m_currentSelectionUI = 0;
+		}
+		if (IsKeyPressed(KEY_DOWN) ||
+			IsKeyPressed(KEY_S) ||
+			IsKeyPressed(KEY_A) ||
+			GetGamepadAxisMovement(0, GAMEPAD_AXIS_LEFT_Y) < -m_leftStickDeadzoneY ||
+			IsGamepadButtonPressed(0, GAMEPAD_BUTTON_LEFT_FACE_DOWN)) {
+			m_currentSelectionUI--;
+			if (m_currentSelectionUI == -1)m_currentSelectionUI = 2;
+		}
 
+		return;
+	}
+	else
+	{
+		UnloadMusicStream(backgroundMusic);
+		backgroundMusic = LoadMusicStream("..\\assets\\audio\\mainmenuTheme.mp3");
+		backgroundMusic.looping = true;
+		PlayMusicStream(backgroundMusic);
+		currentState = MAINMENU;
+		//to be filled in
 	}
 }
 
 void App::draw()
 {
 
-	switch (currentState)
+
+	if(currentState == SPLASHSCREEN) {
+		m_window->BeginDrawing();
+		m_window->ClearBackground(WHITE);
+		unsigned char greyscale = (1.f - timer / 5.f) * 255.f;
+		{
+			DrawRectangle(0, 0, m_winwidth, m_winheight, GREEN);
+			DrawText("Gunning Up", m_winwidth / 2 - 100, m_winheight / 2 - 20, 40, BLACK);
+		}
+		DrawRectangle(0, 0, m_winwidth, m_winheight, {255,255,255,greyscale});
+		m_window->EndDrawing();
+		return;
+	}
+	else if (currentState == MAINMENU)
 	{
-	case State::MAINMENU:
+		m_window->BeginDrawing();
+		m_window->ClearBackground(BEIGE);
+		DrawTexturePro(TX2D_Title, { 0,0,(float)TX2D_Title.width, (float)TX2D_Title.height }, {m_winwidth/4.f,m_winheight/8.f,m_winwidth/2.f,m_winheight/4.f}, { 0,0 }, sin(GetTime()), WHITE);
+
+		for (int i = 0; i < 3; i++) {
+			{
+				if (m_currentSelectionUI == i)
+				{
+					DrawRectangle(m_startPosUI[0], m_startPosUI[1] + m_sizeOfUI[1] * i * 1.5, m_sizeOfUI[0], m_sizeOfUI[1], { 255, 215, 0, 125 });
+				}
+				else
+				{
+					DrawRectangle(m_startPosUI[0], m_startPosUI[1] + m_sizeOfUI[1] * i * 1.5, m_sizeOfUI[0], m_sizeOfUI[1], { 0,82,172,125 });
+				}
+				DrawText(m_mainMenuOptions[i], m_winwidth / 2.f, m_startPosUI[1] + m_sizeOfUI[i] * i * 1.5 + (m_sizeOfUI[1] / 2), m_sizeOfUI[1] / 2, WHITE);
+			}
+		}
+
+		m_window->EndDrawing();
+		return;
+	}
+	else if (currentState == DEATH)
 	{
 		//something
+		
+		return;
 	}
-	case State::DEATH:
+	else if (currentState == PAUSE)
 	{
-		//something
+		m_window->BeginDrawing();
+		m_window->ClearBackground(BEIGE);
+		
+
+		for (int i = 0; i < 3; i++) {
+			{
+				if (m_currentSelectionUI == i) 
+				{
+					DrawRectangle(m_startPosUI[0], m_startPosUI[1] + m_sizeOfUI[1] * i * 1.5, m_sizeOfUI[0], m_sizeOfUI[1], { 255, 215, 0, 125});
+				}else
+				{
+					DrawRectangle(m_startPosUI[0], m_startPosUI[1]+m_sizeOfUI[1]*i*1.5, m_sizeOfUI[0], m_sizeOfUI[1], {0,82,172,125});
+				}
+				DrawText(m_pauseOptions[i], m_winwidth / 2.f, m_startPosUI[1] + m_sizeOfUI[i] * i * 1.5 + (m_sizeOfUI[1] / 2), m_sizeOfUI[1] / 2, GREEN);
+			}
+		}
+
+		m_window->EndDrawing();
+		return;
 	}
-	case State::PAUSE: 
-	{
-		int x = 0;
-	}
-	case State::GAMING :
+	//gaming
+	else
 	{
 		m_window->BeginDrawing();
 
@@ -213,6 +354,9 @@ void App::draw()
 		//Draw Rays
 		{
 			m_window->ClearBackground(WHITE);
+			//draw skybox
+			DrawTexturePro(TX2D_skybox, { ((m_player->getRotationHorizontals() - m_fov / 2) / 360.f * (float)TX2D_skybox.width),0, (float)TX2D_skybox.width * (m_fov/360.f),(float)TX2D_skybox.height }, { 0,0,(float)m_winwidth,(float)m_winheight }, { 0,0 }, 0, WHITE);
+
 
 			//start by casting rays into the scene
 			int currentRayIndex;
@@ -271,7 +415,7 @@ void App::draw()
 					percentAlongWall = Vector2Distance(wallStart, pointAlongWall);
 					percentAlongWall /= m_wallLength;
 					percentAlongWall = percentAlongWall - (float)(int)percentAlongWall;
-					//takes a sample of the texture for the wall and trnasforms it into the correct shape for the wall
+					//takes a sample of the texture for the wall and transforms it into the correct shape for the wall
 					{
 						m_sliceInfo.source = {
 							(float)TX2D_basicWall.width * percentAlongWall, // x
@@ -328,7 +472,7 @@ void App::draw()
 							tempDistance = Vector2Distance(m_player->getPosition(), enemy.getPosition());
 							if (tempDistance < traceDistance) {
 								{
-									y = (float)(m_winheight) / 2.0f; //move to halfway down the screen
+									y = (float)(m_winheight) / 2.0f + wallSize / (tempDistance); //move to halfway down the screen
 
 									height = enemy.getHeight() / (tempDistance);
 
@@ -349,10 +493,13 @@ void App::draw()
 								}
 
 								m_sliceInfo.source = {
-								(float)TX2D_basicEnemy.width * percentAlongWall, // x
-								0,
+								(float)TX2D_basicEnemy.width * percentAlongWall/2.f + 
+									((enemy.isShootingPlayer() * (enemy.getCooldown()<0.5f) + 
+									(!enemy.isShootingPlayer() * ((int)(GetTime()*1000.f) % 2 == 1) * TX2D_basicEnemy.width/2.f))*TX2D_basicEnemy.width/2.f
+								), // x
+								enemy.isShootingPlayer()*TX2D_basicEnemy.height/2.f,
 								1,
-								(float)TX2D_basicEnemy.height
+								(float)TX2D_basicEnemy.height/2.f
 								};
 								m_sliceInfo.top = 0;
 								m_sliceInfo.bottom = 0;
@@ -372,7 +519,7 @@ void App::draw()
 										(float)currentRayIndex,
 										y ,
 										1,
-										height * 2.0f
+										height
 									},
 
 									Vector2{ 0,0 },	//origin
@@ -380,20 +527,25 @@ void App::draw()
 									0,				//rotation
 
 									{				//tint (darkens based on distance)
-										(unsigned char)(ColourTint + (125 * enemy.isHit())),	//r
+										(unsigned char)(ColourTint + (125 * enemy.isHit())), //r
 										ColourTint,	//g
 										ColourTint,	//b
-										255																//a
+										255			//a
 									}
 								);
+								if ((float)enemy.getHealth() / (float)enemy.getMaxHealth() > percentAlongWall)
+								{
+									DrawRectangle(currentRayIndex, y - 50.f / tempDistance, 1, 25.f / tempDistance, GREEN);
+								}
+								else {
+									DrawRectangle(currentRayIndex, y - 50.f / tempDistance, 1, 25.f / tempDistance, RED);
+								}
 							}
-
 						}
 					}
 				}
 				traceDistance = 9999.f; // some big number
 				traceColor = BLACK;
-
 			}
 		}
 
@@ -426,8 +578,8 @@ void App::draw()
 				DrawTexturePro(
 					TX2D_gunHolding,
 					{ (float)TX2D_gunHolding.width / 2.f,0,(float)TX2D_gunHolding.width / 2.f,(float)TX2D_gunHolding.height },
-					{ (float)m_winwidth / 2.f, (float)m_winheight / 4.f * 3.f, (float)TX2D_gunHolding.width / 2.f * m_gunImageScale, (float)TX2D_gunHolding.height * m_gunImageScale },
-					{ 0.5,0.5 },
+					{ (float)m_winwidth / 8.f*3.f, (float)m_winheight / 4.f * 3.f, m_winwidth/4.f, m_winheight/4.f },
+					{ 0,0 },
 					0,
 					{ WHITE }
 				);
@@ -436,7 +588,7 @@ void App::draw()
 				DrawTexturePro(
 					TX2D_gunHolding,
 					{ 0,0,(float)TX2D_gunHolding.width / 2.f,(float)TX2D_gunHolding.height },
-					{ (float)m_winwidth / 2.f, (float)m_winheight / 4.f * 3.f, (float)TX2D_gunHolding.width / 2.f * m_gunImageScale, (float)TX2D_gunHolding.height * m_gunImageScale },
+					{ (float)m_winwidth / 8.f * 3.f, (float)m_winheight / 4.f * 3.f, m_winwidth / 4.f, m_winheight / 4.f },
 					{ 0,0 },
 					0,
 					{ WHITE }
@@ -447,25 +599,72 @@ void App::draw()
 		//HUD
 		{
 			DrawRectangle(20, m_winheight - 60, m_winwidth - 40, 40, YELLOW);
+			//amount of healh
 			DrawText(("Health : " + std::to_string(m_player->getHealth())).c_str(), 30, m_winheight - 38, 8, BLACK);
+			//amount of bullets
 			int numberOfRoundsLeft = 0;
 			for (Bullet& bullet : m_player->getBullets()) {
 				numberOfRoundsLeft += bullet.CanBeFired();
 			}
+			//number of enemies alive
 			DrawText(("Ammo : " + std::to_string(numberOfRoundsLeft)).c_str(), m_winwidth - 80, m_winheight - 38, 8, BLACK);
+			int numberOfEnemiesLeft = 0;
+			for (Enemy& enemy : m_enemies) {
+				numberOfEnemiesLeft += enemy.getAliveStatus();
+			}
+			DrawText(("EnemiesLeft : " + std::to_string(numberOfEnemiesLeft) + " Out Of " + std::to_string(m_enemies.size())).c_str(), 40, 40, 20, RED);
+
+			//DrawCrosshair
+			int length = 10;
+			int thickness = 2;
+			DrawRectangle(m_winwidth / 2 - (length+thickness), m_winheight / 2 - thickness, length, thickness*2, BLACK); //left
+			DrawRectangle(m_winwidth / 2 - (length+thickness/2), m_winheight / 2 - thickness/2, length, thickness, WHITE); //inner left
+			DrawRectangle(m_winwidth / 2 + thickness, m_winheight / 2 - thickness, length, thickness*2, BLACK); //right
+			DrawRectangle(m_winwidth / 2 + thickness/2, m_winheight / 2 - thickness/2, length, thickness, WHITE); //inner right
+			DrawRectangle(m_winwidth / 2 - thickness, m_winheight / 2 - (length+thickness), thickness*2, length, BLACK); //up
+			DrawRectangle(m_winwidth / 2 - thickness/2, m_winheight / 2 - (length+thickness/2), thickness, length, WHITE); //inner up
+			DrawRectangle(m_winwidth / 2 - thickness, m_winheight / 2 + thickness, thickness * 2, length, BLACK); //down
+			DrawRectangle(m_winwidth / 2 - thickness/2, m_winheight / 2 + thickness/2, thickness, length, WHITE); //inner down
+
 		}
+
 
 		m_window->EndDrawing();
 
-		if (IsGamepadButtonDown(0, GAMEPAD_BUTTON_MIDDLE_LEFT) || IsKeyPressed(KEY_ESCAPE)) {
-			currentState = State::PAUSE;
-
+		if (IsGamepadButtonPressed(0, GAMEPAD_BUTTON_MIDDLE_RIGHT) || IsKeyPressed(KEY_ESCAPE)) {
+			currentState = PAUSE;
+			return;
 		}
 
-	}
-	default:
-	{
-		currentState = State::GAMING;
-	}
+	
+
+		currentState = MAINMENU;
+		for (Enemy& enemy : m_enemies) {
+			if (enemy.getAliveStatus())
+			{
+				currentState = GAMING;
+				break;
+			}
+
+		}
+		/*if (currentState = MAINMENU) {
+			m_floor = new FloorGenerator(m_floor->getWidth(), m_floor->getHeight());
+			m_player->Reset();
+			m_player->setPosition(m_floor->getNavigationNodes()[GetRandomValue(0, m_floor->getNavigationNodes().size()-1)].getPosition());
+			NavigationNode* NavNode;
+			for (Enemy& enemy : m_enemies) {
+				NavNode = &m_floor->getNavigationNodes()[GetRandomValue(0, m_floor->getNavigationNodes().size()-1)];
+				enemy.setPosition(NavNode->getPosition());
+				enemy.setNavigationNode(NavNode);
+				enemy.Reset();
+			}
+		}*/
+
+		if (!m_player->getAliveStatus()) {
+			currentState = DEATH;
+			return;
+		}
+
+		return;
 	}
 }

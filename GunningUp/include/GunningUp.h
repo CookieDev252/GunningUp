@@ -13,8 +13,6 @@
 #include "raylib-cpp.hpp"
 #include "raymath.hpp"
 
-static Sound shootingSound;
-
 inline Vector2 ClosestPoint(Vector2 a, Vector2 b, Vector2 p) {
 
 	// get vector differences
@@ -48,6 +46,14 @@ public:
 	Vector2 normal;
 	Color color;
 };
+
+//Axis DeadZones
+const float m_leftStickDeadzoneX{ 0.1f };
+const float m_leftStickDeadzoneY{ 0.1f };
+const float m_rightStickDeadzoneX{ 0.1f };
+const float m_rightStickDeadzoneY{ 0.1f };
+const float m_leftTriggerDeadzone{ -0.9f };
+const float m_rightTriggerDeadzone{ -0.9f };
 
 
 #define TORADIANS PI/180.0f

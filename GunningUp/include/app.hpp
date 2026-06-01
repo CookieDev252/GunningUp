@@ -50,9 +50,14 @@ public:
 private:
 	//minimap
 	RenderTexture m_minimapTexture; ///< a rectangular texture which will have the minimap drawn onto before rendering to the screen
+	Texture2D m_screenShot; ///< takes a full view image of the game (used as a base for the pause menu)
 	Texture2D TX2D_basicWall; ///< a texture for the wall
 	Texture2D TX2D_basicEnemy; ///< a texture for the enemy
 	Texture2D TX2D_gunHolding; ///< a texture for the gun
+	Texture2D TX2D_skybox; ///< a texture for the skybox
+	Texture2D TX2D_Title; ///< a texture for the title
+	raylib::Sound shootingSound;
+	Sound explosionSound; ///< plays when an enemy dies
 	float m_gunImageScale{0.75f};
 	int m_winwidth{ 700 }; ///< width of the screen
 	int m_winheight{ 500 }; ///< height of the screen
@@ -63,17 +68,34 @@ private:
 	float actualAngleDegrees{};
 	float timer{0.f};
 private:
+	//UI variables
+	int m_currentSelectionUI{0};
+	int m_sizeOfUI[2]{ m_winwidth / 2, m_winheight/10 };
+	int m_startPosUI[2]{ m_winwidth/2-m_sizeOfUI[0]/2,m_winheight/2-m_sizeOfUI[1]*2};
+	char* m_pauseOptions[3]{
+		"Continue",
+		"Settings",
+		"MainMenu"
+	};
+	char* m_mainMenuOptions[3]{
+		"Play",
+		"Settings",
+		"Quit"
+	};
+	//window variables
 	char* m_title{ "GunningUp" };
+	//game variables
 	Player* m_player;
 	std::vector<Enemy> m_enemies;
 	FloorGenerator* m_floor;
 	Camera2D* m_camera;
 	NPatchInfo m_sliceInfo;
+	Music backgroundMusic;
 	
 public:
 	bool running{true};
 	raylib::Window* m_window;
-	State currentState{ State::GAMING };
+	unsigned int currentState{ State::SPLASHSCREEN };
 };
 
 

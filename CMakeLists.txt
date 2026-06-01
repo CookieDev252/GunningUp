@@ -31,7 +31,29 @@ if (NOT raylib_cpp_FOUND)
 endif()
 
 add_executable(${PROJECT_NAME})
-set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 11)
+set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 17)
+
+# Fetch GoogleTest framework
+include(FetchContent)
+FetchContent_Declare(
+  googletest
+  URL https://github.com/google/googletest/archive/03597a01ee50ed33e9dfd640b249b4be3799d395.zip
+)
+
+# Prevent overriding parent project's compiler/linker settings
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+FetchContent_MakeAvailable(googletest)
+
+# Enable CTest
+enable_testing()
+
+# Define your test executable
+add_executable(my_tests GTesting/test.cpp)
+target_link_libraries(my_tests GTest::gtest_main)
+
+# Automatically discover tests from the binary
+include(GoogleTest)
+gtest_discover_tests(my_tests)
 
 # Collect source files
 file(GLOB_RECURSE SOURCE_FILES CONFIGURE_DEPENDS

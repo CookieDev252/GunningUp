@@ -40,8 +40,8 @@ private:
 
 class FloorGenerator {
 private:
-	int width{ 0 };
-	int height{ 0 };
+	int m_width{ 0 };
+	int m_height{ 0 };
 	int m_splitCount{ 100 }; // default to 3 splits
 	int m_minRoomArea{ 30 }; // small room
 	int m_maxRoomArea{ 50 }; // massive room
@@ -61,6 +61,8 @@ public:
 	void GenerateLevel();
 	void setSeed(unsigned int seed) { SetRandomSeed(seed); }
 	bool CanBeSplit(Room& room) const;
+	const int getWidth() { return m_width; };
+	const int getHeight() { return m_height; };
 
 	std::vector<Room>& getRooms() { return m_rooms; }
 	std::vector<Line2D>& getWalls() { return m_walls; }
