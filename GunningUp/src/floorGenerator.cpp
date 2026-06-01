@@ -3,7 +3,7 @@
 
 FloorGenerator::FloorGenerator(int width, int height)
 {
-	m_rooms.push_back(Room(0, 0, width, height));
+	m_rooms.push_back(Room(m_intersection, m_intersection, width-m_intersection*2, height-m_intersection*2));
 	this->m_width = width;
 	this->m_height = height;
 

@@ -50,7 +50,7 @@ public:
 private:
 	//minimap
 	RenderTexture m_minimapTexture; ///< a rectangular texture which will have the minimap drawn onto before rendering to the screen
-	Texture2D m_screenShot; ///< takes a full view image of the game (used as a base for the pause menu)
+	Texture2D TX2D_logo; ///< takes a full view image of the game (used as a base for the pause menu)
 	Texture2D TX2D_basicWall; ///< a texture for the wall
 	Texture2D TX2D_basicEnemy; ///< a texture for the enemy
 	Texture2D TX2D_gunHolding; ///< a texture for the gun

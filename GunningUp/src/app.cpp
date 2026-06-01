@@ -49,9 +49,7 @@ App::App(int winWidth, int winHeight, char* title) :
 	m_camera = new Camera2D();
 	m_camera->zoom = 1.0f;
 	m_camera->offset = { GetScreenWidth() / 8.f, GetScreenHeight() / 8.f };
-	m_minimapTexture = LoadRenderTexture(m_winwidth/4, m_winwidth/4);
-	m_screenShot.height = m_winheight;
-	m_screenShot.width = m_winwidth;
+	m_minimapTexture = LoadRenderTexture(m_winwidth / 4, m_winwidth / 4);
 
 	//load in the wall texture
 	TX2D_basicWall = LoadTexture("..\\assets\\textures\\officeWallTexture.png");
@@ -68,11 +66,16 @@ App::App(int winWidth, int winHeight, char* title) :
 	//load in the Title card
 	TX2D_Title = LoadTexture("..\\assets\\textures\\TitleCard.png");
 
+	//load in the logo for the splashscreen
+	TX2D_logo = LoadTexture("..\\assets\\textures\\GDFF.png");
+
 	backgroundMusic = LoadMusicStream("..\\assets\\audio\\SplashScreen.mp3");
 	backgroundMusic.looping = true;
 	PlayMusicStream(backgroundMusic);
 
+	//load in the explosion sound for when the enemies are defeated
 	explosionSound = LoadSound("..\\assets\\audio\\explosion.wav");
+
 
 
 	//this will be used to slice up the wall texture
@@ -88,13 +91,13 @@ App::~App()
 	delete m_camera;
 
 	UnloadRenderTexture(m_minimapTexture); // unload minimap texture
-	UnloadTexture(m_screenShot); // unload the screenshot texture
+	UnloadTexture(TX2D_logo); // unload the Logo
 	UnloadTexture(TX2D_basicWall); // unload the wall texture
 	UnloadTexture(TX2D_basicEnemy); // unload the enemy texture
-	UnloadTexture(TX2D_gunHolding); //  
-	UnloadTexture(TX2D_skybox);
-	UnloadTexture(TX2D_Title);
-	UnloadMusicStream(backgroundMusic);
+	UnloadTexture(TX2D_gunHolding); // unload the gun image
+	UnloadTexture(TX2D_skybox); // unload the skybox image
+	UnloadTexture(TX2D_Title); // unload the title
+	UnloadMusicStream(backgroundMusic); //unload the background music stream
 	CloseAudioDevice();
 
 }
@@ -131,16 +134,16 @@ void App::update(float dt)
 			IsKeyPressed(KEY_D) ||
 			GetGamepadAxisMovement(0, GAMEPAD_AXIS_LEFT_Y) > m_leftStickDeadzoneY ||
 			IsGamepadButtonPressed(0, GAMEPAD_BUTTON_LEFT_FACE_UP)) {
-			m_currentSelectionUI++;
-			if (m_currentSelectionUI == 3)m_currentSelectionUI = 0;
+			m_currentSelectionUI--;
+			if (m_currentSelectionUI == -1)m_currentSelectionUI = 2;
 		}
 		if (IsKeyPressed(KEY_DOWN) ||
 			IsKeyPressed(KEY_S) ||
 			IsKeyPressed(KEY_A) ||
 			GetGamepadAxisMovement(0, GAMEPAD_AXIS_LEFT_Y) < -m_leftStickDeadzoneY ||
 			IsGamepadButtonPressed(0, GAMEPAD_BUTTON_LEFT_FACE_DOWN)) {
-			m_currentSelectionUI--;
-			if (m_currentSelectionUI == -1)m_currentSelectionUI = 2;
+			m_currentSelectionUI++;
+			if (m_currentSelectionUI == 3)m_currentSelectionUI = 0;
 		}
 		return;
 	}
@@ -228,16 +231,16 @@ void App::update(float dt)
 			IsKeyPressed(KEY_D) ||
 			GetGamepadAxisMovement(0, GAMEPAD_AXIS_LEFT_Y) > m_leftStickDeadzoneY ||
 			IsGamepadButtonPressed(0, GAMEPAD_BUTTON_LEFT_FACE_UP)) {
-			m_currentSelectionUI++;
-			if (m_currentSelectionUI == 3)m_currentSelectionUI = 0;
+			m_currentSelectionUI--;
+			if (m_currentSelectionUI == -1)m_currentSelectionUI = 2;
 		}
 		if (IsKeyPressed(KEY_DOWN) ||
 			IsKeyPressed(KEY_S) ||
 			IsKeyPressed(KEY_A) ||
 			GetGamepadAxisMovement(0, GAMEPAD_AXIS_LEFT_Y) < -m_leftStickDeadzoneY ||
 			IsGamepadButtonPressed(0, GAMEPAD_BUTTON_LEFT_FACE_DOWN)) {
-			m_currentSelectionUI--;
-			if (m_currentSelectionUI == -1)m_currentSelectionUI = 2;
+			m_currentSelectionUI++;
+			if (m_currentSelectionUI == 3)m_currentSelectionUI = 0;
 		}
 
 		return;
@@ -263,7 +266,7 @@ void App::draw()
 		unsigned char greyscale = (1.f - timer / 5.f) * 255.f;
 		{
 			DrawRectangle(0, 0, m_winwidth, m_winheight, GREEN);
-			DrawText("Gunning Up", m_winwidth / 2 - 100, m_winheight / 2 - 20, 40, BLACK);
+			DrawTexturePro(TX2D_logo, { 0,0,(float)TX2D_logo.width,(float)TX2D_logo.height }, { m_winwidth / 2.f,m_winheight / 2.f, m_winheight / 2.f,m_winheight / 2.f }, { m_winheight/4.f,m_winheight/4.f }, 0, WHITE);
 		}
 		DrawRectangle(0, 0, m_winwidth, m_winheight, {255,255,255,greyscale});
 		m_window->EndDrawing();
@@ -285,7 +288,7 @@ void App::draw()
 				{
 					DrawRectangle(m_startPosUI[0], m_startPosUI[1] + m_sizeOfUI[1] * i * 1.5, m_sizeOfUI[0], m_sizeOfUI[1], { 0,82,172,125 });
 				}
-				DrawText(m_mainMenuOptions[i], m_winwidth / 2.f, m_startPosUI[1] + m_sizeOfUI[i] * i * 1.5 + (m_sizeOfUI[1] / 2), m_sizeOfUI[1] / 2, WHITE);
+				DrawText(m_mainMenuOptions[i], m_winwidth / 2.f, m_startPosUI[1] + m_sizeOfUI[1] * i * 1.5 + (m_sizeOfUI[1] / 2), m_sizeOfUI[1] / 2, WHITE);
 			}
 		}
 
@@ -313,7 +316,7 @@ void App::draw()
 				{
 					DrawRectangle(m_startPosUI[0], m_startPosUI[1]+m_sizeOfUI[1]*i*1.5, m_sizeOfUI[0], m_sizeOfUI[1], {0,82,172,125});
 				}
-				DrawText(m_pauseOptions[i], m_winwidth / 2.f, m_startPosUI[1] + m_sizeOfUI[i] * i * 1.5 + (m_sizeOfUI[1] / 2), m_sizeOfUI[1] / 2, GREEN);
+				DrawText(m_pauseOptions[i], m_winwidth / 2.f, m_startPosUI[1] + m_sizeOfUI[1] * i * 1.5 + (m_sizeOfUI[1] / 2), m_sizeOfUI[1] / 2, GREEN);
 			}
 		}
 
