@@ -3,6 +3,9 @@
 
 #include "GunningUp.h"
 
+#include <iostream>
+#include <algorithm>
+
 /// @struct Room
 /// @brief Holds the x,y,width, and height values
 struct Room {

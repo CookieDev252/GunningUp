@@ -1,0 +1,5 @@
+This isn't the current git branch
+
+but the instructions are written on this page
+
+https://github.com/CookieDev252/GunningUp/releases/tag/AlphaRelease

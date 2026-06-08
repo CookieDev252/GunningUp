@@ -32,7 +32,7 @@ private:
 	NavigationNode* m_navRef{ nullptr }; ///< a reference pointer to a node, the node has attatched nodes which is how the enemy navigates the scene
 	float m_enemyHeight{ 3000.f }; ///< the height that the enemy is drawn to the screen
 	//behaviour variables
-	float m_distanceBeforeSwitchSqr{ 800.f }; ///< required distance to switch nodes squared
+	float m_distanceBeforeSwitchSqr{ 100.f }; ///< required distance to switch nodes squared
 	float m_distanceBeforeShootingSqr{ 800.f }; ///< required distance to shoot the player squared
 	float m_timer{ 0 }; ///< time since alive (for animations)
 	bool m_shouldChargePlayer{ false }; //< should the enemy charge towards the player

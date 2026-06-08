@@ -35,6 +35,8 @@ void Enemy::draw() const
 		DrawLine(m_position.x - m_size, m_position.y + m_size, m_position.x - m_size + (m_size * 2.f * ((float)m_health / (float)m_maxHealth)), m_position.y + m_size, GREEN);
 	}
 
+	DrawLineV(m_position, m_navRef->getPosition(), RED);
+
 	for (auto& bullet : m_bullets) {
 		bullet.Draw();
 	}
@@ -47,19 +49,25 @@ inline void Enemy::update(float dt)
 	//check if enemy is close enough to the node
 	if (m_distanceBeforeSwitchSqr >= Vector2DistanceSqr(m_position, m_navRef->getPosition())) {
 		//check surrounding nodes
-		float currentDistance = 9999;
+		float currentDot = -1; //least optimal
+		float tempDot;
 		NavigationNode* optimalNode = m_navRef;
 		for (NavigationNode* node : m_navRef->m_connectedNodes) {
-			if (Vector2DistanceSqr(m_playerRef->getPosition(), node->getPosition()) < currentDistance) {
+			tempDot = Vector2DotProduct(
+				Vector2Normalize(Vector2Subtract(m_playerRef->getPosition(), getPosition())), 
+				Vector2Normalize(Vector2Subtract(node->getPosition(), getPosition()))
+			);
+			//std::cout << "dot product is : " << tempDot << std::endl;
+			if (tempDot > currentDot) {
 				optimalNode = node;
-				currentDistance = Vector2DistanceSqr(m_playerRef->getPosition(), node->getPosition());
+				currentDot = tempDot;
 			}
 		}
 
-		//assign the most optimal node based on distance
+		//assign the most optimal node based on dot product
 		m_navRef = optimalNode;
 	}
-	m_shouldChargePlayer = (Vector2DistanceSqr(m_playerRef->getPosition(), m_position) <= 64.f);
+	m_shouldChargePlayer = (Vector2DistanceSqr(m_playerRef->getPosition(), m_position) <= Vector2DistanceSqr(m_position,m_navRef->getPosition()));
 	m_shouldShootPlayer = (Vector2DistanceSqr(m_playerRef->getPosition(), m_position) <= m_distanceBeforeShootingSqr);
 
 	//move towards node or player

@@ -1,18 +1,23 @@
 #include "floorGenerator.hpp"
-#include <iostream>
+
 
 FloorGenerator::FloorGenerator(int width, int height)
 {
-	m_rooms.push_back(Room(m_intersection, m_intersection, width-m_intersection*2, height-m_intersection*2));
+	m_rooms.push_back(Room(m_intersection*2, m_intersection*2, width-m_intersection*4, height-m_intersection*4));
 	this->m_width = width;
 	this->m_height = height;
-
 	GenerateLevel();
 }
 
 void FloorGenerator::draw() {
 	for (const Line2D& wall : m_walls) { 
 		DrawLine(wall.startPoint.x, wall.startPoint.y, wall.endPoint.x, wall.endPoint.y, wall.color);
+	}
+	for (const NavigationNode& nav : m_navNodes) {
+		DrawCircle(nav.getPosition().x, nav.getPosition().y, m_intersection, { 0,255,0,50 }); //barely visisble green
+		for (const NavigationNode* nav2 : nav.m_connectedNodes) {
+			DrawLineV(nav.getPosition(), nav2->getPosition(), { 255,0,0,50 });
+		}
 	}
 }
 
@@ -30,7 +35,7 @@ void FloorGenerator::SplitRoom(int selectedRoom)
 				room.h
 				)
 		);
-		m_navNodes.push_back(NavigationNode{ Vector2{(float)(room.x + room.w / 2 + offset), (float)(room.y) + 1.5f} });
+		m_navNodes.push_back(NavigationNode{ Vector2{(float)(room.x + room.w / 2 + offset), (float)(room.y) - m_intersection} });
 		m_rooms.insert(m_rooms.begin() + selectedRoom+1,
 			Room(
 				room.x + room.w / 2 + offset + m_intersection,
@@ -39,7 +44,7 @@ void FloorGenerator::SplitRoom(int selectedRoom)
 				room.h
 			)
 		);
-		m_navNodes.push_back(NavigationNode{ Vector2{(float)(room.x + room.w / 2 + offset), (float)(room.y + room.h)-1.5f} });
+		m_navNodes.push_back(NavigationNode{ Vector2{(float)(room.x + room.w / 2 + offset), (float)(room.y + room.h)+m_intersection} });
 		m_rooms.erase(m_rooms.begin() + selectedRoom);
 	}
 	else {
@@ -52,7 +57,7 @@ void FloorGenerator::SplitRoom(int selectedRoom)
 				room.h / 2 + offset - m_intersection
 			)
 		);
-		m_navNodes.push_back(NavigationNode{ Vector2{(float)(room.x) + 1.5f, (float)(room.y + room.h / 2 + offset)} });
+		m_navNodes.push_back(NavigationNode{ Vector2{(float)(room.x)-m_intersection, (float)(room.y + room.h / 2 + offset)} });
 		m_rooms.insert(m_rooms.begin() + selectedRoom+1,
 			Room(
 				room.x,
@@ -61,7 +66,7 @@ void FloorGenerator::SplitRoom(int selectedRoom)
 				room.h / 2 - offset - m_intersection
 			)
 		);
-		m_navNodes.push_back(NavigationNode{ Vector2{(float)(room.x + room.w) - 1.5f, (float)(room.y + room.h / 2 + offset)} });
+		m_navNodes.push_back(NavigationNode{ Vector2{(float)(room.x + room.w)+m_intersection, (float)(room.y + room.h / 2 + offset)} });
 		m_rooms.erase(m_rooms.begin() + selectedRoom);
 	}
 }
@@ -123,10 +128,10 @@ void FloorGenerator::GenerateLevel()
 		}
 	}
 	//add back in the map walls
-	m_walls.push_back(Line2D{ Vector2{0,0}, Vector2{(float)m_width,0}, {0,0,0,0} });
-	m_walls.push_back(Line2D{ Vector2{(float)m_width,0}, Vector2{(float)m_width,(float)m_height}, {0,0,0,0}});
-	m_walls.push_back(Line2D{ Vector2{(float)m_width,(float)m_height}, Vector2{0,(float)m_height}, {0,0,0,0}});
-	m_walls.push_back(Line2D{ Vector2{0,(float)m_height}, Vector2{0,0}, {0,0,0,0} });
+	m_walls.push_back(Line2D{ Vector2{0,0}, Vector2{(float)m_width,0}, BLACK });
+	m_walls.push_back(Line2D{ Vector2{(float)m_width,0}, Vector2{(float)m_width,(float)m_height}, BLACK });
+	m_walls.push_back(Line2D{ Vector2{(float)m_width,(float)m_height}, Vector2{0,(float)m_height}, BLACK});
+	m_walls.push_back(Line2D{ Vector2{0,(float)m_height}, Vector2{0,0}, BLACK });
 
 	Vector2* emptyPointer = new Vector2{};
 
@@ -154,16 +159,17 @@ void FloorGenerator::GenerateLevel()
 	//remove the temporary pointer
 	delete emptyPointer;
 
-	//loop through the Navigation nodes, but this time culling any that have the same neighbour and are closer
+	//loop through the Navigation nodes, but this time culling all nodes to 4 nearest nodes
 	for (NavigationNode& node : m_navNodes) { // iterate the base nodes
-		for (NavigationNode* otherNode : node.m_connectedNodes) { // iterate the nodes connected to base node
-			for (NavigationNode* otherNodeCompare : otherNode->m_connectedNodes) { // iterate the node inside the connected nodes 
-				for (NavigationNode* nodeCompare : node.m_connectedNodes) {
-					if (otherNodeCompare == nodeCompare && otherNodeCompare != otherNode ) { // remove node if it's not the same one being sampled
-						if (Vector2DistanceSqr(otherNodeCompare->getPosition(), node.getPosition()) > Vector2DistanceSqr(node.getPosition(), otherNode->getPosition()))
-							node.RemoveNode(otherNodeCompare);
-					}
-				}
+		if (node.m_connectedNodes.size() > 4)
+		{
+			//sort the nodes by their distance from the original
+			std::sort(node.m_connectedNodes.begin(), node.m_connectedNodes.end(), [node](const NavigationNode* a, const NavigationNode* b) {
+				return Vector2DistanceSqr(node.getPosition(), a->getPosition()) < Vector2DistanceSqr(node.getPosition(), b->getPosition());
+				});
+			//truncate all the unnecessary nodes
+			for (int i = 4; i < node.m_connectedNodes.size(); i) {
+				node.RemoveNode(node.m_connectedNodes[i]);
 			}
 		}
 	}
